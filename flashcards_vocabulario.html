@@ -1567,8 +1567,14 @@ function tryLoadFromStorage() {
 }
 
 function showUpdateDictScreen() {
-  document.getElementById('selection-screen').style.display = 'none';
-  document.getElementById('load-screen').style.display = 'flex';
+  // Try server fetch first; only fall back to drag-drop if it fails
+  fetchDictFromServer(
+    function() { onJSONLoaded(0); },
+    function() {
+      document.getElementById('selection-screen').style.display = 'none';
+      document.getElementById('load-screen').style.display = 'flex';
+    }
+  );
 }
 
 function loadJSONFile(event) {
@@ -2557,13 +2563,39 @@ function launchConfetti(bursts) {
   burst();
 }
 
+// ── Auto-fetch dictionary from server ─────────────────────────────────
+function fetchDictFromServer(onSuccess, onFail) {
+  fetch('spanish_dictionary.json')
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(raw) {
+      raw.forEach(function(entry) {
+        if (entry.leitner_box === undefined) entry.leitner_box = 1;
+        if (entry.leitner_sessions_until_due === undefined) entry.leitner_sessions_until_due = 0;
+      });
+      applyStoredLeitner(raw);
+      saveDictToStorage(raw);
+      workingData = raw;
+      jsonLoaded  = true;
+      leitnerMode = true;
+      onSuccess();
+    })
+    .catch(function() { onFail(); });
+}
+
 // ── Init ──────────────────────────────────────────────────────────────
 buildCatGrid();
 updateCatUI();
 if (tryLoadFromStorage()) {
   onJSONLoaded(0);  // dictionary cached in localStorage — skip load screen
 } else {
-  document.getElementById('load-screen').style.display = 'flex';
+  // Try to fetch dictionary from server (works on Netlify); fall back to drag-drop
+  fetchDictFromServer(
+    function() { onJSONLoaded(0); },
+    function() { document.getElementById('load-screen').style.display = 'flex'; }
+  );
 }
 </script>
 </body>
