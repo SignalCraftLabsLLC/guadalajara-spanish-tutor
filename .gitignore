@@ -1,0 +1,11 @@
+# Archive photos — ~2GB, not needed for the app
+archive/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor scratch files
+*.swp
+*~

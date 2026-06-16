@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diccionario Editor — Guadalajara Spanish Tutor</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cobalt: #1B4F8A;
+  --cobalt-dark: #143d6e;
+  --cobalt-light: #2a6db5;
+  --terracotta: #C1440E;
+  --marigold: #E8971A;
+  --cream: #F5F0E8;
+  --cream-dark: #ede6d6;
+  --white: #ffffff;
+  --gray: #888;
+  --gray-light: #e8e8e8;
+  --green: #2a7a3b;
+  --green-light: #e8f5eb;
+  --red: #b22222;
+  --red-light: #fdecea;
+  --box1: #C1440E;
+  --box2: #E8971A;
+  --box3: #7BAE6E;
+  --box4: #2a6db5;
+  --box5: #2a7a3b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--cream); color: #222; min-height: 100vh; }
+
+/* ── HEADER ── */
+#header {
+  background: var(--cobalt);
+  color: white;
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+#header h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--marigold);
+  white-space: nowrap;
+}
+#header .sep { flex: 1; }
+#entry-count {
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.btn {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn-marigold { background: var(--marigold); color: var(--cobalt-dark); }
+.btn-marigold:not(:disabled):hover { background: #d4871a; }
+.btn-green { background: #2a7a3b; color: white; }
+.btn-green:not(:disabled):hover { background: #1e5e2c; }
+.btn-cobalt { background: var(--cobalt-light); color: white; }
+.btn-cobalt:not(:disabled):hover { background: var(--cobalt-dark); }
+.btn-ghost { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.4); }
+.btn-ghost:not(:disabled):hover { background: rgba(255,255,255,0.1); }
+.btn-red { background: var(--terracotta); color: white; }
+.btn-red:not(:disabled):hover { background: #a33a0c; }
+.btn-sm { padding: 4px 10px; font-size: 0.78rem; }
+.btn-leitner {
+  background: rgba(255,255,255,0.12);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  font-size: 0.82rem;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+.btn-leitner:not(:disabled):hover { background: rgba(255,255,255,0.22); }
+
+/* ── EMPTY STATE ── */
+#empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 56px);
+  gap: 20px;
+  text-align: center;
+  padding: 40px;
+}
+#empty-state .title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--cobalt);
+}
+#empty-state .sub {
+  color: var(--gray);
+  font-size: 1rem;
+  max-width: 400px;
+  line-height: 1.6;
+}
+#drop-zone {
+  border: 3px dashed var(--cobalt-light);
+  border-radius: 16px;
+  padding: 48px 64px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+#drop-zone:hover, #drop-zone.drag-over {
+  border-color: var(--marigold);
+  background: #fdf8ee;
+}
+#drop-zone .icon { font-size: 3rem; }
+#drop-zone .hint { font-size: 0.9rem; color: var(--gray); }
+#file-input { display: none; }
+
+/* ── FILTERS ── */
+#filter-bar {
+  background: white;
+  border-bottom: 2px solid var(--cobalt);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 56px;
+  z-index: 90;
+}
+#filter-bar.hidden { display: none; }
+#search-input {
+  flex: 1;
+  min-width: 160px;
+  max-width: 260px;
+  padding: 7px 12px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem;
+}
+#search-input:focus { outline: none; border-color: var(--cobalt-light); }
+.filter-select {
+  padding: 7px 10px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.85rem;
+  background: white;
+  cursor: pointer;
+}
+.filter-select:focus { outline: none; border-color: var(--cobalt-light); }
+.tapatio-toggle {
+  display: flex;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.tapatio-toggle button {
+  padding: 6px 12px;
+  border: none;
+  background: white;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tapatio-toggle button.active {
+  background: var(--cobalt);
+  color: white;
+}
+.filter-count {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: var(--gray);
+  white-space: nowrap;
+}
+#clear-filters {
+  font-size: 0.8rem;
+  color: var(--terracotta);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  display: none;
+}
+
+/* ── LEITNER STATS STRIP ── */
+#leitner-strip {
+  background: #f8f4ec;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: calc(56px + 53px);
+  z-index: 88;
+}
+#leitner-strip.hidden { display: none; }
+.leitner-strip-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--cobalt);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+.box-stat-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 6px;
+  border-radius: 20px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: white;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.box-stat-btn:hover { opacity: 0.85; }
+.box-stat-btn.active { border-color: #333 !important; }
+.box-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.leitner-strip-sep { width: 1px; height: 16px; background: #ccc; margin: 0 4px; }
+
+/* ── TABLE ── */
+#table-wrap {
+  padding: 16px 20px;
+  overflow-x: auto;
+}
+#table-wrap.hidden { display: none; }
+#entry-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+#entry-table thead tr {
+  background: var(--cobalt);
+  color: white;
+}
+#entry-table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+#entry-table th:hover { background: var(--cobalt-dark); }
+#entry-table th.sorted-asc::after { content: ' ↑'; color: var(--marigold); }
+#entry-table th.sorted-desc::after { content: ' ↓'; color: var(--marigold); }
+#entry-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #f0ece4;
+  vertical-align: top;
+}
+#entry-table tr:last-child td { border-bottom: none; }
+#entry-table tbody tr:hover { background: #fdf9f4; }
+.td-word {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  color: var(--cobalt-dark);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.td-english { color: #444; max-width: 200px; }
+.td-pos {
+  white-space: nowrap;
+  font-size: 0.78rem;
+  color: #666;
+}
+.td-cats { max-width: 200px; }
+.cat-pill {
+  display: inline-block;
+  background: var(--cream-dark);
+  border-radius: 10px;
+  padding: 1px 8px;
+  font-size: 0.72rem;
+  margin: 1px 2px 1px 0;
+  white-space: nowrap;
+  color: #444;
+}
+.badge-tapatio {
+  display: inline-block;
+  font-size: 0.85rem;
+  margin: 0 2px;
+}
+.td-actions { white-space: nowrap; }
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background 0.15s;
+}
+.btn-icon:hover { background: var(--cream-dark); }
+.btn-icon.del:hover { background: var(--red-light); }
+#no-results {
+  text-align: center;
+  padding: 60px;
+  color: var(--gray);
+  font-size: 0.95rem;
+  display: none;
+}
+
+/* ── BOX BADGE (in table) ── */
+.box-badge {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+}
+.box-1 { background: var(--box1); }
+.box-2 { background: var(--box2); color: #333; }
+.box-3 { background: var(--box3); }
+.box-4 { background: var(--box4); }
+.box-5 { background: var(--box5); }
+
+/* ── MODAL (shared) ── */
+#modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 200;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+#modal-overlay.open { display: flex; }
+#modal {
+  background: white;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 760px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  margin: auto;
+  overflow: hidden;
+}
+#modal-header {
+  background: var(--cobalt);
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  flex: 1;
+}
+#modal-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+#modal-close:hover { background: rgba(255,255,255,0.15); color: white; }
+#modal-body { padding: 0; }
+.form-section {
+  padding: 20px 24px;
+  border-bottom: 1px solid #eee;
+}
+.form-section:last-child { border-bottom: none; }
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.form-row.single { grid-template-columns: 1fr; }
+.form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.form-input, .form-textarea, .form-select {
+  padding: 8px 10px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--cobalt-light);
+}
+.form-textarea { resize: vertical; min-height: 70px; }
+
+/* Category checkboxes */
+#cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 6px;
+}
+.cat-check-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background: white;
+  transition: all 0.15s;
+}
+.cat-check-label:hover { border-color: var(--cobalt-light); background: #f0f5fc; }
+.cat-check-label input { cursor: pointer; accent-color: var(--cobalt); }
+.cat-check-label.checked { border-color: var(--cobalt); background: #eef3fb; font-weight: 500; }
+
+/* Conjugation tables */
+#verb-section { display: none; }
+#verb-section.visible { display: block; }
+.conj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 640px) { .conj-grid { grid-template-columns: 1fr; } }
+.conj-table-wrap { }
+.conj-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cobalt);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.conj-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+.conj-pronoun {
+  font-size: 0.78rem;
+  color: var(--gray);
+  width: 70px;
+  flex-shrink: 0;
+  font-style: italic;
+}
+.conj-input {
+  flex: 1;
+  padding: 5px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.88rem;
+}
+.conj-input:focus { outline: none; border-color: var(--cobalt-light); }
+.gerund-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.gustar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+  color: #555;
+}
+.gustar-toggle input { accent-color: var(--cobalt); cursor: pointer; }
+
+/* Tapatio section */
+.tapatio-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.tapatio-header label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+.tapatio-header input { accent-color: var(--cobalt); transform: scale(1.2); cursor: pointer; }
+#tapatio-notes-wrap { display: none; }
+#tapatio-notes-wrap.visible { display: block; }
+
+/* Leitner section in modal */
+.box-radio-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.box-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid #ddd;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.15s;
+  background: white;
+}
+.box-radio-label:hover { border-color: #aaa; }
+.box-radio-label input[type=radio] { display: none; }
+.box-radio-label.selected-1 { border-color: var(--box1); background: #fdf0ec; color: var(--box1); }
+.box-radio-label.selected-2 { border-color: var(--box2); background: #fdf6e8; color: #8a5500; }
+.box-radio-label.selected-3 { border-color: var(--box3); background: #eef6eb; color: #3d6e35; }
+.box-radio-label.selected-4 { border-color: var(--box4); background: #eef3fb; color: var(--cobalt-dark); }
+.box-radio-label.selected-5 { border-color: var(--box5); background: #e8f5eb; color: var(--green); }
+.leitner-modal-hint {
+  font-size: 0.78rem;
+  color: var(--gray);
+  margin-top: 8px;
+}
+
+/* Modal footer */
+#modal-footer {
+  padding: 16px 24px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #ddd;
+}
+#modal-footer .sep { flex: 1; }
+.err-msg {
+  color: var(--terracotta);
+  font-size: 0.82rem;
+  display: none;
+}
+
+/* ── LEITNER PANEL (full modal) ── */
+#leitner-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 300;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+#leitner-overlay.open { display: flex; }
+#leitner-panel {
+  background: white;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  margin: auto;
+  overflow: hidden;
+}
+#leitner-panel-header {
+  background: var(--cobalt);
+  color: white;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#leitner-panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  flex: 1;
+}
+#leitner-panel-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+#leitner-panel-close:hover { background: rgba(255,255,255,0.15); color: white; }
+.lp-section {
+  padding: 20px 24px;
+  border-bottom: 1px solid #eee;
+}
+.lp-section:last-child { border-bottom: none; }
+.lp-section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+  margin-bottom: 14px;
+}
+
+/* Distribution bars */
+.box-dist-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+.box-dist-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: 58px;
+  flex-shrink: 0;
+  color: #444;
+}
+.box-dist-bar-wrap {
+  flex: 1;
+  height: 14px;
+  background: #eee;
+  border-radius: 7px;
+  overflow: hidden;
+}
+.box-dist-bar {
+  height: 100%;
+  border-radius: 7px;
+  transition: width 0.4s ease;
+}
+.box-dist-count {
+  font-size: 0.78rem;
+  color: #555;
+  width: 80px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Reset controls */
+.reset-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.reset-row:last-child { margin-bottom: 0; }
+.reset-desc {
+  flex: 1;
+  font-size: 0.88rem;
+  color: #444;
+  line-height: 1.4;
+}
+.reset-desc strong { color: #222; }
+.reset-warning {
+  background: #fff8e1;
+  border: 1px solid #e8c700;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: #665500;
+  margin-top: 16px;
+}
+.lp-select {
+  padding: 7px 10px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.85rem;
+  background: white;
+  cursor: pointer;
+  flex: 1;
+}
+.lp-select:focus { outline: none; border-color: var(--cobalt-light); }
+
+/* Toast */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--cobalt);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+  pointer-events: none;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast.success { background: var(--green); }
+#toast.error { background: var(--terracotta); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header">
+  <h1>🌮 Diccionario Editor</h1>
+  <span id="entry-count" style="display:none"></span>
+  <div class="sep"></div>
+  <button class="btn btn-leitner" id="btn-leitner" disabled onclick="openLeitnerPanel()">🎴 Leitner</button>
+  <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">📂 Cargar JSON</button>
+  <input type="file" id="file-input" accept=".json" onchange="loadFile(event)">
+  <button class="btn btn-marigold" id="btn-add" disabled onclick="openAdd()">+ Nueva entrada</button>
+  <button class="btn btn-green" id="btn-export" disabled onclick="exportJSON()">⬇ Exportar JSON</button>
+</div>
+
+<!-- EMPTY STATE -->
+<div id="empty-state">
+  <div class="title">Editor del Diccionario</div>
+  <div class="sub">Carga el archivo <code>spanish_dictionary.json</code> para empezar a editar.</div>
+  <div id="drop-zone" onclick="document.getElementById('file-input').click()"
+       ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+    <div class="icon">📖</div>
+    <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;color:var(--cobalt);font-weight:600">
+      Haz clic o arrastra el archivo aquí
+    </div>
+    <div class="hint">spanish_dictionary.json</div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div id="filter-bar" class="hidden">
+  <input type="text" id="search-input" placeholder="🔍 Buscar palabra o traducción..." oninput="applyFilters()">
+  <select class="filter-select" id="filter-pos" onchange="applyFilters()">
+    <option value="">Todos los POS</option>
+  </select>
+  <select class="filter-select" id="filter-cat" onchange="applyFilters()">
+    <option value="">Todas las categorías</option>
+  </select>
+  <select class="filter-select" id="filter-box" onchange="applyFilters()">
+    <option value="">Todas las cajas</option>
+    <option value="1">📦 Caja 1</option>
+    <option value="2">📦 Caja 2</option>
+    <option value="3">📦 Caja 3</option>
+    <option value="4">📦 Caja 4</option>
+    <option value="5">⭐ Caja 5</option>
+  </select>
+  <div class="tapatio-toggle">
+    <button id="tap-all" class="active" onclick="setTapatioFilter('all')">Todos</button>
+    <button id="tap-yes" onclick="setTapatioFilter('yes')">🌵 Tapatío</button>
+    <button id="tap-no" onclick="setTapatioFilter('no')">Estándar</button>
+  </div>
+  <span class="filter-count" id="filter-count"></span>
+  <button id="clear-filters" onclick="clearFilters()">× limpiar filtros</button>
+</div>
+
+<!-- LEITNER STATS STRIP -->
+<div id="leitner-strip" class="hidden">
+  <span class="leitner-strip-label">🎴 Leitner:</span>
+  <button class="box-stat-btn" id="strip-btn-1" onclick="quickBoxFilter(1)" title="Filtrar por Caja 1">
+    <span class="box-dot" style="background:var(--box1)"></span>
+    <span id="strip-count-1">—</span>
+  </button>
+  <button class="box-stat-btn" id="strip-btn-2" onclick="quickBoxFilter(2)" title="Filtrar por Caja 2">
+    <span class="box-dot" style="background:var(--box2)"></span>
+    <span id="strip-count-2">—</span>
+  </button>
+  <button class="box-stat-btn" id="strip-btn-3" onclick="quickBoxFilter(3)" title="Filtrar por Caja 3">
+    <span class="box-dot" style="background:var(--box3)"></span>
+    <span id="strip-count-3">—</span>
+  </button>
+  <button class="box-stat-btn" id="strip-btn-4" onclick="quickBoxFilter(4)" title="Filtrar por Caja 4">
+    <span class="box-dot" style="background:var(--box4)"></span>
+    <span id="strip-count-4">—</span>
+  </button>
+  <div class="leitner-strip-sep"></div>
+  <button class="box-stat-btn" id="strip-btn-5" onclick="quickBoxFilter(5)" title="Filtrar por Caja 5 (dominadas)">
+    <span class="box-dot" style="background:var(--box5)"></span>
+    ⭐ <span id="strip-count-5">—</span>
+  </button>
+</div>
+
+<!-- TABLE -->
+<div id="table-wrap" class="hidden">
+  <table id="entry-table">
+    <thead>
+      <tr>
+        <th onclick="sortBy('word')" id="th-word">Palabra</th>
+        <th onclick="sortBy('english')" id="th-english">Traducción</th>
+        <th onclick="sortBy('part_of_speech')" id="th-part_of_speech">POS</th>
+        <th>Categorías</th>
+        <th onclick="sortBy('tapatio')" id="th-tapatio">🌵</th>
+        <th onclick="sortBy('leitner_box')" id="th-leitner_box" title="Caja Leitner">📦</th>
+        <th style="width:70px"></th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+  <div id="no-results">No hay resultados para esta búsqueda. 🤷</div>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div id="modal">
+    <div id="modal-header">
+      <span id="modal-title">Editar entrada</span>
+      <button id="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body">
+
+      <!-- BÁSICO -->
+      <div class="form-section">
+        <div class="section-title">📝 Básico</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Palabra (Español)</label>
+            <input type="text" class="form-input" id="f-word" placeholder="ej. caminar">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Traducción (Inglés)</label>
+            <input type="text" class="form-input" id="f-english" placeholder="ej. to walk">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Parte del discurso</label>
+            <select class="form-select" id="f-pos" onchange="handlePosChange()">
+              <option value="">— seleccionar —</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categorías</label>
+          <div id="cat-grid"></div>
+        </div>
+      </div>
+
+      <!-- GRAMÁTICA -->
+      <div class="form-section">
+        <div class="section-title">📚 Gramática</div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label class="form-label">Notas de gramática</label>
+            <textarea class="form-textarea" id="f-grammar-notes" rows="3" placeholder="Notas de uso, irregularidades, ejemplos..."></textarea>
+          </div>
+        </div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label class="form-label">Regla gramatical</label>
+            <input type="text" class="form-input" id="f-grammar-rule" list="grammar-rules-list" placeholder="ej. Regular -AR verb">
+            <datalist id="grammar-rules-list"></datalist>
+          </div>
+        </div>
+      </div>
+
+      <!-- VERBOS -->
+      <div class="form-section" id="verb-section">
+        <div class="section-title">🔀 Conjugaciones (verbo)</div>
+        <div class="gerund-row">
+          <div class="form-group">
+            <label class="form-label">Gerundio</label>
+            <input type="text" class="form-input" id="f-gerund" placeholder="ej. caminando">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Participio pasado</label>
+            <input type="text" class="form-input" id="f-past-participle" placeholder="ej. caminado">
+          </div>
+        </div>
+        <div class="gustar-toggle">
+          <input type="checkbox" id="f-gustar-type" onchange="handleGustarChange()">
+          <label for="f-gustar-type">Verbo tipo <em>gustar</em> (usa me/te/le/nos/les)</label>
+        </div>
+        <div class="conj-grid" id="conj-grid">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- TAPATÍO -->
+      <div class="form-section">
+        <div class="section-title">🌵 Tapatío</div>
+        <div class="tapatio-header">
+          <label>
+            <input type="checkbox" id="f-tapatio" onchange="handleTapatioChange()">
+            Entrada tapatía / regionalismo de Guadalajara
+          </label>
+        </div>
+        <div id="tapatio-notes-wrap">
+          <div class="form-group">
+            <label class="form-label">Notas tapatías</label>
+            <textarea class="form-textarea" id="f-tapatio-notes" rows="2"
+              placeholder="ej. 🌵 Expresión muy usada en Guadalajara..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEITNER -->
+      <div class="form-section">
+        <div class="section-title">🎴 Leitner</div>
+        <div class="form-group">
+          <label class="form-label">Caja actual</label>
+          <div class="box-radio-group" id="box-radio-group">
+            <label class="box-radio-label" data-box="1">
+              <input type="radio" name="f-leitner-box" value="1" onchange="handleBoxChange()">
+              <span class="box-badge box-1">1</span> Nueva / difícil
+            </label>
+            <label class="box-radio-label" data-box="2">
+              <input type="radio" name="f-leitner-box" value="2" onchange="handleBoxChange()">
+              <span class="box-badge box-2">2</span> Aprendiendo
+            </label>
+            <label class="box-radio-label" data-box="3">
+              <input type="radio" name="f-leitner-box" value="3" onchange="handleBoxChange()">
+              <span class="box-badge box-3">3</span> Avanzando
+            </label>
+            <label class="box-radio-label" data-box="4">
+              <input type="radio" name="f-leitner-box" value="4" onchange="handleBoxChange()">
+              <span class="box-badge box-4">4</span> Casi dominada
+            </label>
+            <label class="box-radio-label" data-box="5">
+              <input type="radio" name="f-leitner-box" value="5" onchange="handleBoxChange()">
+              <span class="box-badge box-5">5</span> ⭐ Dominada
+            </label>
+          </div>
+          <div class="leitner-modal-hint">La tarjeta de flashcards actualiza la caja automáticamente. Aquí puedes ajustarla manualmente.</div>
+        </div>
+      </div>
+
+    </div><!-- end modal-body -->
+
+    <div id="modal-footer">
+      <span class="err-msg" id="modal-err"></span>
+      <div class="sep"></div>
+      <button class="btn btn-ghost" style="color:#555;border-color:#ddd;" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-green" onclick="saveEntry()">💾 Guardar</button>
+    </div>
+  </div><!-- end modal -->
+</div><!-- end overlay -->
+
+<!-- LEITNER PANEL -->
+<div id="leitner-overlay" onclick="handleLeitnerOverlayClick(event)">
+  <div id="leitner-panel">
+    <div id="leitner-panel-header">
+      <span id="leitner-panel-title">🎴 Sistema Leitner</span>
+      <button id="leitner-panel-close" onclick="closeLeitnerPanel()">✕</button>
+    </div>
+
+    <!-- DISTRIBUTION -->
+    <div class="lp-section">
+      <div class="lp-section-title">Distribución por cajas</div>
+      <div id="lp-dist-rows">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- RESET CONTROLS -->
+    <div class="lp-section">
+      <div class="lp-section-title">Resetear a Caja 1</div>
+
+      <div class="reset-row">
+        <div class="reset-desc">
+          <strong>Todas las entradas</strong> — reinicia el sistema completo desde cero.
+        </div>
+        <button class="btn btn-red btn-sm" onclick="confirmResetAll()">Resetear todo</button>
+      </div>
+
+      <div class="reset-row">
+        <div class="reset-desc">
+          <strong>Vista actual</strong> — solo las entradas que aparecen ahora en la tabla (con filtros aplicados).
+        </div>
+        <button class="btn btn-cobalt btn-sm" onclick="confirmResetFiltered()">Resetear vista</button>
+      </div>
+
+      <div class="reset-row" style="flex-wrap:wrap;gap:8px;">
+        <div class="reset-desc" style="width:100%">
+          <strong>Por categoría:</strong>
+        </div>
+        <select class="lp-select" id="lp-cat-select">
+          <option value="">— seleccionar categoría —</option>
+        </select>
+        <button class="btn btn-cobalt btn-sm" onclick="confirmResetCategory()">Resetear categoría</button>
+      </div>
+
+      <div class="reset-warning">
+        ⚠ Un reset mueve las entradas seleccionadas a Caja 1 y reinicia su contador de sesiones. Las demás cajas no se ven afectadas.
+      </div>
+    </div>
+
+    <!-- QUICK PROMOTE/DEMOTE (future) -->
+    <div class="lp-section" style="padding-top:16px;padding-bottom:16px;">
+      <div style="font-size:0.82rem;color:var(--gray);line-height:1.5;">
+        💡 <strong>Flujo de trabajo:</strong> El archivo exportado incluye <code>leitner_box</code> y <code>leitner_sessions_until_due</code> en cada entrada. La app de flashcards los escribe automáticamente al repasar. Exporta desde aquí después de cada reset para guardar los cambios en el JSON.
+      </div>
+    </div>
+
+  </div><!-- end leitner-panel -->
+</div><!-- end leitner-overlay -->
+
+<div id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// CONSTANTS
+// ─────────────────────────────────────────────
+const ALL_CATEGORIES = [
+  'Alimentación','Anatomía y cuerpo','Medicina y tratamiento','Salud y síntomas',
+  'Ropa y accesorios','Casa y hogar','Ciudad y transporte','Orientación y direcciones',
+  'Familia y relaciones','Emociones y estados','Descripción personal','Rutinas diarias',
+  'Tiempo y frecuencia','Cantidades y comparaciones','Comunicación y cortesía',
+  'Gramática funcional','Cultura tapatía'
+];
+
+const VERB_POS_TYPES = ['verb','verb (reflexive)','verb (auxiliary)','verb (impersonal)','verb form','verb phrase'];
+
+const CONJ_KEYS_STANDARD = ['yo','tú','él/ella','nosotros','ellos/ellas'];
+const CONJ_KEYS_GUSTAR    = ['me','te','le','nos','les'];
+
+const TENSE_LABELS = {
+  present_conjugation:   'Presente',
+  preterite_conjugation: 'Pretérito',
+  imperfect_conjugation: 'Imperfecto'
+};
+
+const BOX_COLORS = ['','#C1440E','#E8971A','#7BAE6E','#2a6db5','#2a7a3b'];
+const BOX_LABELS = ['','Caja 1 — Nueva/difícil','Caja 2 — Aprendiendo','Caja 3 — Avanzando','Caja 4 — Casi dominada','Caja 5 — Dominada ⭐'];
+const BOX_INTERVALS = [0, 0, 2, 4, 8, 16]; // sessions until next review, by box
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let entries = [];
+let filtered = [];
+let editIndex = -1;
+let sortKey   = 'word';
+let sortDir   = 'asc';
+let tapatioFilter = 'all';
+let boxFilter = '';  // '' = all, '1'-'5' = specific box
+let allGrammarRules = [];
+let allPosValues = [];
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+function isVerb(pos) {
+  return VERB_POS_TYPES.includes(pos);
+}
+function isGustType(entry) {
+  if (entry.present_conjugation && 'me' in entry.present_conjugation) return true;
+  if (entry.grammar_rule && entry.grammar_rule.toLowerCase().includes('gustar')) return true;
+  return false;
+}
+function conjKeys(entry) {
+  return isGustType(entry) ? CONJ_KEYS_GUSTAR : CONJ_KEYS_STANDARD;
+}
+
+// Rebuild an entry with the exact field order from CLAUDE.md
+function orderFields(e) {
+  const out = {
+    word: e.word || '',
+    english: e.english || '',
+    part_of_speech: e.part_of_speech || '',
+    grammar_notes: e.grammar_notes || '',
+    grammar_rule: e.grammar_rule || '',
+    categories: e.categories || []
+  };
+  if (isVerb(e.part_of_speech)) {
+    out.gerund              = e.gerund || '';
+    out.past_participle     = e.past_participle || '';
+    out.present_conjugation  = e.present_conjugation  || {};
+    out.preterite_conjugation= e.preterite_conjugation|| {};
+    out.imperfect_conjugation= e.imperfect_conjugation|| {};
+  }
+  out.tapatio       = !!e.tapatio;
+  out.tapatio_notes = e.tapatio_notes || '';
+  out.leitner_box   = e.leitner_box || 1;
+  out.leitner_sessions_until_due = (e.leitner_sessions_until_due !== undefined) ? e.leitner_sessions_until_due : 0;
+  return out;
+}
+
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.className = ''; }, 2600);
+}
+
+// ─────────────────────────────────────────────
+// FILE LOADING
+// ─────────────────────────────────────────────
+function loadFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  readFile(file);
+  event.target.value = '';
+}
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.add('drag-over');
+}
+function handleDragLeave() {
+  document.getElementById('drop-zone').classList.remove('drag-over');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) readFile(file);
+}
+function readFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const raw = JSON.parse(e.target.result);
+      // Migrate: add leitner fields to entries that don't have them
+      let migrated = 0;
+      entries = raw.map(entry => {
+        if (entry.leitner_box === undefined) {
+          entry.leitner_box = 1;
+          entry.leitner_sessions_until_due = 0;
+          migrated++;
+        }
+        return entry;
+      });
+      initApp(migrated);
+    } catch(err) {
+      showToast('Error al leer el JSON: ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function initApp(migratedCount = 0) {
+  // Collect unique POS and grammar rules
+  allPosValues = [...new Set(entries.map(e => e.part_of_speech))].sort();
+  allGrammarRules = [...new Set(entries.map(e => e.grammar_rule).filter(Boolean))].sort();
+
+  // Build POS filter dropdown
+  const posSelect = document.getElementById('filter-pos');
+  posSelect.innerHTML = '<option value="">Todos los POS</option>';
+  allPosValues.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p; opt.textContent = p;
+    posSelect.appendChild(opt);
+  });
+
+  // Build category filter dropdown
+  const catSelect = document.getElementById('filter-cat');
+  catSelect.innerHTML = '<option value="">Todas las categorías</option>';
+  ALL_CATEGORIES.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    catSelect.appendChild(opt);
+  });
+
+  // Build Leitner panel category select
+  const lpCatSelect = document.getElementById('lp-cat-select');
+  lpCatSelect.innerHTML = '<option value="">— seleccionar categoría —</option>';
+  ALL_CATEGORIES.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    lpCatSelect.appendChild(opt);
+  });
+
+  // Build POS options in modal
+  const fPos = document.getElementById('f-pos');
+  fPos.innerHTML = '<option value="">— seleccionar —</option>';
+  allPosValues.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p; opt.textContent = p;
+    fPos.appendChild(opt);
+  });
+  const extraPos = VERB_POS_TYPES.concat([
+    'noun (m)','noun (f)','noun (m pl)','noun (f pl)','noun (m/f)',
+    'adjective','adverb','interjection','conjunction','preposition + infinitive'
+  ]);
+  extraPos.forEach(p => {
+    if (!allPosValues.includes(p)) {
+      const opt = document.createElement('option');
+      opt.value = p; opt.textContent = p;
+      fPos.appendChild(opt);
+    }
+  });
+
+  // Build grammar rule datalist
+  const dl = document.getElementById('grammar-rules-list');
+  dl.innerHTML = '';
+  allGrammarRules.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r;
+    dl.appendChild(opt);
+  });
+
+  // Build category checkboxes in modal
+  const catGrid = document.getElementById('cat-grid');
+  catGrid.innerHTML = '';
+  ALL_CATEGORIES.forEach(c => {
+    const label = document.createElement('label');
+    label.className = 'cat-check-label';
+    label.innerHTML = `<input type="checkbox" name="cat" value="${c}"> ${c}`;
+    label.querySelector('input').addEventListener('change', syncCatLabel);
+    catGrid.appendChild(label);
+  });
+
+  // Show UI
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('filter-bar').classList.remove('hidden');
+  document.getElementById('leitner-strip').classList.remove('hidden');
+  document.getElementById('table-wrap').classList.remove('hidden');
+  document.getElementById('entry-count').style.display = '';
+  document.getElementById('btn-add').disabled = false;
+  document.getElementById('btn-export').disabled = false;
+  document.getElementById('btn-leitner').disabled = false;
+
+  applyFilters();
+  updateLeitnerStrip();
+
+  if (migratedCount > 0) {
+    showToast(`✅ ${migratedCount} entradas migradas a Caja 1 (Leitner nuevo).`);
+  }
+}
+
+// ─────────────────────────────────────────────
+// FILTERING + SORTING
+// ─────────────────────────────────────────────
+function applyFilters() {
+  const search = document.getElementById('search-input').value.toLowerCase().trim();
+  const posFilter = document.getElementById('filter-pos').value;
+  const catFilter = document.getElementById('filter-cat').value;
+  boxFilter = document.getElementById('filter-box').value;
+
+  filtered = entries.filter(e => {
+    if (search && !e.word.toLowerCase().includes(search) && !e.english.toLowerCase().includes(search)) return false;
+    if (posFilter && e.part_of_speech !== posFilter) return false;
+    if (catFilter && !(e.categories || []).includes(catFilter)) return false;
+    if (tapatioFilter === 'yes' && !e.tapatio) return false;
+    if (tapatioFilter === 'no' && e.tapatio) return false;
+    if (boxFilter && String(e.leitner_box || 1) !== boxFilter) return false;
+    return true;
+  });
+
+  // Sort
+  filtered.sort((a, b) => {
+    let va = a[sortKey] ?? '';
+    let vb = b[sortKey] ?? '';
+    if (typeof va === 'boolean') va = va ? 1 : 0;
+    if (typeof vb === 'boolean') vb = vb ? 1 : 0;
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  renderTable();
+  updateFilterUI(search, posFilter, catFilter);
+  updateLeitnerStrip();
+}
+
+function setTapatioFilter(val) {
+  tapatioFilter = val;
+  ['all','yes','no'].forEach(v => {
+    document.getElementById('tap-' + v).classList.toggle('active', v === val);
+  });
+  applyFilters();
+}
+
+function clearFilters() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('filter-pos').value = '';
+  document.getElementById('filter-cat').value = '';
+  document.getElementById('filter-box').value = '';
+  boxFilter = '';
+  tapatioFilter = 'all';
+  ['all','yes','no'].forEach(v => {
+    document.getElementById('tap-' + v).classList.toggle('active', v === 'all');
+  });
+  // Clear strip active state
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById('strip-btn-' + i).classList.remove('active');
+  }
+  applyFilters();
+}
+
+function updateFilterUI(search, pos, cat) {
+  const active = search || pos || cat || tapatioFilter !== 'all' || boxFilter;
+  document.getElementById('clear-filters').style.display = active ? '' : 'none';
+  document.getElementById('filter-count').textContent =
+    `${filtered.length} de ${entries.length} entradas`;
+  document.getElementById('entry-count').textContent =
+    `${entries.length} entradas`;
+}
+
+function sortBy(key) {
+  if (sortKey === key) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortKey = key;
+    sortDir = 'asc';
+  }
+  document.querySelectorAll('#entry-table th').forEach(th => {
+    th.classList.remove('sorted-asc', 'sorted-desc');
+  });
+  const th = document.getElementById('th-' + key);
+  if (th) th.classList.add('sorted-' + sortDir);
+  applyFilters();
+}
+
+// ─────────────────────────────────────────────
+// LEITNER STRIP
+// ─────────────────────────────────────────────
+function updateLeitnerStrip() {
+  const counts = {1:0, 2:0, 3:0, 4:0, 5:0};
+  entries.forEach(e => {
+    const b = e.leitner_box || 1;
+    if (counts[b] !== undefined) counts[b]++;
+  });
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById('strip-count-' + i).textContent = counts[i].toLocaleString();
+    document.getElementById('strip-btn-' + i).classList.toggle('active', boxFilter === String(i));
+  }
+}
+
+function quickBoxFilter(box) {
+  const sel = document.getElementById('filter-box');
+  if (boxFilter === String(box)) {
+    sel.value = '';
+    boxFilter = '';
+  } else {
+    sel.value = String(box);
+    boxFilter = String(box);
+  }
+  applyFilters();
+}
+
+// ─────────────────────────────────────────────
+// TABLE RENDERING
+// ─────────────────────────────────────────────
+function renderTable() {
+  const tbody = document.getElementById('table-body');
+  const noResults = document.getElementById('no-results');
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    noResults.style.display = '';
+    return;
+  }
+  noResults.style.display = 'none';
+
+  tbody.innerHTML = filtered.map((e) => {
+    const idx = entries.indexOf(e);
+    const cats = (e.categories || []).map(c =>
+      `<span class="cat-pill">${escHtml(c)}</span>`).join('');
+    const tapBadge = e.tapatio ? '<span class="badge-tapatio">🌵</span>' : '';
+    const box = e.leitner_box || 1;
+    const boxBadge = `<span class="box-badge box-${box}">${box === 5 ? '⭐' : box}</span>`;
+    return `<tr>
+      <td class="td-word">${escHtml(e.word)}</td>
+      <td class="td-english">${escHtml(e.english)}</td>
+      <td class="td-pos">${escHtml(e.part_of_speech)}</td>
+      <td class="td-cats">${cats}</td>
+      <td>${tapBadge}</td>
+      <td style="text-align:center">${boxBadge}</td>
+      <td class="td-actions">
+        <button class="btn-icon" onclick="openEdit(${idx})" title="Editar">✏️</button>
+        <button class="btn-icon del" onclick="deleteEntry(${idx})" title="Eliminar">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────────
+// DELETE
+// ─────────────────────────────────────────────
+function deleteEntry(index) {
+  const e = entries[index];
+  if (!confirm(`¿Eliminar "${e.word}"?\nEsta acción no se puede deshacer.`)) return;
+  entries.splice(index, 1);
+  applyFilters();
+  showToast(`"${e.word}" eliminado.`, 'error');
+}
+
+// ─────────────────────────────────────────────
+// MODAL — OPEN
+// ─────────────────────────────────────────────
+function openEdit(index) {
+  editIndex = index;
+  const e = entries[index];
+  document.getElementById('modal-title').textContent = `Editar: ${e.word}`;
+  populateForm(e);
+  openModal();
+}
+
+function openAdd() {
+  editIndex = -1;
+  document.getElementById('modal-title').textContent = 'Nueva entrada';
+  populateForm(null);
+  openModal();
+}
+
+function openModal() {
+  document.getElementById('modal-err').style.display = 'none';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('f-word').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+// ─────────────────────────────────────────────
+// FORM POPULATION
+// ─────────────────────────────────────────────
+function populateForm(e) {
+  // Basic fields
+  document.getElementById('f-word').value           = e ? e.word : '';
+  document.getElementById('f-english').value        = e ? e.english : '';
+  document.getElementById('f-pos').value            = e ? (e.part_of_speech || '') : '';
+  document.getElementById('f-grammar-notes').value  = e ? (e.grammar_notes || '') : '';
+  document.getElementById('f-grammar-rule').value   = e ? (e.grammar_rule || '') : '';
+
+  // Categories
+  const checks = document.querySelectorAll('#cat-grid input[type=checkbox]');
+  checks.forEach(cb => {
+    cb.checked = e ? (e.categories || []).includes(cb.value) : false;
+    syncCatLabel({ target: cb });
+  });
+
+  // Verb fields
+  const verb = e ? isVerb(e.part_of_speech) : false;
+  document.getElementById('verb-section').classList.toggle('visible', verb);
+  if (verb && e) {
+    document.getElementById('f-gerund').value          = e.gerund || '';
+    document.getElementById('f-past-participle').value = e.past_participle || '';
+    const gustar = isGustType(e);
+    document.getElementById('f-gustar-type').checked   = gustar;
+    buildConjGrid(gustar);
+    const keys = gustar ? CONJ_KEYS_GUSTAR : CONJ_KEYS_STANDARD;
+    ['present','preterite','imperfect'].forEach(tense => {
+      const field = tense + '_conjugation';
+      keys.forEach(k => {
+        const inp = document.getElementById(`conj-${tense}-${safeId(k)}`);
+        if (inp) inp.value = (e[field] || {})[k] || '';
+      });
+    });
+  } else {
+    document.getElementById('f-gerund').value = '';
+    document.getElementById('f-past-participle').value = '';
+    document.getElementById('f-gustar-type').checked = false;
+    buildConjGrid(false);
+  }
+
+  // Tapatio
+  const tap = e ? !!e.tapatio : false;
+  document.getElementById('f-tapatio').checked = tap;
+  document.getElementById('tapatio-notes-wrap').classList.toggle('visible', tap);
+  document.getElementById('f-tapatio-notes').value = e ? (e.tapatio_notes || '') : '';
+
+  // Leitner box
+  const box = e ? (e.leitner_box || 1) : 1;
+  setBoxRadio(box);
+}
+
+function setBoxRadio(box) {
+  const radios = document.querySelectorAll('input[name="f-leitner-box"]');
+  radios.forEach(r => {
+    r.checked = (parseInt(r.value) === box);
+  });
+  refreshBoxLabels();
+}
+
+function handleBoxChange() {
+  refreshBoxLabels();
+}
+
+function refreshBoxLabels() {
+  const radios = document.querySelectorAll('input[name="f-leitner-box"]');
+  let selected = 1;
+  radios.forEach(r => { if (r.checked) selected = parseInt(r.value); });
+  document.querySelectorAll('.box-radio-label').forEach(label => {
+    const b = parseInt(label.dataset.box);
+    label.className = 'box-radio-label' + (b === selected ? ` selected-${b}` : '');
+  });
+}
+
+function syncCatLabel(event) {
+  const cb = event.target;
+  cb.closest('label').classList.toggle('checked', cb.checked);
+}
+
+function handlePosChange() {
+  const pos = document.getElementById('f-pos').value;
+  const verb = isVerb(pos);
+  document.getElementById('verb-section').classList.toggle('visible', verb);
+}
+
+function handleTapatioChange() {
+  const tap = document.getElementById('f-tapatio').checked;
+  document.getElementById('tapatio-notes-wrap').classList.toggle('visible', tap);
+}
+
+function handleGustarChange() {
+  const gustar = document.getElementById('f-gustar-type').checked;
+  buildConjGrid(gustar);
+}
+
+function safeId(s) {
+  return s.replace('/','_').replace(' ','_');
+}
+
+function buildConjGrid(gustar) {
+  const keys = gustar ? CONJ_KEYS_GUSTAR : CONJ_KEYS_STANDARD;
+  const grid = document.getElementById('conj-grid');
+  grid.innerHTML = ['present','preterite','imperfect'].map(tense => {
+    const label = TENSE_LABELS[tense + '_conjugation'];
+    const rows = keys.map(k => `
+      <div class="conj-row">
+        <span class="conj-pronoun">${k}</span>
+        <input type="text" class="conj-input" id="conj-${tense}-${safeId(k)}" placeholder="">
+      </div>`).join('');
+    return `<div class="conj-table-wrap">
+      <div class="conj-label">${label}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────
+// SAVE
+// ─────────────────────────────────────────────
+function saveEntry() {
+  const err = document.getElementById('modal-err');
+  err.style.display = 'none';
+
+  const word = document.getElementById('f-word').value.trim();
+  const english = document.getElementById('f-english').value.trim();
+  const pos = document.getElementById('f-pos').value;
+
+  if (!word) { showErr('La palabra es obligatoria.'); return; }
+  if (!english) { showErr('La traducción es obligatoria.'); return; }
+  if (!pos) { showErr('Selecciona una parte del discurso.'); return; }
+
+  // Categories
+  const catChecks = document.querySelectorAll('#cat-grid input[type=checkbox]:checked');
+  const cats = Array.from(catChecks).map(cb => cb.value);
+
+  // Enforce: if tapatio is true, add Cultura tapatía
+  const tap = document.getElementById('f-tapatio').checked;
+  if (tap && !cats.includes('Cultura tapatía')) cats.push('Cultura tapatía');
+
+  // Leitner box
+  let selectedBox = 1;
+  document.querySelectorAll('input[name="f-leitner-box"]').forEach(r => {
+    if (r.checked) selectedBox = parseInt(r.value);
+  });
+
+  // Preserve existing leitner_sessions_until_due if box unchanged; reset to 0 if box changed
+  let sessionsUntilDue = 0;
+  if (editIndex !== -1) {
+    const existing = entries[editIndex];
+    if ((existing.leitner_box || 1) === selectedBox) {
+      sessionsUntilDue = existing.leitner_sessions_until_due || 0;
+    }
+    // Box changed → reset counter
+  }
+
+  const entry = {
+    word,
+    english,
+    part_of_speech: pos,
+    grammar_notes: document.getElementById('f-grammar-notes').value.trim(),
+    grammar_rule:  document.getElementById('f-grammar-rule').value.trim(),
+    categories: cats
+  };
+
+  // Verb fields
+  if (isVerb(pos)) {
+    const gustar = document.getElementById('f-gustar-type').checked;
+    const keys = gustar ? CONJ_KEYS_GUSTAR : CONJ_KEYS_STANDARD;
+    entry.gerund          = document.getElementById('f-gerund').value.trim();
+    entry.past_participle = document.getElementById('f-past-participle').value.trim();
+    ['present','preterite','imperfect'].forEach(tense => {
+      const field = tense + '_conjugation';
+      entry[field] = {};
+      keys.forEach(k => {
+        const inp = document.getElementById(`conj-${tense}-${safeId(k)}`);
+        entry[field][k] = inp ? inp.value.trim() : '';
+      });
+    });
+  }
+
+  entry.tapatio = tap;
+  entry.tapatio_notes = tap ? document.getElementById('f-tapatio-notes').value.trim() : '';
+  entry.leitner_box = selectedBox;
+  entry.leitner_sessions_until_due = sessionsUntilDue;
+
+  const ordered = orderFields(entry);
+
+  if (editIndex === -1) {
+    entries.push(ordered);
+    showToast(`"${word}" añadido. ✅`, 'success');
+  } else {
+    entries[editIndex] = ordered;
+    showToast(`"${word}" guardado. ✅`, 'success');
+  }
+
+  closeModal();
+  applyFilters();
+}
+
+function showErr(msg) {
+  const err = document.getElementById('modal-err');
+  err.textContent = '⚠ ' + msg;
+  err.style.display = '';
+}
+
+// ─────────────────────────────────────────────
+// EXPORT
+// ─────────────────────────────────────────────
+function exportJSON() {
+  const sorted = [...entries].sort((a, b) =>
+    a.word.toLowerCase().localeCompare(b.word.toLowerCase(), 'es')
+  );
+  const json = JSON.stringify(sorted, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'spanish_dictionary.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`Exportado: ${sorted.length} entradas ✅`, 'success');
+}
+
+// ─────────────────────────────────────────────
+// LEITNER PANEL
+// ─────────────────────────────────────────────
+function openLeitnerPanel() {
+  renderLeitnerDist();
+  document.getElementById('leitner-overlay').classList.add('open');
+}
+
+function closeLeitnerPanel() {
+  document.getElementById('leitner-overlay').classList.remove('open');
+}
+
+function handleLeitnerOverlayClick(e) {
+  if (e.target === document.getElementById('leitner-overlay')) closeLeitnerPanel();
+}
+
+function renderLeitnerDist() {
+  const counts = {1:0, 2:0, 3:0, 4:0, 5:0};
+  entries.forEach(e => {
+    const b = e.leitner_box || 1;
+    if (counts[b] !== undefined) counts[b]++;
+  });
+  const total = entries.length;
+  const container = document.getElementById('lp-dist-rows');
+  container.innerHTML = [1,2,3,4,5].map(b => {
+    const count = counts[b];
+    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+    const label = b === 5 ? '⭐ Caja 5' : `Caja ${b}`;
+    return `<div class="box-dist-row">
+      <div class="box-dist-label">${label}</div>
+      <div class="box-dist-bar-wrap">
+        <div class="box-dist-bar" style="width:${pct}%;background:${BOX_COLORS[b]}"></div>
+      </div>
+      <div class="box-dist-count">${count.toLocaleString()} (${pct}%)</div>
+    </div>`;
+  }).join('');
+}
+
+function confirmResetAll() {
+  if (!confirm(`¿Resetear TODAS las ${entries.length} entradas a Caja 1?\n\nEsto reinicia el sistema Leitner completo. No se puede deshacer.`)) return;
+  let n = doReset(entries);
+  closeLeitnerPanel();
+  applyFilters();
+  showToast(`✅ ${n} entradas reseteadas a Caja 1.`, 'success');
+}
+
+function confirmResetFiltered() {
+  if (filtered.length === 0) {
+    showToast('No hay entradas en la vista actual.', 'error');
+    return;
+  }
+  if (!confirm(`¿Resetear las ${filtered.length} entradas de la vista actual a Caja 1?`)) return;
+  let n = doReset(filtered);
+  closeLeitnerPanel();
+  applyFilters();
+  showToast(`✅ ${n} entradas reseteadas a Caja 1.`, 'success');
+}
+
+function confirmResetCategory() {
+  const cat = document.getElementById('lp-cat-select').value;
+  if (!cat) {
+    showToast('Selecciona una categoría primero.', 'error');
+    return;
+  }
+  const targets = entries.filter(e => (e.categories || []).includes(cat));
+  if (targets.length === 0) {
+    showToast(`No hay entradas en "${cat}".`, 'error');
+    return;
+  }
+  if (!confirm(`¿Resetear las ${targets.length} entradas de "${cat}" a Caja 1?`)) return;
+  let n = doReset(targets);
+  closeLeitnerPanel();
+  applyFilters();
+  showToast(`✅ ${n} entradas de "${cat}" reseteadas a Caja 1.`, 'success');
+}
+
+// Reset a subset of entries (by reference — modifies entries[] in place)
+function doReset(subset) {
+  let count = 0;
+  subset.forEach(e => {
+    e.leitner_box = 1;
+    e.leitner_sessions_until_due = 0;
+    count++;
+  });
+  return count;
+}
+
+// ─────────────────────────────────────────────
+// KEYBOARD SHORTCUTS
+// ─────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLeitnerPanel();
+    closeModal();
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 's' && entries.length) {
+    e.preventDefault();
+    exportJSON();
+  }
+});
+
+// Init sort indicator
+document.getElementById('th-word').classList.add('sorted-asc');
+</script>
+</body>
+</html>

@@ -1,0 +1,2503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarjetas de Vocabulario · Tapatio Spanish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Talavera Design System ─────────────────────────────────────────── */
+:root {
+  --cobalt:          #1B4F8A;
+  --cobalt-mid:      #2563B0;
+  --cobalt-light:    #3B82D4;
+  --cobalt-pale:     #DBEAFE;
+  --cobalt-dark:     #0F2D54;
+  --terracotta:      #C1440E;
+  --terracotta-light:#E8623A;
+  --marigold:        #E8971A;
+  --marigold-light:  #FDE68A;
+  --cream:           #F5F0E8;
+  --cream-dark:      #EAE3D6;
+  --jade:            #2A7A3B;
+  --jade-light:      #D1FAE5;
+  --red:             #C0392B;
+  --red-light:       #FDECEA;
+  --amber:           #D97706;
+  --amber-light:     #FEF3C7;
+  --muted:           #6B7280;
+  --text:            #1A1A2E;
+  --card-bg:         #FFFFFF;
+  --bg:              #F5F0E8;
+  --tapatio:         #7C3AED;
+  --tapatio-bg:      #F3EEFF;
+  --tapatio-border:  #C4B5FD;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Barlow', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 40px;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────── */
+.font-oswald   { font-family: 'Oswald', sans-serif; }
+.font-playfair { font-family: 'Playfair Display', serif; }
+.font-barlow   { font-family: 'Barlow', sans-serif; }
+
+/* ── Selection Screen ───────────────────────────────────────────────── */
+#selection-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 680px;
+  padding-top: 32px;
+  gap: 0;
+}
+
+.app-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--cobalt-dark);
+  letter-spacing: 0.03em;
+  text-align: center;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.app-subtitle {
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.95rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.talavera-rule {
+  width: 100%;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cobalt) 0px, var(--cobalt) 18px,
+    var(--marigold) 18px, var(--marigold) 36px,
+    var(--terracotta) 36px, var(--terracotta) 54px,
+    var(--cobalt-light) 54px, var(--cobalt-light) 72px
+  );
+  border-radius: 3px;
+  margin-bottom: 28px;
+}
+
+.selection-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+  margin-bottom: 14px;
+  align-self: flex-start;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.cat-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--card-bg);
+  border: 2px solid var(--cream-dark);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  user-select: none;
+}
+.cat-card:hover { border-color: var(--cobalt-light); transform: translateY(-1px); }
+.cat-card.selected {
+  background: var(--cobalt);
+  border-color: var(--cobalt-dark);
+  color: white;
+}
+.cat-card.todas-card {
+  grid-column: 1 / -1;
+  background: var(--card-bg);
+  border-color: var(--cream-dark);
+  justify-content: center;
+  padding: 14px;
+}
+.cat-card.todas-card.selected {
+  background: var(--cobalt);
+  border-color: var(--cobalt-dark);
+  color: white;
+}
+
+.cat-emoji { font-size: 1.4rem; flex-shrink: 0; }
+.cat-info  { display: flex; flex-direction: column; min-width: 0; }
+.cat-name  {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cat-count {
+  font-size: 0.75rem;
+  opacity: 0.65;
+  margin-top: 1px;
+}
+.cat-card.selected .cat-count { opacity: 0.8; }
+.todas-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.deck-summary {
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 20px;
+  min-height: 20px;
+  text-align: center;
+}
+.deck-summary span { color: var(--cobalt); font-weight: 600; }
+
+.btn-jugar {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: var(--cobalt);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 16px 56px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  width: 100%;
+  max-width: 340px;
+}
+.btn-jugar:hover:not(:disabled) { background: var(--cobalt-dark); transform: translateY(-1px); }
+.btn-jugar:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+/* ── Play Header ────────────────────────────────────────────────────── */
+.play-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 620px;
+  background: white;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 999px;
+  padding: 10px 20px;
+  margin: 20px 0 16px;
+  gap: 10px;
+}
+.play-header-cat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--cobalt-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  cursor: default;
+}
+.play-header-cat.has-popup { cursor: pointer; }
+.play-header-cat.has-popup:hover { color: var(--cobalt); }
+/* Click popup listing selected categories — fixed so it escapes all overflow clipping */
+#cat-popup {
+  display: none;
+  position: fixed;
+  background: white;
+  color: var(--cobalt-dark);
+  border: 1.5px solid var(--cream-dark);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.7;
+  padding: 10px 14px;
+  border-radius: 12px;
+  white-space: nowrap;
+  z-index: 9999;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.14);
+  pointer-events: none;
+}
+#cat-popup.open { display: block; }
+.play-header-dot { color: var(--cream-dark); font-size: 1rem; flex-shrink: 0; }
+.play-header-rounds {
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.88rem;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.play-header-rounds .rnum { color: var(--cobalt); font-weight: 700; }
+/* .back-to-cats removed — use ← Categorías ctrl button instead */
+
+/* ── Progress bar ───────────────────────────────────────────────────── */
+.progress-wrap {
+  width: 100%;
+  max-width: 580px;
+  margin-bottom: 14px;
+}
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.progress-bar-bg {
+  background: var(--cream-dark);
+  border-radius: 999px;
+  height: 7px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cobalt) 0%, var(--cobalt-light) 100%);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* ── Score chips ────────────────────────────────────────────────────── */
+.chips-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.chip {
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.chip.got    { background: var(--jade-light); color: var(--jade); }
+.chip.missed { background: var(--red-light);  color: var(--red); }
+
+/* ── Flip card ──────────────────────────────────────────────────────── */
+.scene {
+  width: 100%;
+  max-width: 580px;
+  height: 310px;
+  perspective: 1200px;
+  cursor: pointer;
+  margin-bottom: 22px;
+}
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.card-inner.flipped { transform: rotateY(180deg); }
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 32px;
+  text-align: center;
+  box-shadow: 0 14px 44px rgba(27,79,138,0.22), 0 4px 14px rgba(0,0,0,0.12);
+}
+.face.front {
+  background: radial-gradient(ellipse at 32% 24%, #ffffff 0%, #fdf9f4 100%);
+  border: 2px solid var(--cobalt);
+}
+.face.back {
+  background: radial-gradient(ellipse at 32% 24%, #2563B0 0%, #0F2D54 82%);
+  transform: rotateY(180deg);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.75);
+}
+
+/* front Tapatio */
+.face.front.tapatio-card {
+  background: radial-gradient(ellipse at 32% 24%, #F9F5FF 0%, #e8d8f8 88%);
+  border: 2px solid var(--tapatio-border);
+}
+/* front seed */
+.face.front.seed-card {
+  background: radial-gradient(ellipse at 32% 24%, #FFFEF0 0%, #fde9a0 88%);
+  border: 2px solid var(--marigold);
+}
+
+.pos-badge {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--cream-dark);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+}
+.face.back .pos-badge { background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.75); }
+
+.tapatio-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--tapatio);
+  background: white;
+  border: 1.5px solid var(--tapatio-border);
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  font-family: 'Barlow', sans-serif;
+}
+.face.back .tapatio-badge { color: #E9D5FF; background: rgba(124,58,237,0.25); border-color: rgba(196,181,253,0.4); }
+
+.seed-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--amber);
+  background: white;
+  border: 1.5px solid var(--marigold);
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  font-family: 'Barlow', sans-serif;
+}
+
+.word {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  color: var(--cobalt-dark);
+}
+.face.back .word {
+  font-size: 2.4rem;
+  color: white;
+}
+
+.hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 6px;
+  font-family: 'Barlow', sans-serif;
+}
+.face.back .hint { color: rgba(255,255,255,0.55); }
+
+.grammar-note {
+  font-size: 0.80rem;
+  color: rgba(255,255,255,0.72);
+  font-style: italic;
+  max-width: 400px;
+  line-height: 1.5;
+  margin-top: 6px;
+  font-family: 'Barlow', sans-serif;
+}
+.tapatio-note {
+  font-size: 0.78rem;
+  color: #E9D5FF;
+  font-style: italic;
+  max-width: 400px;
+  line-height: 1.5;
+  margin-top: 4px;
+  font-family: 'Barlow', sans-serif;
+}
+
+/* ── Grade buttons ──────────────────────────────────────────────────── */
+.btn-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+  width: 100%;
+  max-width: 580px;
+}
+.btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  font-family: 'Barlow', sans-serif;
+}
+.btn:disabled { background: #F3F4F6; color: #9CA3AF; opacity: 1; cursor: default; transform: none; border: none; }
+.btn:not(:disabled):hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-got    { background: var(--jade-light); color: var(--jade); }
+.btn-missed { background: var(--red-light);  color: var(--red); }
+
+/* ── Card-back grade buttons ────────────────────────────────────────── */
+.back-top-badges {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.back-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.card-btns {
+  position: absolute;
+  bottom: 28px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  gap: 12px;
+}
+.card-btn {
+  flex: 1;
+  padding: 13px 10px;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  transition: opacity 0.15s, transform 0.1s;
+  color: white;
+}
+.card-btn:disabled {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.35);
+  cursor: default;
+  transform: none;
+}
+.card-btn:not(:disabled):hover { opacity: 0.88; transform: translateY(-1px); }
+.card-btn-got    { background: rgba(34, 197, 94, 0.55); }
+.card-btn-missed { background: rgba(239, 68, 68, 0.55); }
+.card-btn:not(:disabled).card-btn-got    { background: rgba(34, 197, 94, 0.65); }
+.card-btn:not(:disabled).card-btn-missed { background: rgba(239, 68, 68, 0.65); }
+
+/* ── Controls row ───────────────────────────────────────────────────── */
+.ctrl-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 580px;
+  margin-bottom: 18px;
+}
+.ctrl-btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--cream-dark);
+  background: white;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.13s, border-color 0.13s;
+  font-family: 'Barlow', sans-serif;
+  color: var(--text);
+}
+.ctrl-btn:hover    { background: var(--cream); border-color: var(--cobalt-light); }
+.ctrl-btn.active   { background: var(--cobalt); color: white; border-color: var(--cobalt-dark); }
+
+/* ── Nav dots ───────────────────────────────────────────────────────── */
+.nav-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  max-width: 580px;
+}
+.nav-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--cream-dark);
+  transition: background 0.2s, transform 0.2s;
+}
+.nav-dot.current { background: var(--cobalt); transform: scale(1.4); }
+.nav-dot.got     { background: #A7F3D0; }
+.nav-dot.missed  { background: #FECACA; }
+.nav-dot.seed    { background: var(--marigold-light); }
+
+/* ── Grammar callout (always visible; grey before flip, blue after) ─── */
+#grammar-callout {
+  display: none;
+  width: 100%;
+  max-width: 580px;
+  margin: -10px 0 16px;
+  padding: 10px 16px 12px;
+  background: #F3F4F6;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  min-height: 5.2rem;
+  transition: background 0.25s, border-color 0.25s;
+}
+#grammar-callout.filled {
+  background: var(--cobalt-pale);
+  border-color: #BFDBFE;
+}
+.callout-header {
+  display: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+  font-family: 'Barlow', sans-serif;
+  margin-bottom: 5px;
+}
+#grammar-callout.filled .callout-header { display: block; }
+#callout-english {
+  display: none;
+  font-size: 0.78rem;
+  color: var(--cobalt);
+  font-weight: 600;
+  line-height: 1.45;
+  font-family: 'Barlow', sans-serif;
+  margin-bottom: 4px;
+}
+#grammar-callout.filled #callout-english { display: block; }
+#callout-grammar {
+  display: none;
+  font-size: 0.80rem;
+  color: #1E40AF;
+  font-style: italic;
+  line-height: 1.55;
+  font-family: 'Barlow', sans-serif;
+}
+#grammar-callout.filled #callout-grammar { display: block; }
+#callout-tapatio {
+  display: none;
+  font-size: 0.76rem;
+  color: var(--tapatio);
+  font-style: italic;
+  line-height: 1.5;
+  margin-top: 5px;
+  font-family: 'Barlow', sans-serif;
+}
+#grammar-callout.filled #callout-tapatio { display: block; }
+
+/* ── Spell zone (typing reinforcement below main card) ──────────────── */
+#spell-zone {
+  width: 100%;
+  max-width: 580px;
+  margin: -6px 0 10px;
+}
+#spell-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Barlow', sans-serif;
+  color: var(--text);
+  background: white;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+#spell-input:focus    { border-color: var(--cobalt-light); }
+#spell-input:disabled { background: var(--cream-dark); color: var(--muted); cursor: default; }
+#spell-feedback {
+  min-height: 1.8rem;
+  font-size: 0.86rem;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 8px;
+  margin-top: 5px;
+  line-height: 1.6;
+  transition: background 0.2s, color 0.2s;
+}
+.spell-fb-empty  { background: transparent; color: transparent; }
+.spell-fb-exact  { background: var(--jade-light);  color: var(--jade);  }
+.spell-fb-accent { background: var(--amber-light); color: var(--amber); }
+.spell-fb-close  { background: var(--amber-light); color: var(--amber); }
+.spell-fb-wrong  { background: var(--cream-dark);  color: var(--muted); }
+
+/* ── Recall drill spelling feedback ─────────────────────────────────── */
+.recall-spell-fb {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: 'Barlow', sans-serif;
+  padding: 3px 10px;
+  border-radius: 7px;
+  margin-bottom: 5px;
+}
+.recall-sfb-exact  { background: var(--jade-light);  color: var(--jade);  }
+.recall-sfb-accent { background: var(--amber-light); color: var(--amber); }
+.recall-sfb-close  { background: var(--amber-light); color: var(--amber); }
+.recall-sfb-wrong  { background: var(--cream-dark);  color: var(--muted); }
+
+/* ── Card foot hint (gentle tap guidance at card bottom) ─────────────── */
+.card-foot-hint {
+  position: absolute;
+  bottom: 13px;
+  font-size: 0.66rem;
+  color: rgba(0,0,0,0.22);
+  letter-spacing: 0.04em;
+  font-family: 'Barlow', sans-serif;
+  font-style: italic;
+  user-select: none;
+  pointer-events: none;
+}
+.face.back .card-foot-hint { color: rgba(255,255,255,0.20); }
+.face.front.tapatio-card .card-foot-hint { color: rgba(124,58,237,0.28); }
+
+/* ── Round summary ──────────────────────────────────────────────────── */
+#round-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+  gap: 12px;
+  padding-top: 10px;
+}
+#round-screen h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cobalt-dark);
+  letter-spacing: 0.03em;
+}
+.round-score {
+  font-size: 3.2rem;
+  font-weight: 900;
+  font-family: 'Oswald', sans-serif;
+  color: var(--cobalt);
+}
+.round-sub { color: var(--muted); font-size: 0.92rem; }
+.perfect-banner {
+  display: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: var(--jade);
+  margin: 0;
+  line-height: 1.1;
+  text-align: center;
+}
+.missed-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 480px;
+}
+.missed-list li {
+  background: var(--red-light);
+  color: var(--red);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* ── Action buttons ─────────────────────────────────────────────────── */
+.action-btn {
+  padding: 13px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  font-family: 'Barlow', sans-serif;
+}
+.action-btn:hover:not(:disabled) { opacity: 0.87; transform: translateY(-1px); }
+.btn-primary   { background: var(--cobalt); color: white; }
+.btn-secondary { background: var(--marigold); color: white; }
+.btn-skip      { background: var(--cream-dark); color: var(--muted); }
+
+/* ── Typed-mode result button (single centered indicator on card back) ── */
+#typed-result-wrap {
+  position: absolute;
+  bottom: 28px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: center;
+}
+#typed-result-btn {
+  min-width: 220px;
+  cursor: default !important;
+  font-size: 1rem;
+  opacity: 1 !important;
+}
+#typed-result-btn.typed-got    { background: rgba(34,197,94,0.72)  !important; color: white; border: none; }
+#typed-result-btn.typed-missed { background: rgba(239,68,68,0.72)  !important; color: white; border: none; }
+
+/* Suppress pointer when card click is inactive in typed mode */
+.scene-no-click { cursor: default !important; }
+
+/* ── Recall / missed-word drill ─────────────────────────────────────── */
+#recall-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 560px;
+  gap: 12px;
+  padding-top: 10px;
+}
+.recall-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.recall-header h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--cobalt-dark);
+}
+.recall-counter { font-size: 0.85rem; color: var(--muted); }
+.recall-card {
+  width: 100%;
+  max-width: 500px;
+  height: 200px;
+  background: var(--amber-light);
+  border: 2px solid var(--marigold);
+  border-radius: 20px;
+  padding: 28px 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.recall-pos    { font-size: 0.72rem; color: var(--muted); background: #FEF3C7; padding: 3px 10px; border-radius: 999px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'Barlow', sans-serif; }
+.recall-word   { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--cobalt-dark); }
+.recall-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  width: 100%;
+  max-width: 500px;
+  min-height: 80px;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.recall-answer.revealed {
+  background: var(--cobalt-pale);
+  border-color: #BFDBFE;
+}
+.recall-answer-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9CA3AF;
+  font-family: 'Barlow', sans-serif;
+  margin-bottom: 3px;
+  transition: color 0.2s;
+}
+.recall-answer.revealed .recall-answer-label {
+  color: var(--cobalt);
+}
+.recall-english { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--cobalt-dark); }
+.recall-grammar-r { font-size: 0.80rem; color: #1E40AF; font-style: italic; max-width: 380px; line-height: 1.5; font-family: 'Barlow', sans-serif; }
+.recall-tapatio { font-size: 0.78rem; color: var(--tapatio); font-style: italic; max-width: 380px; font-family: 'Barlow', sans-serif; }
+.recall-input-row { display: flex; gap: 8px; width: 100%; max-width: 400px; }
+.recall-input {
+  flex: 1;
+  padding: 11px 15px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Barlow', sans-serif;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.recall-input:focus { border-color: var(--cobalt-light); }
+
+.recall-nav-row { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+.recall-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cream-dark); }
+.recall-dot.current { background: var(--amber); transform: scale(1.4); }
+.recall-dot.done    { background: var(--cobalt-pale); }
+
+/* ── Final / complete screen ────────────────────────────────────────── */
+#complete-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  gap: 14px;
+  padding-top: 10px;
+}
+#complete-screen h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cobalt-dark);
+  letter-spacing: 0.03em;
+}
+.final-score     { font-family: 'Oswald', sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--jade); }
+.final-sub       { color: var(--muted); font-size: 0.92rem; }
+.final-missed-block {
+  background: var(--red-light);
+  border: 1.5px solid #FECACA;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+.final-missed-pct   { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 900; color: var(--red); }
+.final-missed-label { font-size: 0.85rem; color: var(--red); opacity: 0.8; }
+.final-missed-list  {
+  list-style: none; padding: 0; margin: 0; width: 100%;
+  display: flex; flex-direction: column; gap: 6px;
+  max-height: 260px; overflow-y: auto;
+}
+.final-missed-list li {
+  background: white;
+  color: var(--red);
+  padding: 6px 16px 6px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  border: 1px solid #FECACA;
+}
+.fml-es { font-weight: 700; flex-shrink: 0; }
+.fml-en { opacity: 0.75; font-style: italic; text-align: right; }
+
+/* ── Deal-in animation ──────────────────────────────────────────────── */
+@keyframes dealCard {
+  0% {
+    transform: translate(52%, 46%) rotate(14deg) scale(0.78);
+    opacity: 0;
+    filter: drop-shadow(0 12px 24px rgba(0,0,0,0.28));
+  }
+  18% { opacity: 1; }
+  72% {
+    transform: translate(1.5%, 0.8%) rotate(0.6deg) scale(1.004);
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.09));
+  }
+  100% {
+    transform: translate(0,0) rotate(0deg) scale(1);
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.05));
+  }
+}
+.scene.deal-in {
+  animation: dealCard 0.46s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* ── Load screen ─────────────────────────────────────────────────────── */
+#load-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 580px;
+  padding-top: 32px;
+  gap: 0;
+}
+#leitner-drop-zone {
+  width: 100%;
+  border: 3px dashed var(--cobalt-light);
+  border-radius: 20px;
+  padding: 36px 40px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(27,79,138,0.08);
+}
+#leitner-drop-zone:hover, #leitner-drop-zone.drag-over {
+  border-color: var(--marigold);
+  background: #fdf8ee;
+}
+.load-icon { font-size: 2.5rem; }
+.load-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cobalt);
+  letter-spacing: 0.03em;
+}
+.load-hint { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+.load-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 4px 0 18px;
+}
+.load-divider::before, .load-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cream-dark);
+}
+.btn-sin-tracking {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  background: var(--cream-dark);
+  color: var(--cobalt-dark);
+  border: none;
+  border-radius: 12px;
+  padding: 13px 32px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-sin-tracking:hover { background: #d6cfbf; }
+.load-no-tracking-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ── Mode toggle (Libre / Leitner) ───────────────────────────────────── */
+#mode-section {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.mode-toggle-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.mode-btn {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 9px 24px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--muted);
+}
+.mode-btn:hover { border-color: var(--cobalt-light); color: var(--cobalt); }
+.mode-btn-active         { background: var(--cobalt); color: white; border-color: var(--cobalt-dark); }
+.mode-btn-active-leitner { background: var(--jade);   color: white; border-color: var(--jade); }
+.mode-btn-active:hover         { color: var(--cream); }
+.mode-btn-active-leitner:hover { color: var(--cream); }
+.leitner-mode-info {
+  font-size: 0.85rem;
+  color: var(--cobalt-dark);
+  padding: 8px 14px;
+  background: var(--cobalt-pale);
+  border-radius: 10px;
+  margin-top: 4px;
+  line-height: 1.6;
+  align-self: stretch;
+  text-align: center;
+}
+.leitner-due-count { font-weight: 700; font-size: 1.05rem; color: var(--cobalt); }
+
+/* ── Leitner final stats ──────────────────────────────────────────────── */
+.leitner-final-stats {
+  background: #f0f7f0;
+  border: 1.5px solid #A7F3D0;
+  border-radius: 14px;
+  padding: 14px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.lf-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--jade);
+  letter-spacing: 0.04em;
+}
+.lf-row { font-size: 0.88rem; color: #444; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+.lf-promoted { color: var(--jade); font-weight: 600; }
+.lf-demoted  { color: var(--red);  font-weight: 600; }
+.lf-sep { color: var(--muted); }
+.btn-save-leitner {
+  background: var(--jade) !important;
+  color: white !important;
+  font-size: 1rem;
+  padding: 14px 32px;
+}
+.btn-save-leitner:hover:not(:disabled) { opacity: 0.87 !important; }
+
+/* ── Confetti ───────────────────────────────────────────────────────── */
+@keyframes confettiA {
+  0%   { transform: translateY(0)     translateX(0)     rotate(0deg)   scaleX(1);  opacity:1; }
+  20%  { transform: translateY(20vh)  translateX(18px)  rotate(144deg) scaleX(-1); }
+  40%  { transform: translateY(40vh)  translateX(-8px)  rotate(288deg) scaleX(1);  }
+  60%  { transform: translateY(60vh)  translateX(24px)  rotate(432deg) scaleX(-1); }
+  80%  { transform: translateY(80vh)  translateX(-12px) rotate(576deg) scaleX(1);  opacity:1; }
+  100% { transform: translateY(112vh) translateX(6px)   rotate(720deg) scaleX(-1); opacity:0; }
+}
+@keyframes confettiB {
+  0%   { transform: translateY(0)     translateX(0)      rotate(0deg)    scaleX(1);  opacity:1; }
+  20%  { transform: translateY(20vh)  translateX(-22px)  rotate(-144deg) scaleX(-1); }
+  40%  { transform: translateY(40vh)  translateX(10px)   rotate(-288deg) scaleX(1);  }
+  60%  { transform: translateY(60vh)  translateX(-28px)  rotate(-432deg) scaleX(-1); }
+  80%  { transform: translateY(80vh)  translateX(8px)    rotate(-576deg) scaleX(1);  opacity:1; }
+  100% { transform: translateY(112vh) translateX(-14px)  rotate(-720deg) scaleX(-1); opacity:0; }
+}
+@keyframes confettiC {
+  0%   { transform: translateY(0)     translateX(0)     rotate(0deg)   scaleY(1);  opacity:1; }
+  25%  { transform: translateY(25vh)  translateX(14px)  rotate(180deg) scaleY(-1); }
+  50%  { transform: translateY(50vh)  translateX(-18px) rotate(360deg) scaleY(1);  }
+  75%  { transform: translateY(75vh)  translateX(10px)  rotate(540deg) scaleY(-1); opacity:1; }
+  100% { transform: translateY(112vh) translateX(-6px)  rotate(720deg) scaleY(0);  opacity:0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  LOAD SCREEN (shown first — JSON required to play)                  -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="load-screen" style="display:none">
+  <h1 class="app-title">Tarjetas de Vocabulario</h1>
+  <p class="app-subtitle">Tapatio Spanish &middot; Guadalajara 🌵</p>
+  <div class="talavera-rule"></div>
+  <p class="selection-label">📂 Cargar diccionario para comenzar</p>
+  <div id="leitner-drop-zone"
+       onclick="document.getElementById('json-file-input').click()"
+       ondragover="handleLeitnerDragOver(event)"
+       ondragleave="handleLeitnerDragLeave()"
+       ondrop="handleLeitnerDrop(event)">
+    <div class="load-icon">📂</div>
+    <div class="load-title">Cargar spanish_dictionary.json</div>
+    <div class="load-hint">Haz clic o arrastra el archivo aquí</div>
+    <div class="load-hint" style="font-size:0.78rem;margin-top:2px;">
+      Requerido para jugar · activa el seguimiento Leitner entre sesiones
+    </div>
+  </div>
+  <input type="file" id="json-file-input" accept=".json" onchange="loadJSONFile(event)" style="display:none">
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  SELECTION SCREEN                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="selection-screen" style="display:none">
+  <h1 class="app-title">Tarjetas de Vocabulario</h1>
+  <p class="app-subtitle">Tapatio Spanish &middot; Guadalajara 🌵</p>
+  <div class="talavera-rule"></div>
+  <p class="selection-label">Elige tu categoría</p>
+  <div class="cat-grid" id="cat-grid"></div>
+  <p class="deck-summary" id="deck-summary">&nbsp;</p>
+
+  <!-- Game mode: Clic vs Escribir (always visible, chosen before play) -->
+  <div id="game-mode-section" style="width:100%;margin-top:10px;text-align:center;">
+    <p class="selection-label" style="margin-bottom:10px;">Tipo de práctica</p>
+    <div class="mode-toggle-row" style="justify-content:center;">
+      <button id="mode-game-click" class="mode-btn mode-btn-active" onclick="setGameMode('click')">🖱 Clic</button>
+      <button id="mode-game-type"  class="mode-btn"                 onclick="setGameMode('type')">⌨ Escribir</button>
+    </div>
+    <div id="game-mode-hint" style="font-size:0.82rem;color:var(--muted);margin-top:6px;line-height:1.5;">
+      Voltea la tarjeta haciendo clic · Califica con ✅ / ❌
+    </div>
+  </div>
+
+  <button class="btn-jugar" id="btn-jugar" onclick="startGame()" disabled>¡Jugar!</button>
+
+  <!-- Mode toggle: Libre / Leitner (shown only when JSON is loaded) -->
+  <div id="mode-section" style="display:none">
+    <p class="selection-label" style="margin-bottom:10px;">Modo de práctica</p>
+    <div class="mode-toggle-row">
+      <button id="mode-btn-libre"   class="mode-btn mode-btn-active" onclick="setLeitnerMode(false)">🔀 Libre</button>
+      <button id="mode-btn-leitner" class="mode-btn"                 onclick="setLeitnerMode(true)">🎴 Leitner</button>
+    </div>
+    <div id="leitner-mode-info" class="leitner-mode-info" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  PLAY HEADER (shown during game)                                   -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="play-header" id="play-header">
+  <div class="play-header-cat" id="play-header-cat" onclick="toggleCatPopup(event)"><!-- filled by JS --></div>
+  <span class="play-header-dot">&middot;</span>
+  <div class="play-header-rounds">
+    Ronda <span class="rnum" id="round-label">1 de 10</span>
+    &nbsp;&middot;&nbsp; Tarjeta <span id="card-label">1 de 10</span>
+  </div>
+</div>
+
+<!-- Category popup — lives outside play-header to avoid overflow clipping -->
+<div id="cat-popup"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  GAME AREA                                                         -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="progress-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-row">
+    <span id="progress-label">0 de 0 vistas</span>
+    <span id="progress-pct">0%</span>
+  </div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+</div>
+
+<div class="chips-row" id="chips-row" style="display:none">
+  <div class="chip got">&#9989; <span id="got-count">0</span> esta ronda</div>
+  <div class="chip missed">&#10060; <span id="missed-count">0</span> esta ronda</div>
+</div>
+
+<div class="ctrl-row" id="ctrl-row" style="display:none">
+  <button class="ctrl-btn" id="tapatio-filter-btn" onclick="toggleTapatio()">🌵 Solo Tapati&#243;</button>
+  <button class="ctrl-btn" onclick="returnToSelection()">&#8592; Categor&#237;as</button>
+</div>
+
+<!-- Flip card -->
+<div class="scene" id="scene" style="display:none" onclick="flipCard()">
+  <div class="card-inner" id="card">
+    <div class="face front" id="front-face">
+      <div id="tapatio-front-badge" class="tapatio-badge" style="display:none">&#127797; Tapati&#243;</div>
+      <div id="seed-front-badge"    class="seed-badge"    style="display:none">&#128260; Repaso</div>
+      <div class="word" id="front-word"></div>
+      <div class="card-foot-hint">toca para ver la traducci&#243;n</div>
+    </div>
+    <div class="face back" id="back-face">
+      <div class="back-top-badges">
+        <div class="pos-badge" id="back-pos"></div>
+        <div id="tapatio-back-badge" class="tapatio-badge" style="display:none">&#127797; Tapati&#243;</div>
+      </div>
+      <div class="back-content">
+        <div class="perfect-banner" id="perfect-banner" style="display:none">&#127881; &#161;Ronda perfecta!</div>
+        <div class="word" id="back-word"></div>
+        <div style="display:none" id="back-spanish"></div>
+        <div class="card-foot-hint" id="back-foot-hint">toca para ver la palabra original</div>
+      </div>
+      <div class="card-btns" id="card-btns">
+        <button class="card-btn card-btn-missed" id="btn-missed" onclick="grade(false); event.stopPropagation();" disabled>&#10060; Repaso</button>
+        <button class="card-btn card-btn-got"    id="btn-got"    onclick="grade(true);  event.stopPropagation();" disabled>&#9989; &#161;Lo s&#233;!</button>
+      </div>
+      <!-- Typed-mode result indicator (replaces grade buttons) -->
+      <div id="typed-result-wrap" style="display:none">
+        <button id="typed-result-btn" class="card-btn" disabled></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Spell zone: type the English translation before flipping the card -->
+<div id="spell-zone" style="display:none">
+  <input id="spell-input" type="text"
+         placeholder="¿Cómo se dice en inglés? — Enter para revelar"
+         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+         onkeydown="onSpellKey(event)">
+  <div id="spell-feedback" class="spell-fb-empty"></div>
+</div>
+
+<div id="grammar-callout">
+  <div class="callout-header">&#128161; Gram&#225;tica</div>
+  <div id="callout-english"></div>
+  <div id="callout-grammar"></div>
+  <div id="callout-tapatio"></div>
+</div>
+
+<div class="nav-row" id="nav-dots"></div>
+
+<!-- Round summary -->
+<div id="round-screen" style="display:none">
+  <div style="font-size:2.5rem" id="round-emoji">&#127881;</div>
+  <h2 id="round-title">Ronda completa</h2>
+  <div class="perfect-banner" id="perfect-banner-round" style="display:none">&#127881; &#161;Ronda perfecta!</div>
+  <div class="round-score" id="round-score-pct">--</div>
+  <div class="round-sub"   id="round-sub"></div>
+  <ul  class="missed-list" id="round-missed-list"></ul>
+  <button class="action-btn btn-secondary" id="btn-recall"     onclick="startRecall()" style="display:none">&#128260; Repasar fallidas antes de continuar</button>
+  <button class="action-btn btn-primary"   id="btn-next-round" onclick="nextRound()">Siguiente ronda &rarr;</button>
+</div>
+
+<!-- Recall drill -->
+<div id="recall-screen" style="display:none">
+  <div class="recall-header">
+    <h2>&#128260; Repaso r&#225;pido</h2>
+    <div class="recall-counter" id="recall-counter">Palabra 1 de 1</div>
+  </div>
+  <div class="recall-card">
+    <div class="recall-pos"  id="recall-pos"></div>
+    <div class="recall-word" id="recall-word"></div>
+    <div class="recall-input-row" id="recall-input-row">
+      <input class="recall-input" id="recall-input" type="text"
+             placeholder="Escribe la traducción…"
+             oninput="onRecallInput()" onkeydown="onRecallKey(event)">
+    </div>
+  </div>
+  <div class="recall-answer" id="recall-answer">
+    <div class="recall-answer-label">&#128161; Respuesta</div>
+    <div id="recall-spell-fb" class="recall-spell-fb" style="display:none"></div>
+    <div class="recall-english"   id="recall-english"></div>
+    <div class="recall-grammar-r" id="recall-grammar-r"></div>
+    <div class="recall-tapatio"   id="recall-tapatio-r"></div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+    <button class="action-btn btn-secondary" id="btn-reveal" onclick="revealRecall()" disabled
+            style="padding:11px 18px;font-size:0.9rem;white-space:nowrap;">
+      Ver respuesta &rarr;
+    </button>
+    <button class="action-btn btn-primary" id="btn-recall-next" onclick="recallNext()" style="display:none">
+      Siguiente &rarr;
+    </button>
+    <button class="action-btn btn-skip" onclick="skipRecall()">Saltar repaso</button>
+  </div>
+  <div class="recall-nav-row" id="recall-dots"></div>
+</div>
+
+<!-- Complete screen -->
+<div id="complete-screen" style="display:none">
+  <div style="font-size:3rem">&#127881;</div>
+  <h2>&#161;Completaste el mazo!</h2>
+  <div class="final-score" id="final-score-pct">--</div>
+  <div class="final-sub"   id="final-sub"></div>
+  <div class="final-missed-block" id="final-missed-block" style="display:none">
+    <div class="final-missed-pct"   id="final-missed-pct">--</div>
+    <div class="final-missed-label" id="final-missed-label"></div>
+    <ul class="final-missed-list"   id="final-missed-list"></ul>
+    <button class="action-btn btn-secondary"
+            style="margin-top:8px;white-space:nowrap;width:auto;padding-left:24px;padding-right:24px;"
+            onclick="reviewAllMissed()" id="btn-review-missed">
+      &#x1F501; Estudiar estas palabras
+    </button>
+  </div>
+  <!-- Leitner progress summary (shown only in Leitner mode) -->
+  <div id="leitner-final-stats" class="leitner-final-stats" style="display:none">
+    <div class="lf-title">🎴 Progreso Leitner esta sesión</div>
+    <div class="lf-row">
+      <span class="lf-promoted">▲ <span id="leitner-promoted">0</span> promovidas</span>
+      <span class="lf-sep">·</span>
+      <span class="lf-demoted">▼ <span id="leitner-demoted">0</span> regresaron a Caja 1</span>
+    </div>
+  </div>
+  <button id="btn-save-leitner" class="action-btn btn-save-leitner" onclick="exportLeitnerJSON()" style="display:none">
+    ⬇ Guardar progreso (JSON)
+  </button>
+  <button class="action-btn btn-primary" style="margin-top:6px" onclick="returnToSelection()">
+    &#8592; Elegir categor&#237;as
+  </button>
+</div>
+
+<script>
+// ── SpellingHandler (inline) ──────────────────────────────────────────
+var SpellingHandler = (function() {
+  var DIACRITIC_MAP = {'á':'a','é':'e','í':'i','ó':'o','ú':'u','ü':'u','ñ':'n'};
+  function stripDiacritics(s) {
+    return s.replace(/[áéíóúüñÁÉÍÓÚÜÑ]/g, function(c){ return DIACRITIC_MAP[c.toLowerCase()]||c; });
+  }
+  function normalize(s) {
+    return stripDiacritics(s.toLowerCase().trim().replace(/^[¿¡]+/,'').replace(/[?!.]+$/,'').replace(/\s+/g,' '));
+  }
+  function lightClean(s) {
+    return s.trim().replace(/^[¿¡]+/,'').replace(/[?!.]+$/,'').toLowerCase();
+  }
+  function levenshtein(a,b) {
+    if (a===b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+    var prev = [], curr = [];
+    for (var j=0;j<=b.length;j++) prev[j]=j;
+    for (var i=1;i<=a.length;i++) {
+      curr[0]=i;
+      for (var j=1;j<=b.length;j++) {
+        var cost = a[i-1]===b[j-1]?0:1;
+        curr[j] = Math.min(prev[j]+1, curr[j-1]+1, prev[j-1]+cost);
+      }
+      var tmp=prev; prev=curr; curr=tmp;
+    }
+    return prev[b.length];
+  }
+  var ARTICLE_RE = /^(el|la|los|las|un|una|unos|unas)\s+/i;
+  function expandVariants(answer, articleOptional) {
+    if (articleOptional === undefined) articleOptional = true;
+    var seen = {}, order = [];
+    function add(s) { s=s.trim(); if(s && !seen[s]){ seen[s]=true; order.push(s); } }
+    var slashes = answer.split('/').map(function(s){return s.trim();}).filter(Boolean);
+    for (var si=0;si<slashes.length;si++) {
+      var raw = slashes[si];
+      var dm  = raw.match(/^\(([^)]+)\)\s*(.+)$/);
+      if (dm) { add(dm[1]+' '+dm[2]); add(dm[2]); if(articleOptional) add(dm[2].replace(ARTICLE_RE,'')); continue; }
+      add(raw);
+      if (articleOptional) { var stripped=raw.replace(ARTICLE_RE,''); if(stripped!==raw) add(stripped); }
+    }
+    return order;
+  }
+  function closeThreshold(w) { var l=w.length; return l<=6?1:2; }
+  var EXACT_MSGS=['¡Perfecto! ✓','¡Exacto! ✓','¡Muy bien! ✓','¡Correcto! ✓','¡Órale, así es! ✓','¡Chido, lo tienes! ✓'];
+  var WRONG_MSGS=['¡Inténtalo de nuevo!','No del todo, ¡sigue intentando!','Mmm, no exactamente.','¡Échale ganas!'];
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function accentFeedback(inp, cor) {
+    var lci=inp.toLowerCase(), lcc=cor.toLowerCase();
+    var ne=/ñ/.test(lcc)&&!/ñ/.test(lci), na=/[áéíóúü]/.test(lcc)&&!/[áéíóúü]/.test(lci);
+    if(ne&&na) return '¡Casi! Revisa la ñ y los acentos → "'+cor+'"';
+    if(ne)     return '¡Casi! Falta la ñ → "'+cor+'"';
+    if(na)     return '¡Casi! Falta el acento → "'+cor+'"';
+    return '¡Casi! Revisa la ortografía → "'+cor+'"';
+  }
+  function makeResult(status, mv, dist, fb) {
+    return {status:status, correct:status==='exact'||status==='accent_only', close:status==='close', matchedVariant:mv, editDistance:dist, feedback:fb};
+  }
+  function check(userInput, correctAnswer, opts) {
+    opts = opts||{};
+    var strict=(opts.strict===true), ao=(opts.articleOptional!==false);
+    var raw=(userInput||'').trim();
+    if(!raw) return makeResult('wrong',null,Infinity,'¡Escribe tu respuesta!');
+    var normIn = normalize(raw);
+    var variants = expandVariants(correctAnswer, ao);
+    var bestDist=Infinity, bestVar=variants[0]||correctAnswer;
+    for(var vi=0;vi<variants.length;vi++){
+      var v=variants[vi];
+      if(lightClean(raw)===lightClean(v)) return makeResult('exact',v,0,pick(EXACT_MSGS));
+      var nv=normalize(v);
+      if(normIn===nv) {
+        if(strict) return makeResult('wrong',v,0,accentFeedback(raw,v));
+        return makeResult('accent_only',v,0,accentFeedback(raw,v));
+      }
+      // Space/hyphen-collapse: "eardrums" ↔ "ear drums", "blood-type" ↔ "blood type"
+      // Same word, different convention → treat as correct (Leitner not penalized)
+      var ci=normIn.replace(/[\s\-]+/g,''), cv=nv.replace(/[\s\-]+/g,'');
+      if(ci===cv) return makeResult('accent_only',v,0,'¡Casi! Revisa los espacios → "'+v+'"');
+      var d=levenshtein(normIn,nv);
+      if(d<bestDist){bestDist=d;bestVar=v;}
+    }
+    if(bestDist<=closeThreshold(normalize(bestVar)))
+      return makeResult('close',bestVar,bestDist,'¡Casi! ¿Quisiste escribir "'+bestVar+'"?');
+    return makeResult('wrong',null,bestDist,pick(WRONG_MSGS));
+  }
+  return {check:check, normalize:normalize, levenshtein:levenshtein, expandVariants:expandVariants};
+})();
+
+// ── English target builder (for spell zone comparisons) ───────────────
+// Strips parenthetical notes and adds "to"-less variants for verb entries
+// so "to open (irregular)" → user can type "open" or "to open".
+function engTarget(english) {
+  var core = (english||'').replace(/\s*\([^)]*\)/g,'').replace(/\s+/g,' ').trim();
+  var parts = core.split('/').map(function(s){return s.trim();}).filter(Boolean);
+  var expanded = [];
+  parts.forEach(function(p){
+    expanded.push(p);
+    if (/^to\s+/i.test(p)) expanded.push(p.replace(/^to\s+/i,''));
+  });
+  return expanded.join('/');
+}
+
+// ── Spell feedback class helper ───────────────────────────────────────
+function spellFbClass(prefix, status) {
+  return prefix + (status==='exact'?'exact':status==='accent_only'?'accent':status==='close'?'close':'wrong');
+}
+
+// ── Data ──────────────────────────────────────────────────────────────
+var ROUND_SIZE  = 10;
+var MAX_DECK    = 100;
+var MAX_SEEDS   = 3;    // max missed-card seeds reinserted per round
+var selectedCats = ['Todas'];
+var CAT_COUNTS  = {};
+var CAT_META    = [
+  { id: 'Todas',                      emoji: '🌍',    label: 'Todas' },
+  { id: 'Alimentación',               emoji: '🍽️',   label: 'Alimentación' },
+  { id: 'Anatomía y cuerpo',          emoji: '🫀',    label: 'Anatomía y cuerpo' },
+  { id: 'Medicina y tratamiento',     emoji: '💊',    label: 'Medicina y tratamiento' },
+  { id: 'Salud y síntomas',           emoji: '🩺',    label: 'Salud y síntomas' },
+  { id: 'Ropa y accesorios',          emoji: '👗',    label: 'Ropa y accesorios' },
+  { id: 'Casa y hogar',               emoji: '🏠',    label: 'Casa y hogar' },
+  { id: 'Ciudad y transporte',        emoji: '🚌',    label: 'Ciudad y transporte' },
+  { id: 'Orientación y direcciones',  emoji: '🧭',    label: 'Orientación y direcciones' },
+  { id: 'Familia y relaciones',       emoji: '👨‍👩‍👧',  label: 'Familia y relaciones' },
+  { id: 'Emociones y estados',        emoji: '😊',    label: 'Emociones y estados' },
+  { id: 'Descripción personal',       emoji: '🪞',    label: 'Descripción personal' },
+  { id: 'Rutinas diarias',            emoji: '📅',    label: 'Rutinas diarias' },
+  { id: 'Tiempo y frecuencia',        emoji: '⏰',    label: 'Tiempo y frecuencia' },
+  { id: 'Cantidades y comparaciones', emoji: '🔢',    label: 'Cantidades y comparaciones' },
+  { id: 'Comunicación y cortesía',    emoji: '💬',    label: 'Comunicación y cortesía' },
+  { id: 'Gramática funcional',        emoji: '📚',    label: 'Gramática funcional' },
+  { id: 'Cultura tapatía',            emoji: '🌵',    label: 'Cultura tapatía' }
+];
+
+// ── Game state ────────────────────────────────────────────────────────
+var ALL_CARDS     = [];
+var shuffledDeck  = [];
+var deckPos       = 0;
+var roundCards    = [];
+var roundNewCount = 0;
+var roundIdx      = 0;
+var roundGot      = {};
+var roundMissed   = {};
+var allMissed     = {};
+var firstEncounterMissed = {};
+var pendingSeeds  = [];
+var isFlipped     = false;
+var tapatioOnly   = false;
+var recallQueue      = [];
+var recallIdx        = 0;
+var recallRevealed   = false;
+var recallFromFinal  = false;
+var onRecallEnter    = null;    // document keydown listener for Enter-to-advance
+var activeRoundSize = ROUND_SIZE;
+
+// ── Game mode state (click vs typed) ──────────────────────────────────
+var gameMode          = 'click'; // 'click' | 'type'
+var typeGraded        = false;   // true after Enter is evaluated in type mode
+var lastSpellCorrect  = false;   // result.correct from last spell check
+var autoAdvanceTimer  = null;    // unused — kept for cleanup safety
+var onEnterAdvance    = null;    // document keydown listener for typed-mode advance
+
+// ── Leitner System state ───────────────────────────────────────────────
+var workingData  = [];     // populated from spanish_dictionary.json on load
+var leitnerMode  = false;
+var jsonLoaded   = false;
+var leitnerStats = { promoted: 0, demoted: 0 };
+// Sessions until next review, indexed by box number (0 = always due)
+var BOX_INTERVALS = [0, 0, 1, 3, 7, 15];
+
+// ── Leitner helper functions ───────────────────────────────────────────
+function getWorkingData() {
+  return workingData;
+}
+
+function loadJSONFile(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  readJSONFile(file);
+  event.target.value = '';
+}
+function handleLeitnerDragOver(e) {
+  e.preventDefault();
+  document.getElementById('leitner-drop-zone').classList.add('drag-over');
+}
+function handleLeitnerDragLeave() {
+  document.getElementById('leitner-drop-zone').classList.remove('drag-over');
+}
+function handleLeitnerDrop(e) {
+  e.preventDefault();
+  document.getElementById('leitner-drop-zone').classList.remove('drag-over');
+  var file = e.dataTransfer.files[0];
+  if (file) readJSONFile(file);
+}
+function readJSONFile(file) {
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var raw = JSON.parse(ev.target.result);
+      var migrated = 0;
+      raw.forEach(function(entry) {
+        if (entry.leitner_box === undefined) { entry.leitner_box = 1; migrated++; }
+        if (entry.leitner_sessions_until_due === undefined) entry.leitner_sessions_until_due = 0;
+      });
+      workingData = raw;
+      jsonLoaded  = true;
+      leitnerMode = true;
+      onJSONLoaded(migrated);
+    } catch(err) {
+      alert('Error al leer el archivo: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+function onJSONLoaded(migratedCount) {
+  rebuildCatCounts();
+  buildCatGrid();
+  document.getElementById('load-screen').style.display = 'none';
+  document.getElementById('selection-screen').style.display = 'flex';
+  updateLeitnerModeUI();
+  updateCatUI();
+  if (migratedCount > 0) {
+    // brief notice — entries didn't have leitner fields yet
+    var info = document.getElementById('leitner-mode-info');
+    info.innerHTML = '✅ Archivo cargado · ' + migratedCount + ' entradas migradas a Caja 1';
+    info.style.display = '';
+    setTimeout(function(){ updateLeitnerInfo(); }, 2000);
+  }
+}
+function rebuildCatCounts() {
+  var data = getWorkingData();
+  CAT_META.forEach(function(cm) {
+    if (cm.id === 'Todas') {
+      CAT_COUNTS[cm.id] = data.length;
+    } else {
+      CAT_COUNTS[cm.id] = data.filter(function(c){
+        return (c.categories || []).indexOf(cm.id) >= 0;
+      }).length;
+    }
+  });
+}
+function setLeitnerMode(val) {
+  if (val && !jsonLoaded) return;
+  leitnerMode = val;
+  updateLeitnerModeUI();
+  updateCatUI();
+}
+function updateLeitnerModeUI() {
+  var modeSect    = document.getElementById('mode-section');
+  var btnLibre    = document.getElementById('mode-btn-libre');
+  var btnLeitner  = document.getElementById('mode-btn-leitner');
+  var leitnerInfo = document.getElementById('leitner-mode-info');
+  if (!modeSect) return;
+  modeSect.style.display = jsonLoaded ? '' : 'none';
+  if (!jsonLoaded) return;
+  btnLibre.className   = 'mode-btn' + (!leitnerMode ? ' mode-btn-active' : '');
+  btnLeitner.className = 'mode-btn' + ( leitnerMode ? ' mode-btn-active-leitner' : '');
+  leitnerInfo.style.display = leitnerMode ? '' : 'none';
+  if (leitnerMode) updateLeitnerInfo();
+}
+function updateLeitnerInfo() {
+  var data   = getWorkingData();
+  var counts = {1:0,2:0,3:0,4:0,5:0};
+  data.forEach(function(c) {
+    var b = c.leitner_box || 1;
+    if (counts[b] !== undefined) counts[b]++;
+  });
+  // Count due cards in currently selected categories
+  var pool = buildPool(selectedCats);
+  var dueInCats = pool.filter(function(c){
+    return (c.leitner_sessions_until_due || 0) <= 0;
+  }).length;
+  document.getElementById('leitner-mode-info').innerHTML =
+    '<span class="leitner-due-count">' + dueInCats + '</span> tarjetas pendientes esta sesión'
+    + ' &nbsp;·&nbsp; <span style="font-size:0.78rem;color:var(--muted)">'
+    + '📦' + counts[1] + ' &nbsp;📦' + counts[2] + ' &nbsp;📦' + counts[3]
+    + ' &nbsp;📦' + counts[4] + ' &nbsp;⭐' + counts[5] + '</span>';
+}
+function decrementSessions() {
+  // Decrement sessions_until_due for all cards globally (one call = one session)
+  var data = getWorkingData();
+  data.forEach(function(c) {
+    if (c.leitner_sessions_until_due === undefined) c.leitner_sessions_until_due = 0;
+    if (c.leitner_sessions_until_due > 0) c.leitner_sessions_until_due--;
+  });
+}
+function applyLeitnerGrade(card, knew) {
+  if (!leitnerMode) return;
+  var oldBox = card.leitner_box || 1;
+  if (knew) {
+    var newBox = Math.min(5, oldBox + 1);
+    card.leitner_box = newBox;
+    card.leitner_sessions_until_due = BOX_INTERVALS[newBox];
+    if (newBox > oldBox) leitnerStats.promoted++;
+  } else {
+    if (oldBox > 1) leitnerStats.demoted++;
+    card.leitner_box = 1;
+    card.leitner_sessions_until_due = 0;
+  }
+}
+function exportLeitnerJSON() {
+  if (!workingData) { alert('No hay datos cargados para guardar.'); return; }
+  var sorted = workingData.slice().sort(function(a, b) {
+    return a.word.toLowerCase().localeCompare(b.word.toLowerCase(), 'es');
+  });
+  var json = JSON.stringify(sorted, null, 2);
+  var blob = new Blob([json], { type: 'application/json' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url; a.download = 'spanish_dictionary.json'; a.click();
+  URL.revokeObjectURL(url);
+  var btn = document.getElementById('btn-save-leitner');
+  if (btn) {
+    var orig = btn.textContent;
+    btn.textContent = '✅ ¡Guardado!';
+    setTimeout(function(){ btn.textContent = orig; }, 2600);
+  }
+}
+
+// ── Build category selection UI ───────────────────────────────────────
+function buildCatGrid() {
+  var grid = document.getElementById('cat-grid');
+  grid.innerHTML = '';
+  CAT_META.forEach(function(cm) {
+    var count = CAT_COUNTS[cm.id] || 0;
+    var div = document.createElement('div');
+    div.className = 'cat-card' + (cm.id === 'Todas' ? ' todas-card' : '');
+    div.dataset.catId = cm.id;
+    div.onclick = function(){ toggleCat(cm.id); };
+    if (cm.id === 'Todas') {
+      div.innerHTML = '<span class="cat-emoji">' + cm.emoji + '</span>'
+        + '<span class="todas-name">' + cm.label + '</span>';
+    } else {
+      div.innerHTML = '<span class="cat-emoji">' + cm.emoji + '</span>'
+        + '<div class="cat-info">'
+        + '<span class="cat-name">' + cm.label + '</span>'
+        + '<span class="cat-count">' + count + ' palabras</span>'
+        + '</div>';
+    }
+    grid.appendChild(div);
+  });
+}
+
+function toggleCat(id) {
+  if (id === 'Todas') {
+    // Select Todas = deselect all others and toggle Todas
+    var todasSelected = selectedCats.indexOf('Todas') >= 0;
+    selectedCats = todasSelected ? [] : ['Todas'];
+  } else {
+    // Remove Todas if present
+    selectedCats = selectedCats.filter(function(c){ return c !== 'Todas'; });
+    var idx = selectedCats.indexOf(id);
+    if (idx >= 0) selectedCats.splice(idx, 1);
+    else selectedCats.push(id);
+  }
+  // If nothing selected, fall back to Todas
+  if (selectedCats.length === 0) selectedCats = ['Todas'];
+  updateCatUI();
+}
+
+function updateCatUI() {
+  // Update card visuals
+  document.querySelectorAll('.cat-card').forEach(function(el) {
+    el.classList.toggle('selected', selectedCats.indexOf(el.dataset.catId) >= 0);
+  });
+  // Compute deck preview
+  var pool = buildPool(selectedCats);
+  var deckSize = Math.min(pool.length, MAX_DECK);
+  // Round down to nearest 10
+  deckSize = Math.floor(deckSize / ROUND_SIZE) * ROUND_SIZE;
+  if (deckSize === 0 && pool.length > 0) deckSize = pool.length; // < 10 edge case
+  var numRounds = deckSize > 0 ? Math.ceil(deckSize / ROUND_SIZE) : 0;
+  var summary = document.getElementById('deck-summary');
+  if (selectedCats.length === 0) {
+    summary.innerHTML = '&nbsp;';
+  } else {
+    summary.innerHTML = '<span>' + deckSize + ' tarjetas</span> &middot; <span>' + numRounds + ' rondas</span>';
+  }
+  document.getElementById('btn-jugar').disabled = selectedCats.length === 0;
+  if (leitnerMode) updateLeitnerInfo();
+}
+
+// ── Balanced pool builder ─────────────────────────────────────────────
+function buildPool(cats) {
+  if (cats.length === 0) return [];
+  if (cats.indexOf('Todas') >= 0) return getWorkingData().slice();
+  // Collect cards per selected category (de-dupe by word)
+  var seen = {};
+  var perCat = {};
+  cats.forEach(function(cat) {
+    perCat[cat] = getWorkingData().filter(function(c){
+      return c.categories.indexOf(cat) >= 0 && !seen[c.word];
+    });
+    perCat[cat].forEach(function(c){ seen[c.word] = true; });
+  });
+  // Total available
+  var total = Object.values(perCat).reduce(function(s,a){ return s + a.length; }, 0);
+  if (total <= MAX_DECK) {
+    var all = [];
+    cats.forEach(function(cat){ all = all.concat(perCat[cat]); });
+    return all;
+  }
+  // Balanced allocation: iteratively give each category its fair share
+  var remaining = MAX_DECK;
+  var catList = cats.slice().sort(function(a,b){ return perCat[a].length - perCat[b].length; });
+  var alloc = {};
+  catList.forEach(function(cat, i) {
+    var share = Math.floor(remaining / (catList.length - i));
+    alloc[cat] = Math.min(share, perCat[cat].length);
+    remaining -= alloc[cat];
+  });
+  var result = [];
+  cats.forEach(function(cat) {
+    var shuffled = fisherYates(perCat[cat].slice());
+    result = result.concat(shuffled.slice(0, alloc[cat]));
+  });
+  return result;
+}
+
+// ── Start game ────────────────────────────────────────────────────────
+function startGame() {
+  var pool = buildPool(selectedCats);
+
+  // ── Leitner: decrement counters, then filter to due cards ─────────────
+  if (leitnerMode) {
+    decrementSessions();
+    pool = pool.filter(function(c){ return (c.leitner_sessions_until_due || 0) <= 0; });
+    leitnerStats = { promoted: 0, demoted: 0 };
+    if (pool.length === 0) {
+      alert('¡No hay tarjetas pendientes para esta sesión! Prueba otra categoría o regresa mañana. 🌵');
+      return;
+    }
+  }
+
+  pool = fisherYates(pool);
+  // Round down to nearest 10
+  var deckSize = Math.floor(Math.min(pool.length, MAX_DECK) / ROUND_SIZE) * ROUND_SIZE;
+  if (deckSize === 0) deckSize = pool.length;
+  ALL_CARDS = pool.slice(0, deckSize);
+  activeRoundSize = ROUND_SIZE;
+
+  // Build header label
+  var catLabel = '';
+  if (selectedCats.indexOf('Todas') >= 0) {
+    catLabel = '🌮 Todas las categorías';
+  } else if (selectedCats.length === 1) {
+    var cm = CAT_META.filter(function(m){ return m.id === selectedCats[0]; })[0];
+    catLabel = cm ? (cm.emoji + ' ' + cm.label) : selectedCats[0];
+  } else {
+    catLabel = '🗂 ' + selectedCats.length + ' categorías';
+  }
+  var catEl = document.getElementById('play-header-cat');
+  catEl.textContent = catLabel;
+  var popup = document.getElementById('cat-popup');
+  popup.classList.remove('open');
+  // Fill popup and enable click when 2+ cats selected
+  if (selectedCats.indexOf('Todas') < 0 && selectedCats.length >= 2) {
+    var lines = selectedCats.map(function(id) {
+      var m = CAT_META.filter(function(x){ return x.id === id; })[0];
+      return m ? (m.emoji + ' ' + m.label) : id;
+    }).join('<br>');
+    popup.innerHTML = lines;
+    catEl.classList.add('has-popup');
+  } else {
+    popup.innerHTML = '';
+    catEl.classList.remove('has-popup');
+  }
+
+  tapatioOnly = false;
+  document.getElementById('tapatio-filter-btn').className = 'ctrl-btn';
+  document.getElementById('selection-screen').style.display = 'none';
+  document.getElementById('play-header').style.display = 'flex';
+  document.getElementById('progress-wrap').style.display = '';
+  document.getElementById('chips-row').style.display = '';
+  document.getElementById('ctrl-row').style.display = '';
+  startNewPass();
+}
+
+function toggleCatPopup(e) {
+  var popup = document.getElementById('cat-popup');
+  if (!popup.innerHTML) return;  // not enabled (single cat or Todas)
+  e.stopPropagation();
+  if (popup.classList.contains('open')) {
+    popup.classList.remove('open');
+    return;
+  }
+  // Position below the cat pill using viewport coords
+  var rect = document.getElementById('play-header-cat').getBoundingClientRect();
+  popup.style.top  = (rect.bottom + 8) + 'px';
+  popup.style.left = rect.left + 'px';
+  popup.classList.add('open');
+  // Close on next click anywhere
+  setTimeout(function() {
+    document.addEventListener('click', function closePop() {
+      popup.classList.remove('open');
+      document.removeEventListener('click', closePop);
+    }, { once: true });
+  }, 0);
+}
+
+function returnToSelection() {
+  hideAll();
+  document.getElementById('cat-popup').classList.remove('open');
+  document.getElementById('play-header').style.display    = 'none';
+  document.getElementById('progress-wrap').style.display  = 'none';
+  document.getElementById('chips-row').style.display      = 'none';
+  document.getElementById('ctrl-row').style.display       = 'none';
+  document.getElementById('nav-dots').innerHTML           = '';
+  document.getElementById('selection-screen').style.display = 'flex';
+  updateCatUI();
+}
+
+// ── Core game logic ───────────────────────────────────────────────────
+function sourceCards() {
+  return tapatioOnly ? ALL_CARDS.filter(function(c){return c.tapatio;}) : ALL_CARDS;
+}
+function totalRounds() {
+  return Math.ceil(sourceCards().length / activeRoundSize);
+}
+
+function fisherYates(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function startNewPass() {
+  shuffledDeck = fisherYates(sourceCards().slice());
+  deckPos = 0; pendingSeeds = [];
+  roundGot = {}; roundMissed = {}; allMissed = {}; firstEncounterMissed = {};
+  hideAll();
+  loadRound();
+}
+
+function loadRound() {
+  var src = sourceCards();
+  if (deckPos >= src.length && pendingSeeds.length === 0) {
+    showFinalScreen(); return;
+  }
+  var seedCount = Math.min(pendingSeeds.length, MAX_SEEDS);
+  var newCount  = Math.max(0, Math.min(activeRoundSize - seedCount, src.length - deckPos));
+  seedCount     = Math.min(pendingSeeds.length, activeRoundSize - newCount);
+  var newCards  = shuffledDeck.slice(deckPos, deckPos + newCount);
+  var seeds     = pendingSeeds.splice(0, seedCount);
+  seeds.forEach(function(c){ c._seed = true; });
+  newCards.forEach(function(c){ c._seed = false; });
+  var merged = newCards.slice();
+  seeds.forEach(function(seed) {
+    var pos = Math.floor(Math.random() * (merged.length + 1));
+    merged.splice(pos, 0, seed);
+  });
+  roundCards    = merged;
+  roundNewCount = newCount;
+  deckPos      += newCount;
+  roundIdx      = 0;
+  roundGot      = {}; roundMissed = {};
+  isFlipped     = false;
+  showMainUI();
+  buildDots();
+  showCard();
+}
+
+function buildDots() {
+  var nav = document.getElementById('nav-dots');
+  nav.innerHTML = '';
+  roundCards.forEach(function(c, i) {
+    var d = document.createElement('div');
+    d.className = 'nav-dot' + (c._seed ? ' seed' : '') + (i === 0 ? ' current' : '');
+    nav.appendChild(d);
+  });
+}
+
+function updateDots() {
+  var dots = document.getElementById('nav-dots').children;
+  for (var i = 0; i < roundCards.length; i++) {
+    var c = roundCards[i];
+    var cls = 'nav-dot';
+    if (c._seed) cls += ' seed';
+    if (roundGot[c.word])    cls += ' got';
+    if (roundMissed[c.word]) cls += ' missed';
+    if (i === roundIdx)      cls += ' current';
+    dots[i].className = cls;
+  }
+}
+
+function showCard() {
+  var src = sourceCards();
+  var tr  = totalRounds();
+  var rn  = Math.floor((deckPos - roundNewCount) / activeRoundSize) + 1;
+  var c   = roundCards[roundIdx];
+  isFlipped = false;
+  // Remove any pending typed-mode Enter listener
+  if (onEnterAdvance) { document.removeEventListener('keydown', onEnterAdvance); onEnterAdvance = null; }
+  typeGraded = false;
+  // Reset typed-mode result button
+  document.getElementById('typed-result-wrap').style.display = 'none';
+  document.getElementById('card-btns').style.display = '';
+  var bfh = document.getElementById('back-foot-hint');
+  if (bfh) bfh.textContent = 'toca para ver la palabra original';
+  // Spell zone: show only in type mode; hide in click mode
+  var spZone = document.getElementById('spell-zone');
+  var scene  = document.getElementById('scene');
+  if (gameMode === 'type') {
+    spZone.style.display = '';
+    scene.classList.add('scene-no-click');    // disable click-to-flip while typing
+    var inp = document.getElementById('spell-input');
+    var fb  = document.getElementById('spell-feedback');
+    inp.value = ''; inp.disabled = false;
+    fb.textContent = ''; fb.className = 'spell-fb-empty';
+    setTimeout(function(){ if (!isFlipped) inp.focus(); }, 540);
+  } else {
+    spZone.style.display = 'none';
+    scene.classList.remove('scene-no-click'); // click-to-flip enabled
+  }
+  document.getElementById('grammar-callout').classList.remove('filled');
+  document.getElementById('callout-english').textContent = '';
+  document.getElementById('callout-grammar').textContent = '';
+  document.getElementById('callout-tapatio').textContent = '';
+  document.getElementById('callout-tapatio').style.display = '';
+
+  document.getElementById('round-label').textContent = rn + ' de ' + tr;
+  document.getElementById('card-label').textContent  = (roundIdx+1) + ' de ' + roundCards.length;
+
+  // Progress
+  var viewedCount = deckPos - roundNewCount + roundIdx + 1;
+  document.getElementById('progress-label').textContent = viewedCount + ' de ' + src.length + ' vistas';
+  document.getElementById('progress-pct').textContent   = Math.round(viewedCount / src.length * 100) + '%';
+  document.getElementById('progress-bar').style.width   = (viewedCount / src.length * 100) + '%';
+
+  // Score chips
+  document.getElementById('got-count').textContent    = Object.keys(roundGot).length;
+  document.getElementById('missed-count').textContent = Object.keys(roundMissed).length;
+
+  document.getElementById('btn-got').disabled    = true;
+  document.getElementById('btn-missed').disabled = true;
+
+  // Update front face immediately — it's hidden while card is flipped, safe to swap anytime
+  var frontFace = document.getElementById('front-face');
+  frontFace.className = 'face front'
+    + (c.tapatio ? ' tapatio-card' : '')
+    + (c._seed && !c.tapatio ? ' seed-card' : '');
+  document.getElementById('front-word').textContent  = c.word;
+  document.getElementById('seed-front-badge').style.display    = c._seed ? '' : 'none';
+  document.getElementById('tapatio-front-badge').style.display = c.tapatio ? '' : 'none';
+
+  // Update back face content — if card is currently showing its back face,
+  // wait until the midpoint of the flip-back animation (card is edge-on,
+  // neither face visible) so the translation never peeks through.
+  function loadBack() {
+    document.getElementById('back-pos').textContent     = c.part_of_speech;
+    var engFull = c.english || '';
+    var parenIdx = engFull.indexOf('(');
+    var engCore = parenIdx > 0 ? engFull.slice(0, parenIdx).trim() : engFull;
+    document.getElementById('back-word').textContent    = engCore;
+    document.getElementById('back-spanish').textContent = c.word;
+    document.getElementById('tapatio-back-badge').style.display = c.tapatio ? '' : 'none';
+  }
+
+  // If card is currently flipped (showing translation), snap it back instantly
+  // — the deal animation replaces the flip-back, no need for both.
+  var cardEl = document.getElementById('card');
+  if (cardEl.classList.contains('flipped')) {
+    cardEl.style.transition = 'none';
+    cardEl.classList.remove('flipped');
+    void cardEl.offsetWidth;
+    cardEl.style.transition = '';
+  }
+  loadBack();
+
+  // Deal the new card in from the lower-right
+  var scene = document.getElementById('scene');
+  scene.classList.remove('deal-in');
+  void scene.offsetWidth;
+  scene.classList.add('deal-in');
+
+  updateDots();
+}
+
+// ── Internal: flip to back face (no typed-mode interception) ─────────
+// Called programmatically from onSpellKey in typed mode.
+function doFlipToBack() {
+  var c = roundCards[roundIdx];
+  if (isFlipped) return;
+  isFlipped = true;
+  document.getElementById('card').classList.add('flipped');
+  // Click mode enables grade buttons; typed mode shows result btn instead
+  if (gameMode !== 'type') {
+    document.getElementById('btn-got').disabled    = false;
+    document.getElementById('btn-missed').disabled = false;
+  }
+  // Lock spell input — answer is now visible
+  var spInp = document.getElementById('spell-input');
+  if (spInp) spInp.disabled = true;
+  // Populate grammar callout
+  var _engFull = c.english || '';
+  var _parenIdx = _engFull.indexOf('(');
+  var engNote = (_parenIdx > 0) ? _engFull.slice(_parenIdx).trim() : '';
+  document.getElementById('callout-english').textContent = engNote;
+  document.getElementById('callout-grammar').textContent = c.grammar_notes || '';
+  var tapEl = document.getElementById('callout-tapatio');
+  tapEl.textContent = c.tapatio ? c.tapatio_notes : '';
+  tapEl.style.display = c.tapatio ? '' : 'none';
+  document.getElementById('grammar-callout').classList.add('filled');
+}
+
+function flipCard() {
+  // ── Typed mode interception (user-initiated clicks only) ─────────────
+  if (gameMode === 'type') {
+    if (typeGraded) {
+      // Card click after grading = advance
+      if (onEnterAdvance) { document.removeEventListener('keydown', onEnterAdvance); onEnterAdvance = null; }
+      typeGraded = false;
+      advanceCard();
+    }
+    // Before grading: card click does nothing (scene has no-click cursor)
+    return;
+  }
+
+  if (!isFlipped) {
+    doFlipToBack();
+  } else {
+    // Flip back to front — grade buttons and callout remain active
+    isFlipped = false;
+    document.getElementById('card').classList.remove('flipped');
+  }
+}
+
+function applyGrade(knew) {
+  var c   = roundCards[roundIdx];
+  applyLeitnerGrade(c, knew);
+  var key = c.word;
+  if (!c._seed && !(key in firstEncounterMissed)) {
+    if (!knew) firstEncounterMissed[key] = true;
+  }
+  if (knew) {
+    roundGot[key] = true;
+    delete roundMissed[key];
+    if (c._seed) delete allMissed[key];
+  } else {
+    roundMissed[key] = true;
+    allMissed[key]   = true;
+    delete roundGot[key];
+  }
+  document.getElementById('got-count').textContent    = Object.keys(roundGot).length;
+  document.getElementById('missed-count').textContent = Object.keys(roundMissed).length;
+  updateDots();
+}
+
+function advanceCard() {
+  if (roundIdx < roundCards.length - 1) {
+    roundIdx++;
+    isFlipped = false;
+    showCard();
+  } else {
+    showRoundSummary();
+  }
+}
+
+function grade(knew) {
+  applyGrade(knew);
+  advanceCard();
+}
+
+function showRoundSummary() {
+  var g = Object.keys(roundGot).length;
+  var m = Object.keys(roundMissed).length;
+  var total = g + m;
+  var pct   = total > 0 ? Math.round(g / total * 100) : 100;
+  var src   = sourceCards();
+  var rn    = Math.floor((deckPos - roundNewCount) / activeRoundSize) + 1;
+
+  document.getElementById('round-score-pct').textContent = pct + '%';
+  document.getElementById('round-score-pct').style.color =
+    pct >= 80 ? 'var(--jade)' : pct >= 50 ? 'var(--marigold)' : 'var(--red)';
+  document.getElementById('round-emoji').textContent =
+    pct === 100 ? '\u{1F389}' : pct >= 70 ? '\u{1F4AA}' : '\u{1F4DA}';
+  document.getElementById('round-title').textContent = 'Ronda ' + rn + ' completada';
+  document.getElementById('round-sub').textContent   = g + ' de ' + total + ' correctas';
+
+  var list = document.getElementById('round-missed-list');
+  list.innerHTML = '';
+  var missedKeys = Object.keys(roundMissed);
+  missedKeys.forEach(function(w) {
+    var li = document.createElement('li'); li.textContent = w; list.appendChild(li);
+    var card = ALL_CARDS.filter(function(c){return c.word === w;})[0];
+    if (card) pendingSeeds.push(card);
+  });
+
+  var newCardKeys = roundCards.filter(function(c){ return !c._seed; }).map(function(c){ return c.word; });
+  var isPerfect   = newCardKeys.every(function(k){ return !roundMissed[k]; });
+
+  document.getElementById('btn-recall').style.display           = missedKeys.length > 0 ? '' : 'none';
+  document.getElementById('perfect-banner-round').style.display = isPerfect ? '' : 'none';
+  document.getElementById('round-score-pct').style.display      = isPerfect ? 'none' : '';
+
+  var isLast = (deckPos >= src.length && pendingSeeds.length === 0);
+  document.getElementById('btn-next-round').textContent =
+    isLast ? 'Ver resultado final →' : 'Siguiente ronda →';
+
+  hideAll();
+  document.getElementById('round-screen').style.display = 'flex';
+  if (isPerfect) launchConfetti(1);
+}
+
+function nextRound() {
+  var src = sourceCards();
+  if (deckPos >= src.length && pendingSeeds.length === 0) {
+    showFinalScreen();
+  } else {
+    loadRound();
+  }
+}
+
+function showFinalScreen() {
+  var src        = sourceCards();
+  var totalCards = src.length;
+  var feMissed   = Object.keys(firstEncounterMissed);
+  var feCorrect  = totalCards - feMissed.length;
+  var pct        = Math.round(feCorrect / totalCards * 100);
+  var missedPct  = 100 - pct;
+
+  document.getElementById('final-score-pct').textContent = pct + '%';
+  document.getElementById('final-score-pct').style.color =
+    pct >= 80 ? 'var(--jade)' : pct >= 50 ? 'var(--marigold)' : 'var(--red)';
+  document.getElementById('final-sub').textContent =
+    feCorrect + ' de ' + totalCards + ' palabras correctas (primer intento)';
+
+  var missedBlock = document.getElementById('final-missed-block');
+  if (feMissed.length > 0) {
+    document.getElementById('final-missed-pct').textContent = missedPct + '%';
+    document.getElementById('final-missed-label').textContent =
+      feMissed.length + (feMissed.length === 1 ? ' palabra necesita más estudio' : ' palabras necesitan más estudio');
+    var ul = document.getElementById('final-missed-list');
+    ul.innerHTML = '';
+    feMissed.sort().forEach(function(w) {
+      var card = ALL_CARDS.filter(function(c){return c.word === w;})[0];
+      var li = document.createElement('li');
+      var es = document.createElement('span'); es.className = 'fml-es'; es.textContent = w;
+      var en = document.createElement('span'); en.className = 'fml-en';
+      en.textContent = card ? card.english : '';
+      li.appendChild(es); li.appendChild(en);
+      ul.appendChild(li);
+    });
+    missedBlock.style.display = 'flex';
+  } else {
+    missedBlock.style.display = 'none';
+  }
+  // ── Leitner session summary ────────────────────────────────────────
+  var leitnerBlock = document.getElementById('leitner-final-stats');
+  var saveBtn      = document.getElementById('btn-save-leitner');
+  if (leitnerMode && leitnerBlock) {
+    document.getElementById('leitner-promoted').textContent = leitnerStats.promoted;
+    document.getElementById('leitner-demoted').textContent  = leitnerStats.demoted;
+    leitnerBlock.style.display = '';
+    if (saveBtn) saveBtn.style.display = '';
+  } else {
+    if (leitnerBlock) leitnerBlock.style.display = 'none';
+    if (saveBtn)      saveBtn.style.display = 'none';
+  }
+
+  hideAll();
+  document.getElementById('complete-screen').style.display = 'flex';
+  launchConfetti(2);
+}
+
+function reviewAllMissed() {
+  var missedCards = ALL_CARDS.filter(function(c){return firstEncounterMissed[c.word];});
+  if (missedCards.length === 0) { alert('¡No hay fallidas!'); return; }
+  recallQueue    = fisherYates(missedCards.slice());
+  recallIdx      = 0;
+  recallRevealed = false;
+  recallFromFinal = true;
+  hideAll();
+  buildRecallDots();
+  showRecallCard();
+  document.getElementById('recall-screen').style.display = 'flex';
+  document.getElementById('recall-input').focus();
+}
+
+// ── Recall drill ──────────────────────────────────────────────────────
+function startRecall() {
+  recallQueue = Object.keys(roundMissed).map(function(w) {
+    return ALL_CARDS.filter(function(c){return c.word === w;})[0];
+  }).filter(Boolean);
+  recallIdx      = 0;
+  recallRevealed = false;
+  hideAll();
+  buildRecallDots();
+  showRecallCard();
+  document.getElementById('recall-screen').style.display = 'flex';
+  document.getElementById('recall-input').focus();
+}
+
+function buildRecallDots() {
+  var row = document.getElementById('recall-dots');
+  row.innerHTML = '';
+  recallQueue.forEach(function(_, i) {
+    var d = document.createElement('div');
+    d.className = 'recall-dot' + (i === 0 ? ' current' : '');
+    row.appendChild(d);
+  });
+}
+
+function updateRecallDots() {
+  var dots = document.getElementById('recall-dots').children;
+  for (var i = 0; i < recallQueue.length; i++) {
+    dots[i].className = 'recall-dot' + (i < recallIdx ? ' done' : i === recallIdx ? ' current' : '');
+  }
+}
+
+function showRecallCard() {
+  var c = recallQueue[recallIdx];
+  recallRevealed = false;
+  document.getElementById('recall-counter').textContent = 'Palabra ' + (recallIdx+1) + ' de ' + recallQueue.length;
+  document.getElementById('recall-pos').textContent  = c.part_of_speech;
+  document.getElementById('recall-word').textContent = c.word;
+  document.getElementById('recall-answer').classList.remove('revealed');
+  document.getElementById('recall-english').textContent    = '';
+  document.getElementById('recall-grammar-r').textContent = '';
+  document.getElementById('recall-tapatio-r').textContent = '';
+  var rsfb = document.getElementById('recall-spell-fb');
+  if (rsfb) { rsfb.textContent = ''; rsfb.style.display = 'none'; rsfb.className = 'recall-spell-fb'; }
+  document.getElementById('recall-input-row').style.display  = '';
+  var inp = document.getElementById('recall-input');
+  inp.value = ''; inp.disabled = false; inp.focus();
+  var revBtn = document.getElementById('btn-reveal');
+  revBtn.textContent = 'Ver respuesta →';
+  revBtn.onclick = revealRecall;
+  revBtn.disabled = true;
+  document.getElementById('btn-recall-next').style.display = 'none';
+  updateRecallDots();
+}
+
+function onRecallInput() {
+  var val = document.getElementById('recall-input').value.trim();
+  document.getElementById('btn-reveal').disabled = (val.length === 0);
+}
+
+function onRecallKey(e) {
+  if (e.key === 'Enter') {
+    if (document.getElementById('recall-input').value.trim().length > 0 && !recallRevealed) revealRecall();
+    else if (recallRevealed) recallNext();
+  }
+}
+
+function revealRecall() {
+  if (recallRevealed) return;
+  recallRevealed = true;
+  var c   = recallQueue[recallIdx];
+  var inp = document.getElementById('recall-input');
+  inp.disabled = true;
+  // SpellingHandler feedback on typed attempt
+  var typed = inp.value.trim();
+  var fbEl  = document.getElementById('recall-spell-fb');
+  if (fbEl) {
+    if (typed) {
+      var r = SpellingHandler.check(typed, engTarget(c.english));
+      fbEl.textContent = r.feedback;
+      fbEl.className   = 'recall-spell-fb ' + spellFbClass('recall-sfb-', r.status);
+      fbEl.style.display = '';
+    } else {
+      fbEl.style.display = 'none';
+    }
+  }
+  document.getElementById('recall-english').textContent    = c.english;
+  document.getElementById('recall-grammar-r').textContent = c.grammar_notes || '';
+  document.getElementById('recall-tapatio-r').textContent = c.tapatio ? c.tapatio_notes : '';
+  document.getElementById('recall-answer').classList.add('revealed');
+  var isLast = (recallIdx >= recallQueue.length - 1);
+  var revBtn = document.getElementById('btn-reveal');
+  revBtn.textContent = isLast ? 'Terminar repaso →' : 'Continuar →';
+  revBtn.disabled = false;
+  revBtn.onclick   = recallNext;
+  // Defer document Enter listener past current event's bubble phase,
+  // otherwise the same keypress that triggered reveal also triggers advance.
+  if (onRecallEnter) { document.removeEventListener('keydown', onRecallEnter); onRecallEnter = null; }
+  setTimeout(function() {
+    onRecallEnter = function(e) {
+      if (e.key === 'Enter') {
+        document.removeEventListener('keydown', onRecallEnter);
+        onRecallEnter = null;
+        recallNext();
+      }
+    };
+    document.addEventListener('keydown', onRecallEnter);
+  }, 0);
+}
+
+function recallNext() {
+  if (onRecallEnter) { document.removeEventListener('keydown', onRecallEnter); onRecallEnter = null; }
+  recallIdx++;
+  if (recallIdx >= recallQueue.length) {
+    hideAll();
+    if (recallFromFinal) {
+      recallFromFinal = false;
+      document.getElementById('complete-screen').style.display = 'flex';
+    } else {
+      // Return to round summary — hide recall button (one pass is enough)
+      document.getElementById('btn-recall').style.display = 'none';
+      document.getElementById('round-screen').style.display = 'flex';
+    }
+  } else {
+    recallRevealed = false;
+    showRecallCard();
+  }
+}
+
+function skipRecall() {
+  if (onRecallEnter) { document.removeEventListener('keydown', onRecallEnter); onRecallEnter = null; }
+  hideAll();
+  if (recallFromFinal) {
+    recallFromFinal = false;
+    document.getElementById('complete-screen').style.display = 'flex';
+  } else {
+    document.getElementById('btn-recall').style.display = 'none';
+    document.getElementById('round-screen').style.display = 'flex';
+  }
+}
+
+// ── Game mode toggle ──────────────────────────────────────────────────
+function setGameMode(mode) {
+  gameMode = mode;
+  document.getElementById('mode-game-click').className = 'mode-btn' + (mode==='click' ? ' mode-btn-active' : '');
+  document.getElementById('mode-game-type').className  = 'mode-btn' + (mode==='type'  ? ' mode-btn-active' : '');
+  var hint = document.getElementById('game-mode-hint');
+  if (mode === 'click') {
+    hint.textContent = 'Voltea la tarjeta haciendo clic · Califica con ✅ / ❌';
+  } else {
+    hint.textContent = 'Escribe la traducción y presiona Enter · La calificación es automática';
+  }
+}
+
+// ── Typed mode: show result button + start auto-advance ───────────────
+function showTypedResult(knew) {
+  // Swap grade buttons for single indicator
+  document.getElementById('card-btns').style.display = 'none';
+  var btn = document.getElementById('typed-result-btn');
+  btn.textContent = knew ? '✅ ¡Lo tienes!' : '❌ A seguir practicando';
+  btn.className   = 'card-btn ' + (knew ? 'typed-got' : 'typed-missed');
+  btn.disabled    = true;
+  document.getElementById('typed-result-wrap').style.display = 'flex';
+  // Update back-face hint
+  var hint = document.getElementById('back-foot-hint');
+  if (hint) hint.textContent = 'toca la tarjeta o presiona Enter para continuar';
+  // Scene becomes clickable again
+  document.getElementById('scene').classList.remove('scene-no-click');
+  // Advance on Enter key
+  if (onEnterAdvance) document.removeEventListener('keydown', onEnterAdvance);
+  onEnterAdvance = function(e) {
+    if (e.key === 'Enter') {
+      document.removeEventListener('keydown', onEnterAdvance);
+      onEnterAdvance = null;
+      if (typeGraded) { typeGraded = false; advanceCard(); }
+    }
+  };
+  document.addEventListener('keydown', onEnterAdvance);
+}
+
+// ── Spell zone handler ────────────────────────────────────────────────
+function onSpellKey(e) {
+  if (e.key !== 'Enter') return;
+  var inp = document.getElementById('spell-input');
+  var val = inp.value.trim();
+  if (!val) return;
+  var c  = roundCards[roundIdx];
+  var r  = SpellingHandler.check(val, engTarget(c.english));
+  var fb = document.getElementById('spell-feedback');
+  fb.textContent = r.feedback;
+  fb.className   = 'spell-feedback ' + spellFbClass('spell-fb-', r.status);
+  inp.disabled   = true;
+
+  if (gameMode === 'type') {
+    // Typed mode: apply grade automatically, show result button, start auto-advance
+    lastSpellCorrect = r.correct;
+    typeGraded       = true;
+    applyGrade(r.correct);
+    setTimeout(function() {
+      doFlipToBack();                      // flip to reveal answer (bypasses typed interception)
+      setTimeout(function() {
+        showTypedResult(r.correct);        // show result button + start 5s timer
+      }, 340);                             // after flip animation
+    }, 300);
+  } else {
+    // Click mode: just flip after a pause (user grades manually)
+    if (!isFlipped) setTimeout(function(){ flipCard(); }, 300);
+  }
+}
+
+// ── Filters ───────────────────────────────────────────────────────────
+function toggleTapatio() {
+  tapatioOnly = !tapatioOnly;
+  document.getElementById('tapatio-filter-btn').className = 'ctrl-btn' + (tapatioOnly ? ' active' : '');
+  startNewPass();
+}
+
+// ── UI helpers ────────────────────────────────────────────────────────
+function showMainUI() {
+  document.getElementById('scene').style.display           = '';
+  document.getElementById('spell-zone').style.display      = gameMode === 'type' ? '' : 'none';
+  document.getElementById('grammar-callout').style.display = 'block';
+  document.getElementById('round-screen').style.display    = 'none';
+  document.getElementById('recall-screen').style.display   = 'none';
+  document.getElementById('complete-screen').style.display = 'none';
+}
+
+function hideAll() {
+  document.getElementById('scene').style.display           = 'none';
+  document.getElementById('spell-zone').style.display      = 'none';
+  document.getElementById('grammar-callout').style.display = 'none';
+  document.getElementById('round-screen').style.display    = 'none';
+  document.getElementById('recall-screen').style.display   = 'none';
+  document.getElementById('complete-screen').style.display = 'none';
+}
+
+// ── Confetti ──────────────────────────────────────────────────────────
+function launchConfetti(bursts) {
+  var colors = ['#1B4F8A','#E8971A','#C1440E','#2A7A3B','#7C3AED','#F472B6','#F5F0E8'];
+  var burstsDone = 0;
+  function burst() {
+    var ref  = document.querySelector('.play-header') || document.body;
+    var rect = ref.getBoundingClientRect();
+    var xMin = rect.left;
+    var xMax = rect.right;
+    for (var i = 0; i < 70; i++) {
+      (function() {
+        var el    = document.createElement('div');
+        var size  = 7 + Math.random() * 8;
+        var dur   = 2.6 + Math.random() * 1.6;
+        var delay = Math.random() * 0.4;
+        var variants = ['confettiA','confettiB','confettiC'];
+        var name  = variants[Math.floor(Math.random() * 3)];
+        var anim  = name + ' ' + dur + 's ' + delay + 's ease-in forwards';
+        el.style.position      = 'fixed';
+        el.style.top           = '-12px';
+        el.style.left          = (xMin + Math.random() * (xMax - xMin)) + 'px';
+        el.style.width         = size + 'px';
+        el.style.height        = size + 'px';
+        el.style.borderRadius  = Math.random() > 0.5 ? '50%' : '2px';
+        el.style.background    = colors[Math.floor(Math.random() * colors.length)];
+        el.style.zIndex        = '9999';
+        el.style.pointerEvents = 'none';
+        el.style.opacity       = '1';
+        document.body.appendChild(el);
+        void el.offsetWidth;
+        el.style.webkitAnimation = anim;
+        el.style.animation       = anim;
+        setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, (dur + delay + 0.5) * 1000);
+      })();
+    }
+    burstsDone++;
+    if (burstsDone < bursts) setTimeout(burst, 750);
+  }
+  burst();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+buildCatGrid();
+updateCatUI();
+// Show load screen first; selection screen is hidden by default
+document.getElementById('load-screen').style.display = 'flex';
+</script>
+</body>
+</html>
