@@ -1167,6 +1167,11 @@ body {
     </div>
     <div id="leitner-mode-info" class="leitner-mode-info" style="display:none"></div>
   </div>
+
+  <!-- Subtle link to reload dictionary when a new version is available -->
+  <div style="margin-top:20px;text-align:center;">
+    <button onclick="showUpdateDictScreen()" style="background:none;border:none;color:var(--muted);font-size:0.78rem;cursor:pointer;font-family:'Barlow',sans-serif;opacity:0.7;">🔄 Actualizar diccionario</button>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════ -->
@@ -1511,6 +1516,61 @@ function getWorkingData() {
   return workingData;
 }
 
+// ── localStorage persistence ───────────────────────────────────────────
+var LS_DICT    = 'tapatio_dict_v';
+var LS_LEITNER = 'tapatio_leitner';
+
+function saveDictToStorage(entries) {
+  try { localStorage.setItem(LS_DICT, JSON.stringify(entries)); } catch(e) {}
+}
+
+function saveLeitnerToStorage() {
+  if (!workingData || !workingData.length) return;
+  try {
+    var state = {};
+    workingData.forEach(function(c) {
+      state[c.word] = { box: c.leitner_box || 1, due: c.leitner_sessions_until_due || 0 };
+    });
+    localStorage.setItem(LS_LEITNER, JSON.stringify(state));
+  } catch(e) {}
+}
+
+function applyStoredLeitner(entries) {
+  try {
+    var stored = JSON.parse(localStorage.getItem(LS_LEITNER) || 'null');
+    if (!stored) return;
+    entries.forEach(function(c) {
+      if (stored[c.word]) {
+        c.leitner_box = stored[c.word].box;
+        c.leitner_sessions_until_due = stored[c.word].due;
+      }
+    });
+  } catch(e) {}
+}
+
+function tryLoadFromStorage() {
+  try {
+    var stored = localStorage.getItem(LS_DICT);
+    if (!stored) return false;
+    var raw = JSON.parse(stored);
+    if (!Array.isArray(raw) || raw.length === 0) return false;
+    raw.forEach(function(c) {
+      if (c.leitner_box === undefined) c.leitner_box = 1;
+      if (c.leitner_sessions_until_due === undefined) c.leitner_sessions_until_due = 0;
+    });
+    applyStoredLeitner(raw);   // LS_LEITNER may be more current than embedded fields
+    workingData = raw;
+    jsonLoaded  = true;
+    leitnerMode = true;
+    return true;
+  } catch(e) { return false; }
+}
+
+function showUpdateDictScreen() {
+  document.getElementById('selection-screen').style.display = 'none';
+  document.getElementById('load-screen').style.display = 'flex';
+}
+
 function loadJSONFile(event) {
   var file = event.target.files[0];
   if (!file) return;
@@ -1540,6 +1600,8 @@ function readJSONFile(file) {
         if (entry.leitner_box === undefined) { entry.leitner_box = 1; migrated++; }
         if (entry.leitner_sessions_until_due === undefined) entry.leitner_sessions_until_due = 0;
       });
+      applyStoredLeitner(raw);    // preserve Leitner progress for matching words
+      saveDictToStorage(raw);     // cache dictionary for future sessions
       workingData = raw;
       jsonLoaded  = true;
       leitnerMode = true;
@@ -1621,6 +1683,7 @@ function decrementSessions() {
     if (c.leitner_sessions_until_due === undefined) c.leitner_sessions_until_due = 0;
     if (c.leitner_sessions_until_due > 0) c.leitner_sessions_until_due--;
   });
+  saveLeitnerToStorage();
 }
 function applyLeitnerGrade(card, knew) {
   if (!leitnerMode) return;
@@ -1635,6 +1698,7 @@ function applyLeitnerGrade(card, knew) {
     card.leitner_box = 1;
     card.leitner_sessions_until_due = 0;
   }
+  saveLeitnerToStorage();
 }
 function exportLeitnerJSON() {
   if (!workingData) { alert('No hay datos cargados para guardar.'); return; }
@@ -2496,8 +2560,11 @@ function launchConfetti(bursts) {
 // ── Init ──────────────────────────────────────────────────────────────
 buildCatGrid();
 updateCatUI();
-// Show load screen first; selection screen is hidden by default
-document.getElementById('load-screen').style.display = 'flex';
+if (tryLoadFromStorage()) {
+  onJSONLoaded(0);  // dictionary cached in localStorage — skip load screen
+} else {
+  document.getElementById('load-screen').style.display = 'flex';
+}
 </script>
 </body>
 </html>
