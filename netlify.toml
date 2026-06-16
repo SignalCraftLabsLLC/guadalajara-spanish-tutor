@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/"
+  to = "/flashcards_vocabulario.html"
+  status = 200
