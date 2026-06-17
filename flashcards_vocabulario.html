@@ -1493,7 +1493,7 @@ var SpellingHandler = (function() {
   }
   function closeThreshold(w) { var l=w.length; return l<=6?1:2; }
   var EXACT_MSGS=['¡Perfecto! ✓','¡Exacto! ✓','¡Muy bien! ✓','¡Correcto! ✓','¡Órale, así es! ✓','¡Chido, lo tienes! ✓'];
-  var WRONG_MSGS=['¡Inténtalo de nuevo!','No del todo, ¡sigue intentando!','Mmm, no exactamente.','¡Échale ganas!'];
+  var WRONG_MSGS=['¡Inténtalo de nuevo!','No del todo, ¡sigue intentando!','Mmm, no exactamente.','¡Échale ganas, casi lo tienes!'];
   function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
   function accentFeedback(inp, cor) {
     var lci=inp.toLowerCase(), lcc=cor.toLowerCase();

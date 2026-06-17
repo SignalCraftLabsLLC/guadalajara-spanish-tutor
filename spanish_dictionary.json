@@ -13618,9 +13618,10 @@
     "grammar_notes": "el ultrasonido; término preferido en México en lugar de 'ecografía'",
     "grammar_rule": "Regular noun",
     "categories": [
-      "Medicina y tratamiento"
+      "Medicina y tratamiento",
+      "Cultura tapatía"
     ],
-    "tapatio": false,
+    "tapatio": true,
     "tapatio_notes": "En Guadalajara y en todo México, 'ultrasonido' es el término estándar — no 'ecografía' como en España.",
     "leitner_box": 1,
     "leitner_sessions_until_due": 0

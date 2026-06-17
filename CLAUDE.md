@@ -12,7 +12,7 @@ Stan is starting from elementary vocabulary and grammar. Tapatio-specific conten
 
 | File | Purpose |
 |------|---------|
-| `spanish_dictionary.json` | Primary data file. 724 entries as of June 2026. Every word from the class, fully enriched. |
+| `spanish_dictionary.json` | Primary data file. 818 entries as of June 2026. Every word from the class, fully enriched. |
 | `flashcards_vocabulario.html` | Full-deck interactive flashcard app. **localStorage-backed** — automatically loads dictionary and Leitner progress from browser storage; drag-drop JSON only needed first time or to update. Category selection, Talavera design, deal-in animation, grammar callout, bidirectional flip. **Leitner System integrated** — Leitner mode is the only mode. Supports Clic and Escribir (typed-answer) practice modes. Live at **guadalajara-spanish-flashcards.netlify.app**. |
 | `dictionary_editor.html` | CRUD editor for `spanish_dictionary.json`. File-load + drag-and-drop, searchable/filterable table, full edit modal with verb conjugation handling, exports sorted JSON with correct field order. Also serves as the **Leitner control panel** — reset boxes globally, by filtered view, or by category. Open in browser, load the JSON, edit, export. |
 | `grammar_catalog.md` | Read-only reference. 41 sections of class notes from Aura and Lalo covering all grammar topics taught. Tapatio content marked with 🌵. **Primary grammar authority — do not modify.** |
@@ -76,27 +76,30 @@ This is intentional and machine-readable — the different key set signals the g
 
 ## Category Taxonomy
 
-All 17 categories. Every entry has at least one. Multi-category entries are common — use arrays liberally when a word genuinely belongs to more than one context.
+All 18 categories. Every entry has at least one. Multi-category entries are common — use arrays liberally when a word genuinely belongs to more than one context.
 
 | Category | Count | Purpose / Exercise Type |
 |----------|-------|------------------------|
-| Alimentación | 100 | Food, drinks, ingredients, cooking — market and restaurant scenarios |
-| Anatomía y cuerpo | 100 | Body parts, organs, blood, tissues — human body exercises |
-| Medicina y tratamiento | 103 | Conditions, procedures, medications, medical roles, lab values — clinic/hospital scenarios |
-| Salud y síntomas | 66 | Symptoms, how you feel, illness — describing health to a doctor |
+| Alimentación | 96 | Food, drinks, ingredients, cooking — market and restaurant scenarios |
+| Anatomía y cuerpo | 98 | Body parts, organs, blood, tissues — human body exercises |
+| Animales | 100 | Animals — pets, farm animals, wildlife, insects — naming and describing animals |
+| Medicina y tratamiento | 104 | Conditions, procedures, medications, medical roles, lab values — clinic/hospital scenarios |
+| Salud y síntomas | 68 | Symptoms, how you feel, illness — describing health to a doctor |
 | Ropa y accesorios | 42 | Clothing, accessories — shopping and description exercises |
-| Casa y hogar | 22 | Home, furniture, rooms — describing your living space |
+| Casa y hogar | 23 | Home, furniture, rooms — describing your living space |
 | Ciudad y transporte | 44 | Streets, vehicles, navigation, places in a city — getting around GDL |
 | Orientación y direcciones | 21 | Directional language — giving/following directions |
-| Familia y relaciones | 40 | Family members, relationships — talking about people you know |
-| Emociones y estados | 50 | Feelings, moods, emotional states — expressing yourself |
-| Descripción personal | 50 | Physical appearance, personality traits — describing people |
-| Rutinas diarias | 67 | Daily activities and action verbs — present tense practice |
+| Familia y relaciones | 39 | Family members, relationships — talking about people you know |
+| Emociones y estados | 64 | Feelings, moods, emotional states — expressing yourself |
+| Descripción personal | 61 | Physical appearance, personality traits — describing people |
+| Rutinas diarias | 77 | Daily activities and action verbs — present tense practice |
 | Tiempo y frecuencia | 33 | Time expressions, seasons, frequency adverbs — scheduling and habits |
 | Cantidades y comparaciones | 13 | Numbers, sizes, quantities — shopping and comparison |
-| Comunicación y cortesía | 39 | Greetings, politeness, conversation connectors — social interaction |
-| Gramática funcional | 53 | Pronouns, articles, prepositions, conjunctions — structural vocabulary |
-| Cultura tapatía | ~100+ | Tapatio-specific slang, food, customs — local flavor overlay |
+| Comunicación y cortesía | 57 | Greetings, politeness, conversation connectors — social interaction |
+| Gramática funcional | 58 | Pronouns, articles, prepositions, conjunctions — structural vocabulary |
+| Cultura tapatía | 123 | Tapatio-specific slang, food, customs — local flavor overlay |
+
+Counts last verified June 17, 2026 (Session 22) by direct tally of `spanish_dictionary.json`. Entries are multi-category, so the sum of this column exceeds the 818 total entries.
 
 **Cultura tapatía is an overlay category**, not standalone — a Tapatio entry also belongs to its functional category (e.g., birria → Alimentación + Cultura tapatía). Every entry with `tapatio: true` has Cultura tapatía in its categories array.
 
@@ -130,7 +133,7 @@ The `grammar_rule` field uses human-readable labels designed to be pedagogically
 - `"tapatio": true` — the word is specific to or strongly associated with Guadalajara/Mexican usage, regional slang, or Tapatio culture
 - `"tapatio": false` — standard Spanish
 - When `tapatio` is true, `tapatio_notes` contains a human-readable explanation of the regional relevance (never empty)
-- ~100+ entries are currently Tapatio-flagged (all notes in Spanish)
+- 108 entries are currently Tapatio-flagged (all notes in Spanish), verified June 17, 2026
 
 **Example Tapatio notes format**: "🌵 Jerga tapatía esencial — la escucharás constantemente en Guadalajara."
 
@@ -180,14 +183,16 @@ Reflexive verbs prefix me/te/se/nos/se to the conjugated form.
 
 | Metric | Value |
 |--------|-------|
-| Total entries | 724 |
-| Verb entries (with all conjugation fields) | 107 |
-| Tapatio-flagged entries | ~100+ |
-| Categories | 17 |
+| Total entries | 818 |
+| Verb entries (with all conjugation fields) | 108 |
+| Tapatio-flagged entries | 108 |
+| Categories | 18 |
 | Conjugation fields per verb | 5 (gerund, past participle, present, preterite, imperfect) |
-| Largest category | Medicina y tratamiento (103+) |
-| Anatomía y cuerpo | 100 clean entries |
+| Largest category | Cultura tapatía (123) |
+| Anatomía y cuerpo | 98 entries |
 | Removed duplicates | pulmón (kept pulmones), leucocitos (kept glóbulos blancos) |
+
+Refreshed June 17, 2026 (Session 22) after these numbers were found stale during a full project review — see Session 22 below.
 
 ---
 
@@ -342,6 +347,15 @@ Reflexive verbs prefix me/te/se/nos/se to the conjugated form.
 - **Auto-fetch dictionary from server** (`fetchDictFromServer()`) — on init, if localStorage is empty, app now `fetch()`es `spanish_dictionary.json` from the same Netlify origin; falls back to drag-drop screen only if fetch fails (e.g., running locally via `file://`); committed `0dca245`
 - Updated `showUpdateDictScreen()` — "🔄 Actualizar diccionario" now re-fetches from server instead of showing drag-drop; drag-drop remains as fallback
 - **Net result**: visiting the Netlify URL for the first time loads the app fully automatically — no drag-drop ever required
+
+### Session 22 (June 16–17, 2026)
+- Added `Animales` category — 94 new entries (94 added on top of the existing dictionary, reaching 818 total); committed `648f6f5`
+- Selection-screen polish: scrollable category box (max ~3.5 rows, scroll-fade affordance), mobile overflow fixes, mode buttons moved above category grid, categories alphabetized with "Todas" pinned first; committed `7b106e3`
+- Left-aligned the Clic/Escribir hint text under the button group instead of centering it under the full row; added an available-card-count note under the Rondas selector; committed `e096de2`
+- **Bug fix**: available-card-count note was reading `buildPool()`'s result, which intentionally caps at `MAX_DECK` (100) for deck-building — so selecting any category (or combo) over 100 words showed "100" instead of the true count. Added `distinctPoolSize(cats)`, a true uncapped distinct-word counter, and pointed the note at it instead. Verified with a synthetic-data Node harness across several category sizes; committed `8e18575`
+- Verified `fisherYates()`/`buildPool()` randomization is genuine (20,000-trial position-frequency check, max deviation 6.6%) and confirmed category/mode/rounds selections persist across rounds within a session but correctly reset on page refresh — no code changes needed for either, just verification
+- **Full project review** (punch list, no changes during the pass itself): found CLAUDE.md's stats/category tables stale relative to the dictionary (724→818 entries, 17→18 categories, all per-category counts drifted) — refreshed in this same session; found `ultrasonido` had `tapatio: false` with non-empty `tapatio_notes`, violating the documented convention — judgment call: flipped to `tapatio: true` (+ added `Cultura tapatía` to its categories) rather than deleting the notes, since the note content ("en Guadalajara y en todo México...") fits the Tapatio-flagging definition; found `spelling_handler.js` (standalone) and its embedded copy in `flashcards_vocabulario.html` had drifted on one wrong-answer message string — synced the embedded copy to match the standalone source (5 entries initially flagged as "non-verb with verb fields" — `dar la vuelta`, `haber`, `hay`, `pedir prestado`, `quepo` — turned out to be a false positive from an incomplete POS whitelist in the check script, not a real data issue)
+- All commits for this session confirmed pushed to `origin/main` from Stan's own terminal (sandbox session has no GitHub credentials, so pushing is always handed off to Stan)
 
 ---
 
