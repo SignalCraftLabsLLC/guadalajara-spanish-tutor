@@ -110,12 +110,66 @@ body {
   align-self: flex-start;
 }
 
+.cat-grid-shell {
+  position: relative;
+  width: 100%;
+  margin-bottom: 24px;
+}
+.cat-grid-wrap {
+  width: 100%;
+  max-height: 232px; /* ≈ 3.5 rows of category cards */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-right: 4px;
+}
+.cat-grid-wrap::-webkit-scrollbar { width: 7px; }
+.cat-grid-wrap::-webkit-scrollbar-track  { background: transparent; }
+.cat-grid-wrap::-webkit-scrollbar-thumb  { background: var(--cream-dark); border-radius: 999px; }
+.cat-grid-wrap::-webkit-scrollbar-thumb:hover { background: var(--cobalt-light); }
+
+.scroll-cue {
+  position: absolute;
+  left: 0; right: 6px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2;
+  border-radius: 12px 12px 0 0;
+}
+.scroll-cue.visible { opacity: 1; }
+.scroll-cue-top {
+  top: 0;
+  align-items: flex-start;
+  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 40%, transparent 100%);
+  border-radius: 12px 12px 0 0;
+}
+.scroll-cue-bottom {
+  bottom: 0;
+  align-items: flex-end;
+  background: linear-gradient(to top, var(--bg) 0%, var(--bg) 40%, transparent 100%);
+  border-radius: 0 0 12px 12px;
+}
+.scroll-cue-arrow {
+  font-size: 0.75rem;
+  color: var(--cobalt);
+  opacity: 0.6;
+  animation: scrollCueBounce 1.6s ease-in-out infinite;
+}
+@keyframes scrollCueBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 10px;
   width: 100%;
-  margin-bottom: 24px;
 }
 
 .cat-card {
@@ -228,6 +282,8 @@ body {
   text-overflow: ellipsis;
   position: relative;
   cursor: default;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 .play-header-cat.has-popup { cursor: pointer; }
 .play-header-cat.has-popup:hover { color: var(--cobalt); }
@@ -244,13 +300,18 @@ body {
   line-height: 1.7;
   padding: 10px 14px;
   border-radius: 12px;
-  white-space: nowrap;
+  white-space: normal;
+  max-width: min(280px, calc(100vw - 32px));
   z-index: 9999;
   box-shadow: 0 6px 20px rgba(0,0,0,0.14);
   pointer-events: none;
 }
 #cat-popup.open { display: block; }
 .play-header-dot { color: var(--cream-dark); font-size: 1rem; flex-shrink: 0; }
+@media (max-width: 480px) {
+  .play-header { padding: 10px 14px; }
+  .play-header-rounds { font-size: 0.8rem; }
+}
 .play-header-rounds {
   font-family: 'Barlow', sans-serif;
   font-size: 0.88rem;
@@ -1140,12 +1201,8 @@ body {
   <h1 class="app-title">Tarjetas de Vocabulario</h1>
   <p class="app-subtitle">Tapatio Spanish &middot; Guadalajara 🌵</p>
   <div class="talavera-rule"></div>
-  <p class="selection-label">Elige tu categoría</p>
-  <div class="cat-grid" id="cat-grid"></div>
-  <p class="deck-summary" id="deck-summary">&nbsp;</p>
-
   <!-- Game mode: Clic vs Escribir (always visible, chosen before play) -->
-  <div id="game-mode-section" style="width:100%;margin-top:10px;text-align:center;">
+  <div id="game-mode-section" style="width:100%;margin-bottom:22px;text-align:center;">
     <p class="selection-label" style="margin-bottom:10px;">Tipo de práctica</p>
     <div class="mode-toggle-row" style="justify-content:center;">
       <button id="mode-game-click" class="mode-btn mode-btn-active" onclick="setGameMode('click')">🖱 Clic</button>
@@ -1155,6 +1212,16 @@ body {
       Voltea la tarjeta haciendo clic · Califica con ✅ / ❌
     </div>
   </div>
+
+  <p class="selection-label">Elige tu categoría</p>
+  <div class="cat-grid-shell">
+    <div class="scroll-cue scroll-cue-top" id="cat-scroll-top"><span class="scroll-cue-arrow">▲</span></div>
+    <div class="cat-grid-wrap" id="cat-grid-wrap">
+      <div class="cat-grid" id="cat-grid"></div>
+    </div>
+    <div class="scroll-cue scroll-cue-bottom" id="cat-scroll-bottom"><span class="scroll-cue-arrow">▼</span></div>
+  </div>
+  <p class="deck-summary" id="deck-summary">&nbsp;</p>
 
   <button class="btn-jugar" id="btn-jugar" onclick="startGame()" disabled>¡Jugar!</button>
 
@@ -1458,22 +1525,22 @@ var CAT_META    = [
   { id: 'Todas',                      emoji: '🌍',    label: 'Todas' },
   { id: 'Alimentación',               emoji: '🍽️',   label: 'Alimentación' },
   { id: 'Anatomía y cuerpo',          emoji: '🫀',    label: 'Anatomía y cuerpo' },
-  { id: 'Medicina y tratamiento',     emoji: '💊',    label: 'Medicina y tratamiento' },
-  { id: 'Salud y síntomas',           emoji: '🩺',    label: 'Salud y síntomas' },
-  { id: 'Ropa y accesorios',          emoji: '👗',    label: 'Ropa y accesorios' },
+  { id: 'Animales',                   emoji: '🐾',    label: 'Animales' },
+  { id: 'Cantidades y comparaciones', emoji: '🔢',    label: 'Cantidades y comparaciones' },
   { id: 'Casa y hogar',               emoji: '🏠',    label: 'Casa y hogar' },
   { id: 'Ciudad y transporte',        emoji: '🚌',    label: 'Ciudad y transporte' },
-  { id: 'Orientación y direcciones',  emoji: '🧭',    label: 'Orientación y direcciones' },
-  { id: 'Familia y relaciones',       emoji: '👨‍👩‍👧',  label: 'Familia y relaciones' },
-  { id: 'Emociones y estados',        emoji: '😊',    label: 'Emociones y estados' },
-  { id: 'Descripción personal',       emoji: '🪞',    label: 'Descripción personal' },
-  { id: 'Rutinas diarias',            emoji: '📅',    label: 'Rutinas diarias' },
-  { id: 'Tiempo y frecuencia',        emoji: '⏰',    label: 'Tiempo y frecuencia' },
-  { id: 'Cantidades y comparaciones', emoji: '🔢',    label: 'Cantidades y comparaciones' },
   { id: 'Comunicación y cortesía',    emoji: '💬',    label: 'Comunicación y cortesía' },
-  { id: 'Gramática funcional',        emoji: '📚',    label: 'Gramática funcional' },
   { id: 'Cultura tapatía',            emoji: '🌵',    label: 'Cultura tapatía' },
-  { id: 'Animales',                   emoji: '🐾',    label: 'Animales' }
+  { id: 'Descripción personal',       emoji: '🪞',    label: 'Descripción personal' },
+  { id: 'Emociones y estados',        emoji: '😊',    label: 'Emociones y estados' },
+  { id: 'Familia y relaciones',       emoji: '👨‍👩‍👧',  label: 'Familia y relaciones' },
+  { id: 'Gramática funcional',        emoji: '📚',    label: 'Gramática funcional' },
+  { id: 'Medicina y tratamiento',     emoji: '💊',    label: 'Medicina y tratamiento' },
+  { id: 'Orientación y direcciones',  emoji: '🧭',    label: 'Orientación y direcciones' },
+  { id: 'Ropa y accesorios',          emoji: '👗',    label: 'Ropa y accesorios' },
+  { id: 'Rutinas diarias',            emoji: '📅',    label: 'Rutinas diarias' },
+  { id: 'Salud y síntomas',           emoji: '🩺',    label: 'Salud y síntomas' },
+  { id: 'Tiempo y frecuencia',        emoji: '⏰',    label: 'Tiempo y frecuencia' }
 ];
 
 // ── Game state ────────────────────────────────────────────────────────
@@ -1624,6 +1691,7 @@ function onJSONLoaded(migratedCount) {
   buildCatGrid();
   document.getElementById('load-screen').style.display = 'none';
   document.getElementById('selection-screen').style.display = 'flex';
+  updateCatScrollCues(); // re-check now that the screen is actually visible (was 0x0 while hidden)
   updateLeitnerModeUI();
   updateCatUI();
   if (migratedCount > 0) {
@@ -1748,6 +1816,26 @@ function buildCatGrid() {
     }
     grid.appendChild(div);
   });
+  setupCatScrollCues();
+  updateCatScrollCues();
+}
+
+// ── Category scroll cues (fade + chevron when more cats are off-screen) ─
+function setupCatScrollCues() {
+  var wrap = document.getElementById('cat-grid-wrap');
+  if (!wrap || wrap._scrollCueBound) return;
+  wrap._scrollCueBound = true;
+  wrap.addEventListener('scroll', updateCatScrollCues);
+  window.addEventListener('resize', updateCatScrollCues);
+}
+function updateCatScrollCues() {
+  var wrap = document.getElementById('cat-grid-wrap');
+  var top  = document.getElementById('cat-scroll-top');
+  var bot  = document.getElementById('cat-scroll-bottom');
+  if (!wrap || !top || !bot) return;
+  var canScroll = wrap.scrollHeight > wrap.clientHeight + 1;
+  top.classList.toggle('visible', canScroll && wrap.scrollTop > 4);
+  bot.classList.toggle('visible', canScroll && wrap.scrollTop < (wrap.scrollHeight - wrap.clientHeight - 4));
 }
 
 function toggleCat(id) {
