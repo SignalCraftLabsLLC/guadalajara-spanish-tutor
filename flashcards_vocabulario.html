@@ -1957,11 +1957,33 @@ function updateCatUI() {
     if (selectedCats.length === 0) {
       availNote.innerHTML = '&nbsp;';
     } else {
-      availNote.textContent = pool.length + (pool.length === 1 ? ' palabra disponible' : ' palabras disponibles');
+      var availCount = distinctPoolSize(selectedCats);
+      availNote.textContent = availCount + (availCount === 1 ? ' palabra disponible' : ' palabras disponibles');
     }
   }
 
   if (leitnerMode) updateLeitnerInfo();
+}
+
+// ── True available-card count for a category set (no MAX_DECK cap) ────
+// buildPool() truncates its result to MAX_DECK for deck-building purposes;
+// this counts the full distinct word pool, uncapped, for display only.
+function distinctPoolSize(cats) {
+  if (cats.length === 0) return 0;
+  if (cats.indexOf('Todas') >= 0) return getWorkingData().length;
+  var seen = {};
+  var count = 0;
+  getWorkingData().forEach(function(c) {
+    if (seen[c.word]) return;
+    for (var i = 0; i < cats.length; i++) {
+      if (c.categories.indexOf(cats[i]) >= 0) {
+        seen[c.word] = true;
+        count++;
+        break;
+      }
+    }
+  });
+  return count;
 }
 
 // ── Balanced pool builder ─────────────────────────────────────────────
