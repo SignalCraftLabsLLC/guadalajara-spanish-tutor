@@ -117,7 +117,7 @@ body {
 }
 .cat-grid-wrap {
   width: 100%;
-  max-height: 232px; /* ≈ 3.5 rows of category cards */
+  max-height: 258px; /* ≈ 3.5 rows of category cards, with a generous peek of row 4 */
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -1078,7 +1078,7 @@ body {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 .mode-toggle-row { display: flex; gap: 10px; margin-bottom: 10px; }
 .mode-btn {
@@ -1095,10 +1095,39 @@ body {
   color: var(--muted);
 }
 .mode-btn:hover { border-color: var(--cobalt-light); color: var(--cobalt); }
-.mode-btn-active         { background: var(--cobalt); color: white; border-color: var(--cobalt-dark); }
-.mode-btn-active-leitner { background: var(--jade);   color: white; border-color: var(--jade); }
+.mode-btn-active         { background: var(--cobalt);     color: white; border-color: var(--cobalt-dark); }
+.mode-btn-active-leitner { background: var(--terracotta); color: white; border-color: var(--terracotta); }
 .mode-btn-active:hover         { color: var(--cream); }
 .mode-btn-active-leitner:hover { color: var(--cream); }
+.rounds-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+.rounds-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.rounds-select {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 9px 14px;
+  border: 2px solid var(--cream-dark);
+  border-radius: 10px;
+  background: white;
+  color: var(--cobalt);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.rounds-select:hover   { border-color: var(--cobalt-light); }
+.rounds-select:focus   { outline: none; border-color: var(--cobalt); }
 .leitner-mode-info {
   font-size: 0.85rem;
   color: var(--cobalt-dark);
@@ -1204,12 +1233,23 @@ body {
   <!-- Game mode: Clic vs Escribir (always visible, chosen before play) -->
   <div id="game-mode-section" style="width:100%;margin-bottom:22px;text-align:center;">
     <p class="selection-label" style="margin-bottom:10px;">Tipo de práctica</p>
-    <div class="mode-toggle-row" style="justify-content:center;">
-      <button id="mode-game-click" class="mode-btn mode-btn-active" onclick="setGameMode('click')">🖱 Clic</button>
-      <button id="mode-game-type"  class="mode-btn"                 onclick="setGameMode('type')">⌨ Escribir</button>
-    </div>
-    <div id="game-mode-hint" style="font-size:0.82rem;color:var(--muted);margin-top:6px;line-height:1.5;">
-      Voltea la tarjeta haciendo clic · Califica con ✅ / ❌
+    <div class="mode-toggle-row" style="justify-content:space-between;align-items:flex-start;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">
+        <div style="display:flex;gap:10px;">
+          <button id="mode-game-click" class="mode-btn mode-btn-active" onclick="setGameMode('click')">🖱 Clic</button>
+          <button id="mode-game-type"  class="mode-btn"                 onclick="setGameMode('type')">⌨ Escribir</button>
+        </div>
+        <div id="game-mode-hint" style="font-size:0.82rem;color:var(--muted);line-height:1.5;text-align:left;">
+          Voltea la tarjeta haciendo clic · Califica con ✅ / ❌
+        </div>
+      </div>
+      <div class="rounds-picker" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <label for="rounds-select" class="rounds-label">Rondas</label>
+          <select id="rounds-select" class="rounds-select" onchange="onRoundsChange(this.value)"></select>
+        </div>
+        <div id="rounds-available-note" style="font-size:0.82rem;color:var(--muted);line-height:1.5;text-align:right;">&nbsp;</div>
+      </div>
     </div>
   </div>
 
@@ -1227,7 +1267,7 @@ body {
 
   <!-- Mode toggle: Libre / Leitner (shown only when JSON is loaded) -->
   <div id="mode-section" style="display:none">
-    <p class="selection-label" style="margin-bottom:10px;">Modo de práctica</p>
+    <p class="selection-label" style="margin-bottom:10px;align-self:center;">Modo de práctica</p>
     <div class="mode-toggle-row">
       <button id="mode-btn-libre"   class="mode-btn mode-btn-active" onclick="setLeitnerMode(false)">🔀 Libre</button>
       <button id="mode-btn-leitner" class="mode-btn"                 onclick="setLeitnerMode(true)">🎴 Leitner</button>
@@ -1519,7 +1559,8 @@ function spellFbClass(prefix, status) {
 var ROUND_SIZE  = 10;
 var MAX_DECK    = 100;
 var MAX_SEEDS   = 3;    // max missed-card seeds reinserted per round
-var selectedCats = ['Todas'];
+var selectedCats   = ['Todas'];
+var selectedRounds = null; // null = "follow max for this category"; set by toggleCat() on category change
 var CAT_COUNTS  = {};
 var CAT_META    = [
   { id: 'Todas',                      emoji: '🌍',    label: 'Todas' },
@@ -1852,6 +1893,34 @@ function toggleCat(id) {
   }
   // If nothing selected, fall back to Todas
   if (selectedCats.length === 0) selectedCats = ['Todas'];
+  selectedRounds = null; // category changed — re-default rounds to the new max
+  updateCatUI();
+}
+
+// ── Rounds selector ──────────────────────────────────────────────────
+// Builds the <option> list 1..maxRounds and keeps selectedRounds valid/defaulted.
+function populateRoundsSelect(maxRounds) {
+  var sel = document.getElementById('rounds-select');
+  if (!sel) return;
+  if (maxRounds <= 0) {
+    sel.innerHTML = '';
+    sel.disabled = true;
+    return;
+  }
+  sel.disabled = false;
+  var html = '';
+  for (var r = 1; r <= maxRounds; r++) {
+    html += '<option value="' + r + '">' + r + (r === 1 ? ' ronda' : ' rondas') + '</option>';
+  }
+  sel.innerHTML = html;
+  var target = (selectedRounds && selectedRounds <= maxRounds) ? selectedRounds : maxRounds;
+  sel.value = String(target);
+  selectedRounds = target;
+}
+
+// Fires when the user manually changes the rounds dropdown.
+function onRoundsChange(value) {
+  selectedRounds = parseInt(value, 10) || null;
   updateCatUI();
 }
 
@@ -1860,13 +1929,21 @@ function updateCatUI() {
   document.querySelectorAll('.cat-card').forEach(function(el) {
     el.classList.toggle('selected', selectedCats.indexOf(el.dataset.catId) >= 0);
   });
-  // Compute deck preview
+  // Compute full-pool deck size (the ceiling — what's available for this category set)
   var pool = buildPool(selectedCats);
-  var deckSize = Math.min(pool.length, MAX_DECK);
+  var fullDeckSize = Math.min(pool.length, MAX_DECK);
   // Round down to nearest 10
-  deckSize = Math.floor(deckSize / ROUND_SIZE) * ROUND_SIZE;
-  if (deckSize === 0 && pool.length > 0) deckSize = pool.length; // < 10 edge case
-  var numRounds = deckSize > 0 ? Math.ceil(deckSize / ROUND_SIZE) : 0;
+  fullDeckSize = Math.floor(fullDeckSize / ROUND_SIZE) * ROUND_SIZE;
+  if (fullDeckSize === 0 && pool.length > 0) fullDeckSize = pool.length; // < 10 edge case
+  var maxRounds = fullDeckSize > 0 ? Math.ceil(fullDeckSize / ROUND_SIZE) : 0;
+
+  populateRoundsSelect(maxRounds);
+
+  // Effective rounds chosen by the user (or defaulted to max)
+  var chosenRounds = (selectedRounds && selectedRounds <= maxRounds) ? selectedRounds : maxRounds;
+  var deckSize = (fullDeckSize >= ROUND_SIZE) ? Math.min(chosenRounds * ROUND_SIZE, fullDeckSize) : fullDeckSize;
+  var numRounds = chosenRounds;
+
   var summary = document.getElementById('deck-summary');
   if (selectedCats.length === 0) {
     summary.innerHTML = '&nbsp;';
@@ -1874,6 +1951,16 @@ function updateCatUI() {
     summary.innerHTML = '<span>' + deckSize + ' tarjetas</span> &middot; <span>' + numRounds + ' rondas</span>';
   }
   document.getElementById('btn-jugar').disabled = selectedCats.length === 0;
+
+  var availNote = document.getElementById('rounds-available-note');
+  if (availNote) {
+    if (selectedCats.length === 0) {
+      availNote.innerHTML = '&nbsp;';
+    } else {
+      availNote.textContent = pool.length + (pool.length === 1 ? ' palabra disponible' : ' palabras disponibles');
+    }
+  }
+
   if (leitnerMode) updateLeitnerInfo();
 }
 
@@ -1933,6 +2020,11 @@ function startGame() {
   // Round down to nearest 10
   var deckSize = Math.floor(Math.min(pool.length, MAX_DECK) / ROUND_SIZE) * ROUND_SIZE;
   if (deckSize === 0) deckSize = pool.length;
+  // Clamp to the user's chosen round count (e.g. Leitner due-filtering may have
+  // already shrunk the pool below this — that smaller deckSize always wins).
+  if (selectedRounds && deckSize >= ROUND_SIZE) {
+    deckSize = Math.min(deckSize, selectedRounds * ROUND_SIZE);
+  }
   ALL_CARDS = pool.slice(0, deckSize);
   activeRoundSize = ROUND_SIZE;
 
