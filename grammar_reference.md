@@ -771,7 +771,143 @@ These Guadalajara-flavored forms appear throughout the dictionary in the `tapati
 
 ---
 
+# PARTE B — Especificación de Construcción de Oraciones (Sentence Generation Spec)
+
+This part documents how the **Constructor de Oraciones** (`sentence_maker.html` /
+`sentence_engine.js`) assembles fill-in-the-blank exercises on demand. Sentences are
+**never stored** — every exercise is built at runtime from `spanish_dictionary.json`,
+respecting agreement and using **only the conjugations present in the dictionary**
+(present / preterite / imperfect — no future, conditional, or subjunctive). Scope is
+**B2 and below**. Keep this spec and `sentence_engine.js` in sync (the engine is the
+runtime authority; this document is the human-readable reference).
+
+## B.1 Person & Pronoun Reference Table
+
+No vosotros (Mexican Spanish). These six "persons" drive every conjugation and pronoun.
+
+| id | Subject | Conj. key (dictionary) | Number | Gender | Reflexive | Indirect obj. | Direct obj. |
+|------|----------|------------------------|--------|--------|-----------|---------------|-------------|
+| yo | yo | `yo` | sing | — | me | me | me |
+| tu | tú | `tú` | sing | — | te | te | te |
+| el | él | `él/ella` | sing | m | se | le | lo |
+| ella | ella | `él/ella` | sing | f | se | le | la |
+| nos | nosotros | `nosotros` | plur | m | nos | nos | nos |
+| ellos | ellos | `ellos/ellas` | plur | m | se | les | los |
+
+> **Subject-pronoun blanks** only use persons whose conjugated form is unambiguous —
+> `yo, tú, nosotros, ellos`. The 3rd-person singular form (`él/ella/usted`) is skipped
+> for subject-pronoun blanks because it maps to several subjects.
+
+## B.2 Slot (Blank) Types
+
+A sentence has **1–3 blanks**. Each blank has a *role*; the role determines the correct
+answer, the agreement source, the multiple-choice distractors, and whether it feeds Leitner.
+
+| Role | Tests | Answer source | Agreement with | Leitner word? |
+|------|-------|---------------|----------------|---------------|
+| `verb` | conjugation | dictionary present/pret/imperf | subject person + tense | yes (infinitive) |
+| `infinitive` | infinitive after *ir a* | dictionary `word` | — | yes |
+| `subject-pronoun` | subject pronoun | person table | verb form | no |
+| `possessive` | unstressed possessive | derived (§16) | possessed noun number/gender | yes (the noun) |
+| `article` | definite article | derived (§13) | noun gender/number | yes (the noun) |
+| `adjective` | adjective agreement | derived from base form | noun gender/number | yes (adjective) |
+| `ser-estar` | SER vs ESTAR + conjugation | dictionary `ser`/`estar` present | adjective's tag (see B.4) | yes (ser/estar) |
+| `do-pronoun` | direct-object pronoun | derived (§36) | replaced noun gender/number | yes (the noun) |
+| `io-pronoun` | indirect-object pronoun | person table (§37) | recipient | yes (the verb) |
+| `reflexive-pronoun` | reflexive pronoun | person table (§20) | subject person | no |
+| `gustar-verb` | gustar-type agreement | dictionary gustar present | postposed subject number (§18) | yes (gustar verb) |
+
+## B.3 Agreement Rules (derivations)
+
+- **Definite article / DO pronoun**: `el/la/los/las` and `lo/la/los/las` by noun gender
+  (`f` → la/las; else lo/los) and number.
+- **Indefinite article**: `un/una/unos/unas`.
+- **Possessive (unstressed)**: `mi/mis`, `tu/tus`, `su/sus` agree with the *possessed*
+  noun's **number** only; `nuestro/nuestra/nuestros/nuestras` agree with **number and gender**.
+  Person → stem: yo→mi, tú→tu, él/ella/ellos→su, nosotros→nuestro-.
+- **Adjective**: base (masc. sing.) → fem. by `-o → -a` (or add `-a` to `-dor`); plural by
+  `+s` after a vowel, `+es` after a consonant. Adjectives ending in `-e` or a consonant are
+  invariable by gender. (See §12, §25.)
+- **Gustar-type**: the verb agrees with the **postposed grammatical subject** (the thing
+  liked). Dictionary stores both forms as `"gusta / gustan"`; the engine picks singular or
+  plural from that noun's number (§18, §39 for *doler*).
+- **Reflexive**: dictionary stores the pronoun inline (`"me acuesto"`); the engine splits it
+  into the reflexive-pronoun blank and the verb blank.
+
+## B.4 SER vs ESTAR Selection
+
+The copula is **not** chosen at random. It is read from the adjective's `grammar_rule`:
+
+- `Adjective: used with SER (permanent trait)` → **ser**
+- `Adjective: used with ESTAR (temporary state)` → **estar**
+- `Adjective: SER (permanent) vs ESTAR (temporary) — meaning shifts` → either (random)
+- any other / agreement-only tag → defaults to **ser**
+
+This keeps sentences like *"Ellos **están** concentrados"* and *"Él **es** pelirrojo"* correct.
+
+## B.5 Tense Cues
+
+Front-of-sentence markers signal the tense so the learner knows which form to produce:
+
+| Tense | Cue phrases |
+|-------|-------------|
+| Present | *Todos los días, Normalmente, Cada mañana, Siempre, Ahora* |
+| Pretérito | *Ayer, Anoche, La semana pasada, El año pasado, Esta mañana* |
+| Imperfecto | *Cuando era niño, Antes, De vez en cuando antes, En aquellos años* |
+
+A verb is eligible for a tense only if its dictionary entry has **all five person keys** for
+that tense; otherwise it is skipped (no form is ever invented).
+
+## B.6 Template Catalog
+
+Each template yields one exercise (1–3 blanks). Tested grammar in **bold**.
+
+1. **conjVerb** — *"{cue}, {subject} ___."* → **verb conjugation** (present/pret/imperf).
+2. **subjPron** — *"___ {verb} todos los días."* → **subject pronoun** (unique persons).
+3. **possessive** — *"{Subject} {decir} que ___ {noun} es importante."* → **possessive**.
+4. **article** — *"___ {noun} {verb}."* → **definite article** (gender/number).
+5. **adjAgree** — *"{Art} {noun} {ser/estar} muy ___."* → **adjective agreement**.
+6. **serEstar** — *"{Subject} ___ {adjective}."* → **SER vs ESTAR + conjugation**.
+7. **ioPron** — *"{Subject} ___ {verb} {un/una noun} a María / a mis amigos."* → **indirect-object pronoun**.
+8. **gustar** — *"A {experiencer} ___ ___ {el/los noun}."* → **IO pronoun + gustar agreement** (2 blanks).
+9. **reflexive** — *"{cue}, {subject} ___ ___."* → **reflexive pronoun + verb** (2 blanks; routine verbs only).
+10. **futuroProximo** — *"Mañana {subject} ___ a ___."* → **ir (conjugated) + infinitive** (2 blanks).
+11. **doPron** — *"{Subject} {ver} {art noun}. {Subject} ___ {verb} siempre."* → **direct-object pronoun**.
+
+Noun choice is biased toward concrete, readable categories (Animales, Alimentación, Familia,
+Casa, Ciudad, Descripción personal) but any noun may appear. Because nouns and adjectives are
+paired by grammar (not meaning), some sentences are semantically quirky (*"La cena está
+deprimida"*) — this is expected and harmless: the **grammar** being tested is always correct.
+
+## B.7 Leitner Weighting & Writeback
+
+- **Selection weight** per word: `(6 − box)`, doubled if the card is **due**
+  (`sessions_until_due ≤ 0`). So box-1/due words are chosen far more often than box-5 words
+  (measured ≈ 3× over-representation), focusing practice on the least-familiar vocabulary.
+- **Shared store**: reads/writes the same `localStorage` keys as the flashcards —
+  `tapatio_dict_v` (dictionary) and `tapatio_leitner` (`{word: {box, due}}`).
+- **One battery = one Leitner session**: `sessions_until_due` is decremented once at battery
+  start (mirrors the flashcards).
+- **Grading**: for each blank that maps to a dictionary word, a correct answer promotes the
+  word (`box+1`, capped at 5, `due = BOX_INTERVALS[box]` where `BOX_INTERVALS=[0,0,1,3,7,15]`);
+  a miss demotes it to box 1, due now. Pronoun-only blanks (subject/reflexive) have no word
+  and never touch Leitner. A word appearing in several blanks is "known" only if **all** its
+  blanks were correct.
+
+## B.8 Battery Rules
+
+- Rounds of **10**, up to **5 rounds** = **50 sentences** maximum.
+- **No repeats**: deduplicated by the fully-filled sentence string across the whole battery.
+- **Difficulty modes**: `typed` (free text graded by `SpellingHandler` — accent-tolerant) or
+  `choice` (3–4 options per blank; the correct answer is always present; distractors are
+  same-type forms — other persons of the verb, sibling pronouns/articles, wrong agreement).
+- **English help** is shown **only on request** (per project tutoring rules): the Ayuda panel
+  reveals each blank's answer, its dictionary gloss, and a grammar note.
+
+---
+
 *Compiled June 2026 — Stan's Guadalajara Spanish project*
 *Source grammar framework: CEFR A1–B1 Spanish syllabus (Instituto Cervantes, IIFLS, KwiZiq)*
 *Mexican Spanish notes sourced from: Berlitz, Elon.io, The Spanish Group, Lingoda, Omniglot*
 *Class content basis: Aura & Lalo, Guadalajara, June 2026*
+*Part B (Sentence Generation Spec) added June 23, 2026 — mirrors `sentence_engine.js`*

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constructor de Oraciones · Guadalajara</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cobalt:#1B4F8A; --cobalt-dk:#143a66;
+  --terracotta:#C1440E; --marigold:#E8971A; --cream:#F5F0E8;
+  --jade:#2A7A3B; --red:#C0392B; --amber:#D97706;
+  --muted:#6B7280; --text:#1A1A2E; --bg:#F5F0E8; --tapatio:#7C3AED;
+  --card:#FFFFFF; --line:#E2D8C8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',system-ui,sans-serif;background:
+  radial-gradient(circle at 12% 10%, rgba(232,151,26,.10), transparent 40%),
+  radial-gradient(circle at 88% 85%, rgba(27,79,138,.10), transparent 42%),
+  var(--bg);
+  color:var(--text);min-height:100vh;line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding:24px 18px 64px}
+header.top{text-align:center;margin-bottom:18px}
+header.top .kicker{font-family:'Barlow Condensed',sans-serif;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--terracotta);font-weight:700;font-size:.82rem}
+header.top h1{font-family:'Playfair Display',serif;font-size:2rem;color:var(--cobalt);line-height:1.1;margin-top:2px}
+header.top .sub{color:var(--muted);font-size:.92rem;margin-top:4px}
+.screen{display:none}
+.screen.active{display:block}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:22px;box-shadow:0 8px 24px rgba(27,79,138,.07)}
+.panel + .panel{margin-top:16px}
+h2.sec{font-family:'Oswald',sans-serif;font-weight:600;color:var(--cobalt-dk);
+  font-size:1.05rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.opt-row{display:flex;gap:10px;flex-wrap:wrap}
+.opt-btn{flex:1;min-width:140px;border:2px solid var(--line);background:#fff;border-radius:12px;
+  padding:12px 14px;cursor:pointer;font-family:'Barlow',sans-serif;font-size:.96rem;
+  transition:.15s;text-align:left}
+.opt-btn:hover{border-color:var(--marigold)}
+.opt-btn .t{font-weight:700;display:block}
+.opt-btn .d{color:var(--muted);font-size:.82rem;margin-top:2px}
+.opt-btn.sel{border-color:var(--cobalt);background:#EEF4FB}
+.opt-btn.sel.leit{border-color:var(--tapatio);background:#F3EEFE}
+.rounds{display:flex;gap:8px}
+.round-btn{width:44px;height:44px;border:2px solid var(--line);background:#fff;border-radius:10px;
+  font-weight:700;cursor:pointer;font-family:'Oswald',sans-serif;font-size:1rem}
+.round-btn.sel{border-color:var(--cobalt);background:var(--cobalt);color:#fff}
+.btn{display:inline-block;border:none;border-radius:12px;padding:13px 22px;font-family:'Oswald',sans-serif;
+  font-weight:600;font-size:1rem;letter-spacing:.03em;cursor:pointer;text-transform:uppercase}
+.btn-go{background:var(--terracotta);color:#fff;width:100%;margin-top:6px}
+.btn-go:hover{background:#a5390b}
+.btn-ghost{background:transparent;color:var(--cobalt);border:2px solid var(--line)}
+.btn-ghost:hover{border-color:var(--cobalt)}
+.muted{color:var(--muted);font-size:.86rem}
+.flag{display:inline-block;background:#F3EEFE;color:var(--tapatio);border:1px solid #E2D2FB;
+  border-radius:20px;padding:2px 10px;font-size:.76rem;font-weight:600}
+
+/* play */
+.progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-family:'Oswald',sans-serif}
+.progress .pill{background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:.84rem;color:var(--cobalt-dk)}
+.bar{height:6px;background:#E7DECF;border-radius:6px;overflow:hidden;margin-bottom:16px}
+.bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--marigold),var(--terracotta));width:0;transition:width .3s}
+.sentence{font-family:'Playfair Display',serif;font-size:1.5rem;line-height:1.9;color:var(--text);margin:6px 0 8px}
+.slot{display:inline-block}
+.slot input{font-family:'Barlow',sans-serif;font-size:1.05rem;font-weight:600;color:var(--cobalt-dk);
+  border:none;border-bottom:2.5px solid var(--marigold);background:#FFFBF3;text-align:center;
+  padding:2px 8px;min-width:84px;border-radius:6px 6px 0 0;outline:none}
+.slot input:focus{border-color:var(--cobalt);background:#fff}
+.slot.filled-pill{background:#EEF4FB;border:1.5px solid var(--cobalt);border-radius:8px;
+  padding:1px 12px;font-weight:700;color:var(--cobalt-dk);font-family:'Barlow',sans-serif;font-size:1.1rem}
+.slot.empty-pill{background:#FFFBF3;border:1.5px dashed var(--marigold);border-radius:8px;
+  padding:1px 20px;color:var(--muted);font-family:'Barlow',sans-serif;font-size:1.05rem}
+.slot.ok input,.slot.ok{border-color:var(--jade)!important;color:var(--jade)!important;background:#ECF7EE!important}
+.slot.near input,.slot.near{border-color:var(--amber)!important;color:var(--amber)!important;background:#FEF6E7!important}
+.slot.bad input,.slot.bad{border-color:var(--red)!important;background:#FBEBEA!important}
+.hint-tag{font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--muted);font-style:italic}
+.choices{margin-top:14px}
+.choice-group{margin-bottom:12px}
+.choice-group .cg-label{font-size:.78rem;color:var(--muted);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.choice-group .cg-btns{display:flex;gap:8px;flex-wrap:wrap}
+.cbtn{border:2px solid var(--line);background:#fff;border-radius:10px;padding:8px 16px;cursor:pointer;
+  font-family:'Barlow',sans-serif;font-weight:600;font-size:1rem}
+.cbtn:hover{border-color:var(--marigold)}
+.cbtn.sel{border-color:var(--cobalt);background:#EEF4FB;color:var(--cobalt-dk)}
+.cbtn.ok{border-color:var(--jade);background:#ECF7EE;color:var(--jade)}
+.cbtn.bad{border-color:var(--red);background:#FBEBEA;color:var(--red)}
+.cbtn.reveal{border-color:var(--jade);background:#ECF7EE;color:var(--jade);outline:2px dashed var(--jade)}
+.feedback{margin-top:14px;min-height:24px}
+.fb-line{font-size:.95rem;margin:3px 0;font-weight:600}
+.fb-ok{color:var(--jade)} .fb-near{color:var(--amber)} .fb-bad{color:var(--red)}
+.help{margin-top:14px;background:#FBF7EF;border:1px solid var(--line);border-radius:12px;padding:14px;display:none}
+.help.show{display:block}
+.help h4{font-family:'Oswald',sans-serif;color:var(--cobalt-dk);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.help .row{font-size:.9rem;margin:5px 0}
+.help .es{font-weight:700;color:var(--cobalt-dk)}
+.help .en{color:var(--muted)}
+.help .note{color:var(--text);font-size:.86rem;font-style:italic;margin-top:4px}
+.play-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.play-actions .btn{flex:1;min-width:130px}
+.btn-check{background:var(--cobalt);color:#fff}
+.btn-check:hover{background:var(--cobalt-dk)}
+.btn-next{background:var(--jade);color:#fff}
+.btn-help{background:transparent;color:var(--terracotta);border:2px solid var(--line);flex:0 0 auto;min-width:0}
+/* summary */
+.summary{text-align:center}
+.summary .big{font-family:'Playfair Display',serif;font-size:2.4rem;color:var(--cobalt)}
+.stat-grid{display:flex;gap:12px;justify-content:center;margin:18px 0;flex-wrap:wrap}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:120px}
+.stat .n{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700}
+.stat .l{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--cobalt-dk);color:#fff;
+  padding:10px 18px;border-radius:24px;font-size:.9rem;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+.backlink{display:inline-block;margin-top:18px;color:var(--cobalt);text-decoration:none;font-weight:600;font-size:.9rem}
+.drop{border:2.5px dashed var(--marigold);border-radius:14px;padding:26px;text-align:center;background:#FFFBF3;cursor:pointer}
+.drop.drag{background:#FDF2DD;border-color:var(--terracotta)}
+@media(max-width:520px){.sentence{font-size:1.25rem;line-height:1.85}header.top h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">Tutor Tapatío 🌵 · Guadalajara</div>
+    <h1>Constructor de Oraciones</h1>
+    <div class="sub">Oraciones dinámicas para rellenar los espacios — nunca se repiten</div>
+  </header>
+
+  <!-- LOAD (fallback) -->
+  <section id="load-screen" class="screen">
+    <div class="panel">
+      <h2 class="sec">Cargar diccionario</h2>
+      <p class="muted" style="margin-bottom:14px">No se pudo cargar <code>spanish_dictionary.json</code> automáticamente. Arrastra el archivo aquí.</p>
+      <div id="drop" class="drop">
+        <div style="font-size:2rem">📂</div>
+        <div style="font-weight:700;margin-top:6px">Suelta <code>spanish_dictionary.json</code></div>
+        <div class="muted" style="margin-top:4px">o haz clic para elegir</div>
+        <input id="file-input" type="file" accept="application/json,.json" style="display:none">
+      </div>
+    </div>
+  </section>
+
+  <!-- SETUP -->
+  <section id="setup-screen" class="screen">
+    <div class="panel">
+      <h2 class="sec">Dificultad</h2>
+      <div class="opt-row" id="mode-row">
+        <button class="opt-btn sel" data-mode="typed" onclick="setMode('typed')">
+          <span class="t">⌨ Escribir</span><span class="d">Escribes cada respuesta. Para quien ya domina lo básico.</span>
+        </button>
+        <button class="opt-btn" data-mode="choice" onclick="setMode('choice')">
+          <span class="t">🔘 Opción múltiple</span><span class="d">Eliges entre opciones. Ideal para empezar.</span>
+        </button>
+      </div>
+    </div>
+    <div class="panel">
+      <h2 class="sec">Series de 10 <span class="muted" style="font-weight:400;text-transform:none;letter-spacing:0">(hasta 5 = 50 oraciones)</span></h2>
+      <div class="rounds" id="rounds-row"></div>
+      <p class="muted" id="rounds-info" style="margin-top:10px"></p>
+    </div>
+    <div class="panel">
+      <h2 class="sec">Refuerzo Leitner <span class="flag">📦 activado</span></h2>
+      <p class="muted">Las oraciones priorizan las palabras que menos dominas (cajas bajas y pendientes), y tus aciertos/errores actualizan tu progreso compartido con las tarjetas.</p>
+      <p class="muted" id="leitner-info" style="margin-top:8px"></p>
+    </div>
+    <button class="btn btn-go" onclick="startBattery()">¡Empezar! 🌶️</button>
+    <div style="text-align:center"><a class="backlink" href="index.html">← Volver al menú</a></div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="play-screen" class="screen">
+    <div class="progress">
+      <span class="pill" id="round-pill">Serie 1</span>
+      <span class="pill" id="card-pill">Oración 1 / 10</span>
+    </div>
+    <div class="bar"><i id="bar-fill"></i></div>
+    <div class="panel">
+      <div class="sentence" id="sentence"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="help" id="help"></div>
+      <div class="play-actions">
+        <button class="btn btn-help" id="btn-help" onclick="toggleHelp()">💡 Ayuda</button>
+        <button class="btn btn-check" id="btn-check" onclick="checkAnswers()">Revisar</button>
+        <button class="btn btn-next" id="btn-next" onclick="nextCard()" style="display:none">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROUND SUMMARY -->
+  <section id="round-screen" class="screen">
+    <div class="panel summary">
+      <div class="big" id="round-emoji">🎉</div>
+      <h2 class="sec" id="round-title">Serie completa</h2>
+      <div class="stat-grid" id="round-stats"></div>
+      <button class="btn btn-go" id="btn-continue" onclick="nextRound()">Siguiente serie →</button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="final-screen" class="screen">
+    <div class="panel summary">
+      <div class="big">🏆 ¡Terminaste!</div>
+      <div class="stat-grid" id="final-stats"></div>
+      <p class="muted" id="final-leitner"></p>
+      <div class="play-actions" style="justify-content:center">
+        <button class="btn btn-go" style="max-width:280px" onclick="location.reload()">Nueva sesión</button>
+      </div>
+      <a class="backlink" href="index.html">← Volver al menú</a>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="spelling_handler.js"></script>
+<script src="sentence_engine.js"></script>
+<script>
+// ── Shared state / Leitner store (compatible with flashcards) ───────────────
+var LS_DICT='tapatio_dict_v', LS_LEITNER='tapatio_leitner';
+var BOX_INTERVALS=[0,0,1,3,7,15];
+var workingData=null, model=null;
+var settings={mode:'typed', rounds:5};
+var battery=[], cur=0, curChecked=false;
+var stats={correctBlanks:0,totalBlanks:0,perfectSentences:0,helped:0};
+var roundStats={correct:0,total:0};
+
+function $(id){return document.getElementById(id);}
+function show(id){['load-screen','setup-screen','play-screen','round-screen','final-screen']
+  .forEach(function(s){$(s).classList.toggle('active', s===id);});}
+function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);}
+
+// ── Dictionary loading ──────────────────────────────────────────────────────
+function applyStoredLeitner(entries){
+  try{var s=JSON.parse(localStorage.getItem(LS_LEITNER)||'null');if(!s)return;
+    entries.forEach(function(c){if(s[c.word]){c.leitner_box=s[c.word].box;c.leitner_sessions_until_due=s[c.word].due;}});
+  }catch(e){}
+}
+function saveLeitnerToStorage(){
+  if(!workingData)return;
+  try{var st={};workingData.forEach(function(c){st[c.word]={box:c.leitner_box||1,due:c.leitner_sessions_until_due||0};});
+    localStorage.setItem(LS_LEITNER,JSON.stringify(st));}catch(e){}
+}
+function ingest(raw){
+  raw.forEach(function(c){if(c.leitner_box===undefined)c.leitner_box=1;if(c.leitner_sessions_until_due===undefined)c.leitner_sessions_until_due=0;});
+  applyStoredLeitner(raw);
+  workingData=raw;
+  model=SentenceEngine.classify(workingData);
+  show('setup-screen');
+  buildSetup();
+}
+function tryLoadFromStorage(){
+  try{var s=localStorage.getItem(LS_DICT);if(!s)return false;var raw=JSON.parse(s);
+    if(!Array.isArray(raw)||!raw.length)return false;ingest(raw);return true;}catch(e){return false;}
+}
+function fetchDict(){
+  fetch('spanish_dictionary.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(raw){localStorage.setItem(LS_DICT,JSON.stringify(raw));ingest(raw);})
+    .catch(function(){show('load-screen');});
+}
+function readFile(file){
+  var rd=new FileReader();
+  rd.onload=function(e){try{var raw=JSON.parse(e.target.result);
+    localStorage.setItem(LS_DICT,JSON.stringify(raw));ingest(raw);}
+    catch(err){alert('Error al leer: '+err.message);}};
+  rd.readAsText(file);
+}
+
+// ── Setup screen ────────────────────────────────────────────────────────────
+function setMode(m){settings.mode=m;
+  document.querySelectorAll('#mode-row .opt-btn').forEach(function(b){b.classList.toggle('sel',b.dataset.mode===m);});}
+function buildSetup(){
+  var rr=$('rounds-row');rr.innerHTML='';
+  for(var i=1;i<=5;i++){(function(n){var b=document.createElement('button');
+    b.className='round-btn'+(n===settings.rounds?' sel':'');b.textContent=n;
+    b.onclick=function(){settings.rounds=n;buildSetup();};rr.appendChild(b);})(i);}
+  $('rounds-info').textContent=(settings.rounds*10)+' oraciones en total · cada una distinta.';
+  // leitner snapshot
+  var counts={1:0,2:0,3:0,4:0,5:0},due=0;
+  workingData.forEach(function(c){var b=c.leitner_box||1;if(counts[b]!==undefined)counts[b]++;
+    if((c.leitner_sessions_until_due||0)<=0)due++;});
+  $('leitner-info').innerHTML='Distribución: 📦'+counts[1]+' · 📦'+counts[2]+' · 📦'+counts[3]+' · 📦'+counts[4]+' · ⭐'+counts[5]+
+    ' &nbsp;·&nbsp; <strong>'+due+'</strong> palabras pendientes hoy.';
+}
+
+// ── Battery ─────────────────────────────────────────────────────────────────
+function decrementSessions(){
+  workingData.forEach(function(c){if((c.leitner_sessions_until_due||0)>0)c.leitner_sessions_until_due--;});
+  saveLeitnerToStorage();
+}
+function startBattery(){
+  decrementSessions();                       // one battery = one Leitner session
+  model=SentenceEngine.classify(workingData);
+  battery=SentenceEngine.generateBattery(model,{count:settings.rounds*10,mode:settings.mode});
+  if(battery.length<settings.rounds*10){toast('Generadas '+battery.length+' oraciones únicas.');}
+  cur=0;stats={correctBlanks:0,totalBlanks:0,perfectSentences:0,helped:0};
+  show('play-screen');renderCard();
+}
+function curRound(){return Math.floor(cur/10);}
+
+function renderCard(){
+  curChecked=false;
+  var ex=battery[cur];
+  roundStartIfNeeded();
+  $('round-pill').textContent='Serie '+(curRound()+1)+' / '+settings.rounds;
+  $('card-pill').textContent='Oración '+((cur%10)+1)+' / '+Math.min(10,battery.length-curRound()*10);
+  $('bar-fill').style.width=((cur+1)/battery.length*100)+'%';
+  $('feedback').innerHTML='';
+  $('help').className='help';$('help').innerHTML=buildHelp(ex);
+  $('btn-check').style.display='';$('btn-next').style.display='none';
+  $('btn-help').disabled=false;
+
+  // build sentence
+  var sEl=$('sentence');sEl.innerHTML='';
+  var cEl=$('choices');cEl.innerHTML='';
+  var blankIdx=0;
+  ex.parts.forEach(function(p){
+    if(p.t==='text'){sEl.appendChild(document.createTextNode(p.v));}
+    else{
+      var i=blankIdx++;
+      var slot=document.createElement('span');slot.className='slot';slot.dataset.i=i;
+      if(settings.mode==='typed'){
+        var inp=document.createElement('input');inp.type='text';inp.autocomplete='off';
+        inp.autocapitalize='off';inp.spellcheck=false;inp.dataset.i=i;
+        inp.style.width=Math.max(84,(p.b.answer.length*13))+'px';
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();
+          if(curChecked)nextCard();else checkAnswers();}});
+        slot.appendChild(inp);
+      }else{
+        slot.className='slot empty-pill';slot.textContent='( '+(i+1)+' )';
+      }
+      sEl.appendChild(slot);
+    }
+  });
+  // choice panels
+  if(settings.mode==='choice'){
+    ex.blanks.forEach(function(b,i){
+      var g=document.createElement('div');g.className='choice-group';
+      var lbl=document.createElement('div');lbl.className='cg-label';
+      lbl.textContent=(ex.blanks.length>1?'Espacio '+(i+1)+' · ':'')+roleLabel(b.role);
+      g.appendChild(lbl);
+      var row=document.createElement('div');row.className='cg-btns';
+      (b.options||[]).forEach(function(opt){
+        var cb=document.createElement('button');cb.className='cbtn';cb.textContent=opt;
+        cb.onclick=function(){if(curChecked)return;
+          row.querySelectorAll('.cbtn').forEach(function(x){x.classList.remove('sel');});
+          cb.classList.add('sel');g.dataset.sel=opt;};
+        row.appendChild(cb);
+      });
+      g.appendChild(row);cEl.appendChild(g);
+    });
+  }
+  if(settings.mode==='typed'){var f=sEl.querySelector('input');if(f)setTimeout(function(){f.focus();},60);}
+}
+function roleLabel(role){
+  var m={'verb':'verbo','infinitive':'infinitivo','subject-pronoun':'pronombre sujeto',
+    'possessive':'posesivo','article':'artículo','adjective':'adjetivo','ser-estar':'ser / estar',
+    'do-pronoun':'objeto directo','io-pronoun':'objeto indirecto','reflexive-pronoun':'pronombre reflexivo',
+    'gustar-verb':'verbo (concordancia)'};
+  return m[role]||role;
+}
+
+var roundStartedFor=-1;
+function roundStartIfNeeded(){
+  if(curRound()!==roundStartedFor){roundStartedFor=curRound();roundStats={correct:0,total:0};}
+}
+
+// ── Checking ────────────────────────────────────────────────────────────────
+function checkAnswers(){
+  if(curChecked)return;
+  var ex=battery[cur];
+  var perBlank=[];var fb=[];var allOk=true;
+  ex.blanks.forEach(function(b,i){
+    var ok=false,status='wrong',msg='';
+    if(settings.mode==='typed'){
+      var inp=$('sentence').querySelector('input[data-i="'+i+'"]');
+      var val=inp?inp.value:'';
+      var r=SpellingHandler.check(val,b.answer);
+      ok=r.correct;status=r.status;msg=r.feedback;
+      inp.parentNode.className='slot '+(r.correct?'ok':(r.close?'near':'bad'));
+      if(!r.correct){ // reveal correct answer in the slot context via feedback
+        msg='✗ "'+ (val||'—') +'" → '+b.answer;
+      }
+    }else{
+      var g=$('choices').children[i];
+      var sel=g?g.dataset.sel:undefined;
+      ok=sel && sel.toLowerCase()===b.answer.toLowerCase();
+      var slot=$('sentence').querySelector('.slot[data-i="'+i+'"]');
+      slot.className='slot filled-pill '+(ok?'ok':'bad');slot.textContent=sel||'( '+(i+1)+' )';
+      g.querySelectorAll('.cbtn').forEach(function(cb){
+        if(cb.textContent===sel)cb.classList.add(ok?'ok':'bad');
+        if(!ok && cb.textContent.toLowerCase()===b.answer.toLowerCase())cb.classList.add('reveal');
+        cb.disabled=true;
+      });
+      msg=ok?'✓ '+b.answer:'✗ '+(sel||'—')+' → '+b.answer;
+    }
+    perBlank.push(ok);if(!ok)allOk=false;
+    stats.totalBlanks++;if(ok)stats.correctBlanks++;
+    roundStats.total++;if(ok)roundStats.correct++;
+    fb.push('<div class="fb-line '+(ok?'fb-ok':(status==='close'||status==='accent_only'?'fb-near':'fb-bad'))+'">'+
+      (ex.blanks.length>1?('['+roleLabel(b.role)+'] '):'')+msg+'</div>');
+  });
+  if(allOk)stats.perfectSentences++;
+  $('feedback').innerHTML=fb.join('');
+  // Leitner writeback (shared store)
+  var grades=SentenceEngine.gradeExercise(ex,perBlank);
+  grades.forEach(function(gr){applyLeitnerGrade(gr.word,gr.knew);});
+  saveLeitnerToStorage();
+  curChecked=true;
+  $('btn-check').style.display='none';$('btn-next').style.display='';
+  var nb=$('btn-next');nb.textContent=(cur%10===9||cur===battery.length-1)?'Ver resultados →':'Siguiente →';
+  nb.focus();
+}
+function applyLeitnerGrade(word,knew){
+  var c=workingData.filter(function(e){return e.word===word;})[0];if(!c)return;
+  var old=c.leitner_box||1;
+  if(knew){c.leitner_box=Math.min(5,old+1);c.leitner_sessions_until_due=BOX_INTERVALS[c.leitner_box];}
+  else{c.leitner_box=1;c.leitner_sessions_until_due=0;}
+}
+
+// ── Help (English only on request, per project rules) ───────────────────────
+function buildHelp(ex){
+  var rows='';
+  ex.blanks.forEach(function(b,i){
+    rows+='<div class="row"><span class="es">'+b.answer+'</span>'+
+      (b.gloss?' <span class="en">— '+b.gloss+'</span>':'')+
+      (b.note?'<div class="note">'+b.note+'</div>':'')+'</div>';
+  });
+  return '<h4>Ayuda · respuesta y notas</h4>'+rows;
+}
+function toggleHelp(){
+  var h=$('help');var showing=h.classList.toggle('show');
+  if(showing && !curChecked){stats.helped++;}
+}
+
+// ── Navigation ──────────────────────────────────────────────────────────────
+function nextCard(){
+  if(!curChecked){checkAnswers();return;}
+  var endOfRound=(cur%10===9)||(cur===battery.length-1);
+  if(endOfRound){showRoundSummary();return;}
+  cur++;renderCard();
+}
+function showRoundSummary(){
+  var last=(cur===battery.length-1);
+  show('round-screen');
+  var pct=roundStats.total?Math.round(roundStats.correct/roundStats.total*100):0;
+  $('round-emoji').textContent=pct>=90?'🌟':pct>=70?'🎉':pct>=50?'💪':'🌱';
+  $('round-title').textContent='Serie '+(curRound()+1)+' completa';
+  $('round-stats').innerHTML=
+    statBox(roundStats.correct+'/'+roundStats.total,'aciertos')+
+    statBox(pct+'%','precisión');
+  var btn=$('btn-continue');
+  btn.textContent=last?'Ver resultados finales →':'Siguiente serie →';
+  btn.onclick=last?showFinal:nextRound;
+}
+function nextRound(){cur++;show('play-screen');renderCard();}
+function statBox(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
+function showFinal(){
+  show('final-screen');
+  var pct=stats.totalBlanks?Math.round(stats.correctBlanks/stats.totalBlanks*100):0;
+  $('final-stats').innerHTML=
+    statBox(battery.length,'oraciones')+
+    statBox(stats.correctBlanks+'/'+stats.totalBlanks,'espacios')+
+    statBox(pct+'%','precisión')+
+    statBox(stats.perfectSentences,'perfectas');
+  var counts={1:0,2:0,3:0,4:0,5:0};
+  workingData.forEach(function(c){var b=c.leitner_box||1;if(counts[b]!==undefined)counts[b]++;});
+  $('final-leitner').innerHTML='Progreso Leitner actualizado y guardado: 📦'+counts[1]+' · 📦'+counts[2]+
+    ' · 📦'+counts[3]+' · 📦'+counts[4]+' · ⭐'+counts[5]+'. Compartido con tus tarjetas.';
+}
+
+// ── Wire up load screen ─────────────────────────────────────────────────────
+(function(){
+  var drop=$('drop'),fi=$('file-input');
+  if(drop){drop.onclick=function(){fi.click();};
+    drop.ondragover=function(e){e.preventDefault();drop.classList.add('drag');};
+    drop.ondragleave=function(){drop.classList.remove('drag');};
+    drop.ondrop=function(e){e.preventDefault();drop.classList.remove('drag');if(e.dataTransfer.files[0])readFile(e.dataTransfer.files[0]);};
+    fi.onchange=function(e){if(e.target.files[0])readFile(e.target.files[0]);e.target.value='';};}
+  if(!tryLoadFromStorage())fetchDict();
+})();
+</script>
+</body>
+</html>
