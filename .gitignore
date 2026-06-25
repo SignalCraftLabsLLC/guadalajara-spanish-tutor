@@ -9,3 +9,7 @@ archive/
 # Editor scratch files
 *.swp
 *~
+
+# Node (test-harness scratch installs, e.g. jsdom)
+node_modules/
+package-lock.json

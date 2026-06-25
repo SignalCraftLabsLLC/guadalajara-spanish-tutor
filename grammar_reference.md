@@ -781,6 +781,12 @@ respecting agreement and using **only the conjugations present in the dictionary
 **B2 and below**. Keep this spec and `sentence_engine.js` in sync (the engine is the
 runtime authority; this document is the human-readable reference).
 
+Difficulty has **two independent axes**: (1) **per-word** selection, via the existing
+Leitner weighting (§B.7) — unchanged; (2) **structural/grammatical** complexity — which
+template and which tense are offered — governed by the 9-step ladder in **§B.9**. The
+axes are orthogonal: a learner on an early step still gets Leitner-weighted practice of
+whatever vocabulary that step's unlocked templates can use.
+
 ## B.1 Person & Pronoun Reference Table
 
 No vosotros (Mexican Spanish). These six "persons" drive every conjugation and pronoun.
@@ -854,9 +860,18 @@ Front-of-sentence markers signal the tense so the learner knows which form to pr
 | Present | *Todos los días, Normalmente, Cada mañana, Siempre, Ahora* |
 | Pretérito | *Ayer, Anoche, La semana pasada, El año pasado, Esta mañana* |
 | Imperfecto | *Cuando era niño, Antes, De vez en cuando antes, En aquellos años* |
+| Presente continuo | *En este momento, Ahora mismo, Justo ahora, En este preciso momento* |
+| Pretérito perfecto | *Hoy ya, Esta semana, Por fin, Esta mañana ya* |
 
 A verb is eligible for a tense only if its dictionary entry has **all five person keys** for
-that tense; otherwise it is skipped (no form is ever invented).
+that tense; otherwise it is skipped (no form is ever invented). Presente continuo and
+pretérito perfecto cues are **affirmative-only by design** — negation was considered and
+rejected because it conflicts with their word order.
+
+Which tenses a given template may draw from is not fixed — it is threaded in per battery
+via a `ctx.tenses` map built from the current step (§B.9), so `conjVerb`, `subjPron`, and
+`reflexive` only offer the tenses the learner has unlocked so far (plus a taper-weighted
+preview of the next step's tense, near the gate).
 
 ## B.6 Template Catalog
 
@@ -873,6 +888,15 @@ Each template yields one exercise (1–3 blanks). Tested grammar in **bold**.
 9. **reflexive** — *"{cue}, {subject} ___ ___."* → **reflexive pronoun + verb** (2 blanks; routine verbs only).
 10. **futuroProximo** — *"Mañana {subject} ___ a ___."* → **ir (conjugated) + infinitive** (2 blanks).
 11. **doPron** — *"{Subject} {ver} {art noun}. {Subject} ___ {verb} siempre."* → **direct-object pronoun**.
+12. **presenteContinuo** — *"{cue}, {subject} ___ ___."* → **ESTAR (present) + gerundio** (2 blanks).
+    Non-reflexive verbs only — the dictionary's reflexive gerunds are fixed 3rd-person
+    citation forms that don't generalize to other subjects, so reflexive continuous was
+    deliberately left out rather than built incorrectly.
+13. **preteritoPerfecto** — *"{cue}, {subject} ___ ___."* → **HABER (present) + participio** (2 blanks).
+14. **dobleObjeto** — *"{Subject} {verb} {un/una noun} a {recipient}. {Subject} ___ ___ {verb}."*
+    → **double-object pronoun, le/les→se + lo/la/los/las** (2 blanks). Restricted to a curated
+    list of transfer verbs (`IO_VERBS`) and to `yo/tú/nosotros/ellos` to avoid 3rd-person
+    ambiguity in the repeated clause.
 
 Noun choice is biased toward concrete, readable categories (Animales, Alimentación, Familia,
 Casa, Ciudad, Descripción personal) but any noun may appear. Because nouns and adjectives are
@@ -904,6 +928,81 @@ deprimida"*) — this is expected and harmless: the **grammar** being tested is 
 - **English help** is shown **only on request** (per project tutoring rules): the Ayuda panel
   reveals each blank's answer, its dictionary gloss, and a grammar note.
 
+## B.9 Step Ladder, Tapering & Gating
+
+Structural difficulty advances through **9 discrete steps**, not a smooth ramp — chosen so
+new grammar builds confidence rather than discouraging the learner. The order is grounded in
+the actual chronological sequence Aura and Lalo taught the class (`notes_transcription.md`),
+cross-checked against published L2 Spanish acquisition sequencing, **not** `grammar_catalog.md`'s
+topical (non-chronological) section order.
+
+### B.9.1 The 9 steps
+
+| # | id | Label | Unlocks |
+|---|----|-------|---------|
+| 0 | `cimientos` | Cimientos | possessive, article, adjAgree, serEstar, conjVerb, subjPron — present tense |
+| 1 | `gustarOI` | Gustar y objeto indirecto | ioPron, gustar |
+| 2 | `reflexivos` | Reflexivos y rutina | reflexive — present tense |
+| 3 | `presenteContinuo` | Presente continuo | presenteContinuo (ESTAR + gerundio) |
+| 4 | `futuroProximo` | Futuro próximo | futuroProximo (ir + a + infinitivo) |
+| 5 | `preterito` | Pretérito | conjVerb, subjPron, reflexive — adds preterite tense |
+| 6 | `imperfecto` | Imperfecto | conjVerb — adds imperfect tense |
+| 7 | `preteritoPerfecto` | Pretérito perfecto | preteritoPerfecto (HABER + participio) |
+| 8 | `objetoDirecto` | Objeto directo | doPron, dobleObjeto (se lo / se la) |
+
+Each step's `templates` list and `tenseAdds` map are **cumulative**: a learner on step *n*
+has access to every template/tense introduced at steps `0..n`. Advancement is **one-way** —
+no demotion back to an earlier step, even after missed answers.
+
+### B.9.2 Tense-gating vs. template-gating
+
+Most steps unlock a brand-new template. Three templates (`conjVerb`, `subjPron`, `reflexive`)
+are instead **tense-gated**: they appear in `STEPS[0].templates` from the start (so the battery
+generator always treats them as "available"), but which **tense** each may draw from is
+controlled separately by `tenseAdds`, threaded into the templates at battery-build time as a
+`ctx.tenses` map (e.g. `ctx.tenses.conjVerb = ['present','present','preterite',...]`, built
+fresh per battery from the cumulative config). This is why `introducingStepIndex(templateId,
+tense)` must check `tenseAdds` matches **before** falling back to plain `templates`-list
+membership — otherwise a tense added at a later step (e.g. preterite at step 5) would be
+wrongly attributed to step 0, where the template id first appears, and progress on that step
+could never be counted.
+
+### B.9.3 Tapering near the gate
+
+Rather than a hard wall between steps, the next step's content is blended in gradually as the
+learner approaches the gate, per Stan's preference for "rounded" steps:
+
+- `taperFraction(progress) = clamp(0, TAPER_CAP, (attempts / GATE_MIN_SAMPLE) * TAPER_CAP)`,
+  with `TAPER_CAP = 0.35`.
+- In the weighted template pool, each unlocked template/tense gets `WEIGHT_SCALE = 3` copies;
+  the **next** step's wholly-new templates get `max(1, round(WEIGHT_SCALE * taper))` copies —
+  so a small, growing fraction of each battery previews what's coming, without ever exceeding
+  ~35% of the weight.
+- Taper-preview exercises still count as "next step" content for gating purposes (they don't
+  count toward the *current* step's gate, since `introStep` correctly points at the next step).
+
+### B.9.4 Gate logic & advancement
+
+`recordStepProgress(progress, exercise, perBlankCorrect, stepIndex)`:
+
+- Counts an attempt **only if** `exercise.introStep === stepIndex` — i.e. only the current
+  step's own newly-introduced content counts, never review content from earlier steps and
+  never taper-preview content from the next step.
+- Gate opens at **≥70% accuracy** (`GATE_THRESHOLD = 0.70`) over a **minimum 15 qualifying
+  attempts** (`GATE_MIN_SAMPLE = 15`).
+- On advancing, `progress` resets (`attempts = correct = 0`) for the new step.
+- Advancement is **one-way**: a run of wrong answers after advancing never demotes the learner.
+
+### B.9.5 Storage & display
+
+- State lives in its own `localStorage` key, `tapatio_sentence_step` — separate from the
+  shared `tapatio_dict_v` / `tapatio_leitner` keys, so `flashcards_vocabulario.html` is
+  unaffected.
+- The setup screen shows the current step's label, sub-label, and a progress bar toward the
+  gate, in **friendly, jargon-free Spanish** (grammar terms like "pretérito" or "reflexivos"
+  are shown — Stan was taught those terms directly in class — but the Leitner-style
+  box/level jargon used elsewhere in the project is not).
+
 ---
 
 *Compiled June 2026 — Stan's Guadalajara Spanish project*
@@ -911,3 +1010,5 @@ deprimida"*) — this is expected and harmless: the **grammar** being tested is 
 *Mexican Spanish notes sourced from: Berlitz, Elon.io, The Spanish Group, Lingoda, Omniglot*
 *Class content basis: Aura & Lalo, Guadalajara, June 2026*
 *Part B (Sentence Generation Spec) added June 23, 2026 — mirrors `sentence_engine.js`*
+*§B.9 (Step Ladder, Tapering & Gating) and the presenteContinuo/preteritoPerfecto/dobleObjeto
+templates in §B.6 added June 25, 2026.*
