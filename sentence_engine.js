@@ -285,7 +285,8 @@ var SentenceEngine = (function () {
 
   // Reflexive verbs that form a complete clause without a direct object
   var ROUTINE_REFLEXIVES = ['levantarse', 'acostarse', 'bañarse', 'ducharse', 'despertarse',
-    'vestirse', 'peinarse', 'maquillarse', 'afeitarse', 'dormirse', 'divertirse', 'relajarse', 'sentarse'];
+    'vestirse', 'peinarse', 'maquillarse', 'afeitarse', 'dormirse', 'divertirse', 'relajarse', 'sentarse',
+    'quedarse'];
 
   // Decide SER vs ESTAR from an adjective's grammar_rule tag
   function copulaForAdj(entry, rng) {
