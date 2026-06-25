@@ -399,11 +399,16 @@ Refreshed June 23, 2026 (Session 24) after expanding the dictionary to 1000 word
 - **Data issue surfaced, not fixed**: `quedarse` is documented and classified everywhere (including this file, Session 1) as reflexive, but its `present_conjugation` field actually uses gustar-type keys (`me/te/le/nos/les`) instead of standard ones. The engine's classifier detects gustar-type verbs by the presence of a `me` key, so `quedarse` is currently misclassified into the gustar bucket. Flagged for Stan's decision — not changed, since dictionary data edits are out of scope for this session.
 - Committed `fd5667b`; pushed to `origin/main` from Stan's terminal (sandbox has no GitHub credentials).
 
+### Session 27 (June 25, 2026)
+- **Closed out the `quedarse` incident flagged in Session 26.** Two fixes, both verified with `SentenceEngine.classify()` and live battery generation before being committed:
+  - **Data fix** (`spanish_dictionary.json`): `quedarse`'s `present_conjugation` used gustar-type keys/values (`me: "queda / quedan"`, etc.) instead of standard reflexive ones. Replaced with the correct `{yo: "me quedo", tú: "te quedas", él/ella: "se queda", nosotros: "nos quedamos", ellos/ellas: "se quedan"}` shape. Confirmed via `classify()`: `model.gustars` 5→4, `model.reflexives` 27→28, `quedarse` now lands in the reflexive bucket. Committed `dcdc899`.
+  - **Engine fix** (`sentence_engine.js`): reclassifying `quedarse` alone wasn't enough to make it show up in practice — the `reflexive` template draws from a separate, pre-existing `ROUTINE_REFLEXIVES` whitelist (13 verbs that "form a complete clause without a direct object") before falling back to the full pool, and `quedarse` had never been on it. Confirmed `reflexive` is the *only* template that reads `model.reflexives`, so this whitelist was the actual gate. Asked Stan whether to add it; he said yes ("se queda en casa" reads as a complete clause same as the others). Added `quedarse` to `ROUTINE_REFLEXIVES`. Verified: 104 `quedarse` blanks across 15,000 generated exercises (0 before the fix). Committed `a01b133`.
+- Net result: `quedarse` now both classifies correctly and actually appears in Constructor de Oraciones reflexive-template sentences.
+
 ---
 
 ## Potential Next Steps
 
-- **Fix `quedarse`'s `present_conjugation`** to use standard yo/tú/él-ella/nosotros/ellos-ellas keys instead of gustar-type keys, so the engine's classifier sorts it as reflexive (see Session 26)
 - Add future tense conjugation field to all verb entries (would let the sentence maker add a future template) — now higher value with 186 verbs
 - Add conditional tense conjugation field to all verb entries
 - Build a "lesson" structure mapping dictionary entries to grammar_catalog sections
