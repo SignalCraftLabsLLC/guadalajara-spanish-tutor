@@ -14706,11 +14706,11 @@
     "gerund": "quedándose",
     "past_participle": "quedado",
     "present_conjugation": {
-      "me": "queda / quedan",
-      "te": "queda / quedan",
-      "le": "queda / quedan",
-      "nos": "queda / quedan",
-      "les": "queda / quedan"
+      "yo": "me quedo",
+      "tú": "te quedas",
+      "él/ella": "se queda",
+      "nosotros": "nos quedamos",
+      "ellos/ellas": "se quedan"
     },
     "preterite_conjugation": {
       "yo": "me quedé",
