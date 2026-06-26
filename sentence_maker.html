@@ -70,6 +70,9 @@ h2.sec{font-family:'Oswald',sans-serif;font-weight:600;color:var(--cobalt-dk);
 /* play */
 .progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-family:'Oswald',sans-serif}
 .progress .pill{background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:.84rem;color:var(--cobalt-dk)}
+.progress .pill-group{display:flex;gap:8px}
+.pill-btn{cursor:pointer;font-family:'Oswald',sans-serif}
+.pill-btn:hover{border-color:var(--cobalt)}
 .bar{height:6px;background:#E7DECF;border-radius:6px;overflow:hidden;margin-bottom:16px}
 .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--marigold),var(--terracotta));width:0;transition:width .3s}
 .sentence{font-family:'Playfair Display',serif;font-size:1.5rem;line-height:1.9;color:var(--text);margin:6px 0 8px}
@@ -189,8 +192,11 @@ h2.sec{font-family:'Oswald',sans-serif;font-weight:600;color:var(--cobalt-dk);
   <!-- PLAY -->
   <section id="play-screen" class="screen">
     <div class="progress">
-      <span class="pill" id="round-pill">Serie 1</span>
-      <span class="pill" id="card-pill">Oración 1 / 10</span>
+      <button class="pill pill-btn" id="btn-setup-exit" onclick="confirmBackToSetup()" title="Volver a configuración">⚙</button>
+      <div class="pill-group">
+        <span class="pill" id="round-pill">Serie 1</span>
+        <span class="pill" id="card-pill">Oración 1 / 10</span>
+      </div>
     </div>
     <div class="bar"><i id="bar-fill"></i></div>
     <div class="panel">
@@ -199,7 +205,7 @@ h2.sec{font-family:'Oswald',sans-serif;font-weight:600;color:var(--cobalt-dk);
       <div class="feedback" id="feedback"></div>
       <div class="help" id="help"></div>
       <div class="play-actions">
-        <button class="btn btn-help" id="btn-help" onclick="toggleHelp()">💡 Ayuda</button>
+        <button class="btn btn-help" id="btn-help" onclick="toggleHelp()">💡 Pista</button>
         <button class="btn btn-check" id="btn-check" onclick="checkAnswers()">Revisar</button>
         <button class="btn btn-next" id="btn-next" onclick="nextCard()" style="display:none">Siguiente →</button>
       </div>
@@ -213,6 +219,8 @@ h2.sec{font-family:'Oswald',sans-serif;font-weight:600;color:var(--cobalt-dk);
       <h2 class="sec" id="round-title">Serie completa</h2>
       <div class="stat-grid" id="round-stats"></div>
       <button class="btn btn-go" id="btn-continue" onclick="nextRound()">Siguiente serie →</button>
+      <button class="btn btn-ghost" id="btn-review-missed" onclick="" style="margin-top:10px;width:100%;display:none"></button>
+      <button class="btn btn-ghost" id="btn-round-setup" onclick="show('setup-screen');buildSetup();" style="margin-top:10px;width:100%">⚙ Volver a configuración</button>
     </div>
   </section>
 
@@ -241,10 +249,22 @@ var BOX_INTERVALS=[0,0,1,3,7,15];
 var workingData=null, model=null;
 var settings={mode:'typed', rounds:5};
 var battery=[], cur=0, curChecked=false;
-var stats={correctBlanks:0,totalBlanks:0,perfectSentences:0,helped:0};
+var stats={correctBlanks:0,totalBlanks:0,perfectSentences:0,pistas:0,revelados:0};
 var roundStats={correct:0,total:0};
+var roundMissedWords={};            // word -> true, reset at the start of each round
 var stepState={stepIndex:0, attempts:0, correct:0};
 var STEP_EMOJI=['🧱','💛','🪞','🎬','🚀','⏪','🕰️','✅','🎯'];
+
+// ── Hints: two tiers. Tier 1 (Pista) shows the grammar note only — free.
+// Tier 2 (Ver respuesta) reveals the full answer + gloss — costs Leitner credit:
+// any word touched by a fully-revealed exercise is graded knew=false, regardless
+// of whether the typed/chosen answer was actually correct.
+var hintState=0, cardMaxHint=0;
+
+// ── Missed-word review pass: a short side-battery built from this round's
+// wrong answers, played inline on the same screens, then handed back to
+// whatever was supposed to happen next (next round or final results).
+var reviewMode=false, reviewList=[], reviewIdx=0, reviewStats={correct:0,total:0}, afterReviewFn=null;
 
 // ── Step-ladder progress (separate from Leitner; never touches box/jargon UI) ─
 function loadStepState(){
@@ -362,22 +382,29 @@ function startBattery(){
   battery=SentenceEngine.generateBattery(model,{count:settings.rounds*10,mode:settings.mode,
     stepIndex:stepState.stepIndex, taper:taper});
   if(battery.length<settings.rounds*10){toast('Generadas '+battery.length+' oraciones únicas.');}
-  cur=0;stats={correctBlanks:0,totalBlanks:0,perfectSentences:0,helped:0};
+  cur=0;stats={correctBlanks:0,totalBlanks:0,perfectSentences:0,pistas:0,revelados:0};
+  roundMissedWords={};reviewMode=false;
   show('play-screen');renderCard();
 }
 function curRound(){return Math.floor(cur/10);}
+function currentExercise(){return reviewMode?reviewList[reviewIdx]:battery[cur];}
 
 function renderCard(){
   curChecked=false;
-  var ex=battery[cur];
-  roundStartIfNeeded();
-  $('round-pill').textContent='Serie '+(curRound()+1)+' / '+settings.rounds;
-  $('card-pill').textContent='Oración '+((cur%10)+1)+' / '+Math.min(10,battery.length-curRound()*10);
-  $('bar-fill').style.width=((cur+1)/battery.length*100)+'%';
+  var ex=currentExercise();
+  resetHintUI();
+  if(reviewMode){
+    $('round-pill').textContent='📝 Repaso de fallos';
+    $('card-pill').textContent='Oración '+(reviewIdx+1)+' / '+reviewList.length;
+    $('bar-fill').style.width=((reviewIdx+1)/reviewList.length*100)+'%';
+  }else{
+    roundStartIfNeeded();
+    $('round-pill').textContent='Serie '+(curRound()+1)+' / '+settings.rounds;
+    $('card-pill').textContent='Oración '+((cur%10)+1)+' / '+Math.min(10,battery.length-curRound()*10);
+    $('bar-fill').style.width=((cur+1)/battery.length*100)+'%';
+  }
   $('feedback').innerHTML='';
-  $('help').className='help';$('help').innerHTML=buildHelp(ex);
   $('btn-check').style.display='';$('btn-next').style.display='none';
-  $('btn-help').disabled=false;
 
   // build sentence
   var sEl=$('sentence');sEl.innerHTML='';
@@ -431,13 +458,13 @@ function roleLabel(role){
 
 var roundStartedFor=-1;
 function roundStartIfNeeded(){
-  if(curRound()!==roundStartedFor){roundStartedFor=curRound();roundStats={correct:0,total:0};}
+  if(curRound()!==roundStartedFor){roundStartedFor=curRound();roundStats={correct:0,total:0};roundMissedWords={};}
 }
 
 // ── Checking ────────────────────────────────────────────────────────────────
 function checkAnswers(){
   if(curChecked)return;
-  var ex=battery[cur];
+  var ex=currentExercise();
   var perBlank=[];var fb=[];var allOk=true;
   ex.blanks.forEach(function(b,i){
     var ok=false,status='wrong',msg='';
@@ -464,15 +491,23 @@ function checkAnswers(){
       msg=ok?'✓ '+b.answer:'✗ '+(sel||'—')+' → '+b.answer;
     }
     perBlank.push(ok);if(!ok)allOk=false;
-    stats.totalBlanks++;if(ok)stats.correctBlanks++;
-    roundStats.total++;if(ok)roundStats.correct++;
+    if(reviewMode){
+      reviewStats.total++;if(ok)reviewStats.correct++;
+    }else{
+      stats.totalBlanks++;if(ok)stats.correctBlanks++;
+      roundStats.total++;if(ok)roundStats.correct++;
+      if(!ok && b.wordKey)roundMissedWords[b.wordKey]=true;
+    }
     fb.push('<div class="fb-line '+(ok?'fb-ok':(status==='close'||status==='accent_only'?'fb-near':'fb-bad'))+'">'+
       (ex.blanks.length>1?('['+roleLabel(b.role)+'] '):'')+msg+'</div>');
   });
-  if(allOk)stats.perfectSentences++;
+  if(allOk && !reviewMode)stats.perfectSentences++;
   $('feedback').innerHTML=fb.join('');
-  // Leitner writeback (shared store)
+  // Leitner writeback (shared store). Cost of the full-reveal hint tier: a fully
+  // revealed exercise can't prove you knew it, so it's graded knew=false even
+  // if the typed/chosen answer happened to be correct.
   var grades=SentenceEngine.gradeExercise(ex,perBlank);
+  if(cardMaxHint>=2){grades=grades.map(function(g){return {word:g.word,knew:false};});}
   grades.forEach(function(gr){applyLeitnerGrade(gr.word,gr.knew);});
   saveLeitnerToStorage();
   // Step-ladder progress (sentence-maker-only; only counts this step's own new content)
@@ -483,9 +518,18 @@ function checkAnswers(){
     var ns=SentenceEngine.STEPS[stepState.stepIndex];
     toast('🎉 ¡Subiste de nivel! Ahora: '+ns.label);
   }
+  if(!reviewMode){
+    if(cardMaxHint>=1)stats.pistas++;
+    if(cardMaxHint>=2)stats.revelados++;
+  }
   curChecked=true;
   $('btn-check').style.display='none';$('btn-next').style.display='';
-  var nb=$('btn-next');nb.textContent=(cur%10===9||cur===battery.length-1)?'Ver resultados →':'Siguiente →';
+  var nb=$('btn-next');
+  if(reviewMode){
+    nb.textContent=(reviewIdx>=reviewList.length-1)?'Terminar repaso →':'Siguiente →';
+  }else{
+    nb.textContent=(cur%10===9||cur===battery.length-1)?'Ver resultados →':'Siguiente →';
+  }
   nb.focus();
 }
 function applyLeitnerGrade(word,knew){
@@ -495,24 +539,48 @@ function applyLeitnerGrade(word,knew){
   else{c.leitner_box=1;c.leitner_sessions_until_due=0;}
 }
 
-// ── Help (English only on request, per project rules) ───────────────────────
-function buildHelp(ex){
+// ── Help: two tiers (English only on request, per project rules) ────────────
+// Tier 1 (Pista): grammar note only, no answer, no gloss — free.
+// Tier 2 (Ver respuesta): full answer + gloss — costs Leitner credit (see checkAnswers).
+function buildHelp(ex,level){
   var rows='';
   ex.blanks.forEach(function(b,i){
-    rows+='<div class="row"><span class="es">'+b.answer+'</span>'+
-      (b.gloss?' <span class="en">— '+b.gloss+'</span>':'')+
-      (b.note?'<div class="note">'+b.note+'</div>':'')+'</div>';
+    var tag=ex.blanks.length>1?('<strong>Espacio '+(i+1)+':</strong> '):'';
+    if(level>=2){
+      rows+='<div class="row">'+tag+'<span class="es">'+b.answer+'</span>'+
+        (b.gloss?' <span class="en">— '+b.gloss+'</span>':'')+
+        (b.note?'<div class="note">'+b.note+'</div>':'')+'</div>';
+    }else{
+      rows+='<div class="row">'+tag+(b.note?b.note:'Piensa en la concordancia y el contexto.')+'</div>';
+    }
   });
-  return '<h4>Ayuda · respuesta y notas</h4>'+rows;
+  var title=level>=2?'👁 Respuesta y notas <span class="muted" style="font-weight:400;font-size:.78rem;text-transform:none;letter-spacing:0">(cuenta como repaso, no como dominado)</span>':'💡 Pista — sin revelar la respuesta';
+  return '<h4>'+title+'</h4>'+rows;
+}
+function resetHintUI(){
+  hintState=0;cardMaxHint=0;
+  $('help').className='help';$('help').innerHTML='';
+  $('btn-help').textContent='💡 Pista';$('btn-help').disabled=false;
 }
 function toggleHelp(){
-  var h=$('help');var showing=h.classList.toggle('show');
-  if(showing && !curChecked){stats.helped++;}
+  hintState=(hintState+1)%3;
+  if(hintState>cardMaxHint)cardMaxHint=hintState;
+  var h=$('help'),btn=$('btn-help'),ex=currentExercise();
+  if(hintState===0){
+    h.classList.remove('show');h.innerHTML='';btn.textContent='💡 Pista';
+  }else{
+    h.classList.add('show');h.innerHTML=buildHelp(ex,hintState);
+    btn.textContent=hintState===1?'👁 Ver respuesta (cuesta)':'✕ Cerrar ayuda';
+  }
 }
 
 // ── Navigation ──────────────────────────────────────────────────────────────
 function nextCard(){
   if(!curChecked){checkAnswers();return;}
+  if(reviewMode){
+    if(reviewIdx>=reviewList.length-1){finishReview();return;}
+    reviewIdx++;renderCard();return;
+  }
   var endOfRound=(cur%10===9)||(cur===battery.length-1);
   if(endOfRound){showRoundSummary();return;}
   cur++;renderCard();
@@ -528,7 +596,17 @@ function showRoundSummary(){
     statBox(pct+'%','precisión');
   var btn=$('btn-continue');
   btn.textContent=last?'Ver resultados finales →':'Siguiente serie →';
-  btn.onclick=last?showFinal:nextRound;
+  var continueFn=last?showFinal:nextRound;
+  btn.onclick=continueFn;
+  var missed=Object.keys(roundMissedWords);
+  var rb=$('btn-review-missed');
+  if(missed.length){
+    rb.style.display='';
+    rb.textContent='📝 Repasar '+missed.length+' palabra'+(missed.length===1?'':'s')+' que fallaste';
+    rb.onclick=function(){startReviewMissed(continueFn);};
+  }else{
+    rb.style.display='none';
+  }
 }
 function nextRound(){cur++;show('play-screen');renderCard();}
 function statBox(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
@@ -539,11 +617,53 @@ function showFinal(){
     statBox(battery.length,'oraciones')+
     statBox(stats.correctBlanks+'/'+stats.totalBlanks,'espacios')+
     statBox(pct+'%','precisión')+
-    statBox(stats.perfectSentences,'perfectas');
+    statBox(stats.perfectSentences,'perfectas')+
+    statBox(stats.pistas,'pistas')+
+    statBox(stats.revelados,'reveladas');
   var counts={1:0,2:0,3:0,4:0,5:0};
   workingData.forEach(function(c){var b=c.leitner_box||1;if(counts[b]!==undefined)counts[b]++;});
   $('final-leitner').innerHTML='Progreso Leitner actualizado y guardado: 📦'+counts[1]+' · 📦'+counts[2]+
     ' · 📦'+counts[3]+' · 📦'+counts[4]+' · ⭐'+counts[5]+'. Compartido con tus tarjetas.';
+}
+
+// ── Missed-word review pass ──────────────────────────────────────────────────
+// Builds a short side-battery from a fresh sample, filtered down to exercises
+// that touch at least one word this round got wrong. Plays inline, then hands
+// control back to whatever the user was about to do (next round / final).
+function startReviewMissed(afterFn){
+  var words=Object.keys(roundMissedWords);
+  if(!words.length)return;
+  var taper=SentenceEngine.taperFraction(stepState);
+  var sample=SentenceEngine.generateBattery(model,{count:40,mode:settings.mode,
+    stepIndex:stepState.stepIndex,taper:taper});
+  var filtered=sample.filter(function(ex){
+    return ex.blanks.some(function(b){return b.wordKey && words.indexOf(b.wordKey)>=0;});
+  });
+  if(!filtered.length){
+    toast('No se pudieron generar oraciones de repaso para esas palabras todavía.');
+    return;
+  }
+  reviewList=filtered.slice(0,Math.min(10,filtered.length));
+  reviewIdx=0;reviewMode=true;reviewStats={correct:0,total:0};
+  afterReviewFn=afterFn;
+  show('play-screen');renderCard();
+}
+function finishReview(){
+  reviewMode=false;
+  toast('📝 Repaso terminado: '+reviewStats.correct+'/'+reviewStats.total+' correctas');
+  var fn=afterReviewFn;afterReviewFn=null;
+  if(fn)fn();else show('round-screen');
+}
+
+// ── Mid-session exit back to setup ───────────────────────────────────────────
+function confirmBackToSetup(){
+  if(reviewMode){
+    if(!confirm('¿Salir del repaso y volver a configuración?'))return;
+    reviewMode=false;afterReviewFn=null;
+  }else if(!curChecked){
+    if(!confirm('¿Salir de esta serie y volver a configuración? Lo que ya revisaste se guardó.'))return;
+  }
+  show('setup-screen');buildSetup();
 }
 
 // ── Wire up load screen ─────────────────────────────────────────────────────
