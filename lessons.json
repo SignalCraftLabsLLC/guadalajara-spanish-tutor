@@ -1,0 +1,82 @@
+{
+  "lessons": [
+    {
+      "id": "mercado",
+      "title": "En el mercado",
+      "emoji": "🧺",
+      "accent": "#2A7A3B",
+      "summary": "Compra aguacate, queso y fresas en un puesto del mercado, todo en el registro formal (usted) que se usa con los vendedores en Guadalajara.",
+      "setting": "Estás en un puesto de frutas y verduras en un mercado de Guadalajara, hablando con la vendedora.",
+      "register_note": "Esta conversación usa usted, no tú. En Guadalajara, usted es la forma normal para hablar con vendedores y desconocidos, no solo con personas mayores que tú. Ver la Sección 28 abajo.",
+      "categories": ["Alimentación", "Cantidades y comparaciones", "Comunicación y cortesía"],
+      "grammar_refs": [
+        {
+          "section": 2,
+          "title": "HAY (There is / There are)",
+          "note": "La vendedora dice \"hay aguacates\" y \"hay fresas\", no \"están\". HAY presenta algo por primera vez, sin que el cliente lo haya identificado todavía; ESTÁ/N se usaría para algo ya conocido y específico."
+        },
+        {
+          "section": 18,
+          "title": "GUSTAR + Verbos Similares",
+          "note": "\"Me gustan mucho\" usa la estructura invertida: el sujeto gramatical son las fresas (plural, por eso \"gustan\"), no \"yo\". \"Yo\" es solo el objeto indirecto."
+        },
+        {
+          "section": 28,
+          "title": "Cortesía y Formalidad 🌵",
+          "note": "Disculpe, no disculpa, porque el cliente le habla de usted a la vendedora. Mande y sale son tapatío puro: los vas a oír en cualquier puesto del mercado."
+        },
+        {
+          "section": 30,
+          "title": "Contables vs. No Contables + Cuantificadores",
+          "note": "Kilo, docena y pedazo son las unidades que convierten algo no contable o vendido a granel (queso, fresas) en una cantidad que se puede pedir. Demasiado y poco matizan cuánto."
+        }
+      ],
+      "vocab_highlight": [
+        { "word": "aguacate", "english": "avocado" },
+        { "word": "queso", "english": "cheese" },
+        { "word": "fresa", "english": "strawberry" },
+        { "word": "kilo", "english": "kilo" },
+        { "word": "docena", "english": "dozen" },
+        { "word": "pedazo", "english": "piece" },
+        { "word": "comprar", "english": "to buy" },
+        { "word": "probar", "english": "to try / taste" },
+        { "word": "costar", "english": "to cost" },
+        { "word": "pagar", "english": "to pay" },
+        { "word": "hay", "english": "there is / there are" },
+        { "word": "disculpa", "english": "excuse me (disculpe = usted form)" },
+        { "word": "gracias", "english": "thank you" },
+        { "word": "de acuerdo", "english": "agreed / OK" },
+        { "word": "mande", "english": "pardon? / yes? (tapatío)" },
+        { "word": "sale", "english": "deal / OK (tapatío)" },
+        { "word": "demasiado", "english": "too much" },
+        { "word": "poco", "english": "a little / few" }
+      ],
+      "dialogue": [
+        { "speaker": "Cliente", "es": "Buenos días. Disculpe, ¿tiene aguacates?", "en": "Good morning. Excuse me, do you have avocados?" },
+        { "speaker": "Vendedora", "es": "Buenos días. ¡Mande! Sí, hay aguacates bien maduros hoy.", "en": "Good morning. Pardon? Yes, there are nice ripe avocados today." },
+        { "speaker": "Cliente", "es": "Qué bueno. ¿Cuánto cuesta el kilo?", "en": "Great. How much does the kilo cost?" },
+        { "speaker": "Vendedora", "es": "El kilo cuesta cuarenta pesos.", "en": "The kilo costs forty pesos." },
+        { "speaker": "Cliente", "es": "De acuerdo. Quiero comprar un kilo, por favor.", "en": "Agreed. I want to buy a kilo, please." },
+        { "speaker": "Vendedora", "es": "Muy bien. ¿Necesita algo más?", "en": "Very well. Do you need anything else?" },
+        { "speaker": "Cliente", "es": "Sí. También busco queso. ¿Tiene queso fresco?", "en": "Yes. I'm also looking for cheese. Do you have fresh cheese?" },
+        { "speaker": "Vendedora", "es": "Claro. Aquí tengo queso fresco y queso cotija.", "en": "Of course. I have fresh cheese and cotija cheese here." },
+        { "speaker": "Cliente", "es": "¿Me da un pedazo del queso fresco? Pero no quiero demasiado, solo un poco.", "en": "Could you give me a piece of the fresh cheese? But I don't want too much, just a little." },
+        { "speaker": "Vendedora", "es": "Sale. Le corto un pedazo así, ¿está bien?", "en": "Deal. I'll cut you a piece like this, is that good?" },
+        { "speaker": "Cliente", "es": "Perfecto, gracias. Y unas fresas, si hay.", "en": "Perfect, thanks. And some strawberries, if there are any." },
+        { "speaker": "Vendedora", "es": "Sí, hay fresas bien dulces. ¿Las quiere probar?", "en": "Yes, there are nice sweet strawberries. Would you like to try them?" },
+        { "speaker": "Cliente", "es": "Sí, gracias. Mmm, están muy ricas. Me gustan mucho.", "en": "Yes, thanks. Mmm, they're delicious. I like them a lot." },
+        { "speaker": "Vendedora", "es": "Le doy una docena, entonces. Son treinta pesos.", "en": "I'll give you a dozen, then. That's thirty pesos." },
+        { "speaker": "Cliente", "es": "De acuerdo. ¿Puedo pagar con efectivo?", "en": "Agreed. Can I pay with cash?" },
+        { "speaker": "Vendedora", "es": "Sí, claro.", "en": "Yes, of course." },
+        { "speaker": "Cliente", "es": "Aquí tiene cien pesos. Muchas gracias.", "en": "Here's a hundred pesos. Thank you very much." },
+        { "speaker": "Vendedora", "es": "Gracias a usted. ¡Que le vaya bien!", "en": "Thank you. Have a good one!" }
+      ],
+      "practice": [
+        { "label": "Tarjetas: Alimentación", "href": "flashcards_vocabulario.html", "note": "Abre las Tarjetas de Vocabulario y elige la categoría \"Alimentación\" para repasar aguacate, queso, fresa y el resto." },
+        { "label": "Tarjetas: Cantidades y comparaciones", "href": "flashcards_vocabulario.html", "note": "Elige \"Cantidades y comparaciones\" para repasar kilo, docena, pedazo, demasiado, poco." },
+        { "label": "Tarjetas: Comunicación y cortesía", "href": "flashcards_vocabulario.html", "note": "Elige \"Comunicación y cortesía\" para repasar disculpa, gracias, de acuerdo, mande, sale." },
+        { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica formar oraciones con estas mismas palabras en cualquier categoría." }
+      ]
+    }
+  ]
+}
