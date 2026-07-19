@@ -514,7 +514,7 @@ function buildDrillUI(lesson){
       '<div class="note-box" style="margin-top:10px"><b>¿De dónde sale esta lista?</b> '+esc(lesson.methodology)+'</div></div>'+
     '<div class="card"><h2>🎯 Sigue practicando</h2><div class="practice-list">'+practiceHtml+'</div></div>';
   document.onkeydown=function(ev){
-    if(ev.key==='Enter'&&DRILL&&DRILL.answered){ev.preventDefault();nextCard();}
+    if(ev.key==='Enter'&&!ev.repeat&&DRILL&&DRILL.answered){ev.preventDefault();nextCard();}
   };
   renderMatrix();
   nextCard();
@@ -582,7 +582,11 @@ function nextCard(){
   };
   var inp=$('dv-input');
   inp.onkeydown=function(ev){
-    if(ev.key==='Enter'){ if(DRILL.answered) nextCard(); else gradeCard(); }
+    if(ev.key==='Enter'){
+      ev.preventDefault();
+      ev.stopPropagation();   // don't let this same keystroke reach the document handler
+      if(!DRILL.answered) gradeCard();
+    }
   };
   inp.focus();
 }
