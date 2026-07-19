@@ -219,6 +219,44 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "acabar",
+    "english": "to finish, to end",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; acabar de + infinitivo = acción recién terminada: acabo de comer.",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Rutinas diarias",
+      "Tiempo y frecuencia"
+    ],
+    "gerund": "acabando",
+    "past_participle": "acabado",
+    "present_conjugation": {
+      "yo": "acabo",
+      "tú": "acabas",
+      "él/ella": "acaba",
+      "nosotros": "acabamos",
+      "ellos/ellas": "acaban"
+    },
+    "preterite_conjugation": {
+      "yo": "acabé",
+      "tú": "acabaste",
+      "él/ella": "acabó",
+      "nosotros": "acabamos",
+      "ellos/ellas": "acabaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "acababa",
+      "tú": "acababas",
+      "él/ella": "acababa",
+      "nosotros": "acabábamos",
+      "ellos/ellas": "acababan"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "acción",
     "english": "action",
     "part_of_speech": "noun (f)",
@@ -431,6 +469,44 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "agarrar",
+    "english": "to grab, to take",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; en México se usa constantemente en lugar de tomar/coger: agarrar el camión, agarrar la onda.",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Rutinas diarias",
+      "Cultura tapatía"
+    ],
+    "gerund": "agarrando",
+    "past_participle": "agarrado",
+    "present_conjugation": {
+      "yo": "agarro",
+      "tú": "agarras",
+      "él/ella": "agarra",
+      "nosotros": "agarramos",
+      "ellos/ellas": "agarran"
+    },
+    "preterite_conjugation": {
+      "yo": "agarré",
+      "tú": "agarraste",
+      "él/ella": "agarró",
+      "nosotros": "agarramos",
+      "ellos/ellas": "agarraron"
+    },
+    "imperfect_conjugation": {
+      "yo": "agarraba",
+      "tú": "agarrabas",
+      "él/ella": "agarraba",
+      "nosotros": "agarrábamos",
+      "ellos/ellas": "agarraban"
+    },
+    "tapatio": true,
+    "tapatio_notes": "🌵 Verbo comodín mexicano: agarra el camión (toma el bus), agarré frío, ¿ya agarraste la onda? La escucharás a diario en GDL.",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "agradecido",
     "english": "thankful / grateful",
     "part_of_speech": "adjective",
@@ -582,6 +658,43 @@
     "categories": [
       "Alimentación"
     ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "alcanzar",
+    "english": "to reach; to be enough",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; cambio ortográfico en pretérito yo: alcancé (z→c). Uso cotidiano: no me alcanza (el dinero).",
+    "grammar_rule": "Regular -AR verb (-zar→-cé in preterite yo)",
+    "categories": [
+      "Cantidades y comparaciones"
+    ],
+    "gerund": "alcanzando",
+    "past_participle": "alcanzado",
+    "present_conjugation": {
+      "yo": "alcanzo",
+      "tú": "alcanzas",
+      "él/ella": "alcanza",
+      "nosotros": "alcanzamos",
+      "ellos/ellas": "alcanzan"
+    },
+    "preterite_conjugation": {
+      "yo": "alcancé",
+      "tú": "alcanzaste",
+      "él/ella": "alcanzó",
+      "nosotros": "alcanzamos",
+      "ellos/ellas": "alcanzaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "alcanzaba",
+      "tú": "alcanzabas",
+      "él/ella": "alcanzaba",
+      "nosotros": "alcanzábamos",
+      "ellos/ellas": "alcanzaban"
+    },
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,
@@ -1173,6 +1286,43 @@
     "leitner_box": 2,
     "leitner_sessions_until_due": 1,
     "_seed": false
+  },
+  {
+    "word": "aparecer",
+    "english": "to appear",
+    "part_of_speech": "verb",
+    "grammar_notes": "Irregular solo en yo: aparezco (c→zc); lo demás regular.",
+    "grammar_rule": "Irregular yo form (c→zc): aparezco",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "apareciendo",
+    "past_participle": "aparecido",
+    "present_conjugation": {
+      "yo": "aparezco",
+      "tú": "apareces",
+      "él/ella": "aparece",
+      "nosotros": "aparecemos",
+      "ellos/ellas": "aparecen"
+    },
+    "preterite_conjugation": {
+      "yo": "aparecí",
+      "tú": "apareciste",
+      "él/ella": "apareció",
+      "nosotros": "aparecimos",
+      "ellos/ellas": "aparecieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "aparecía",
+      "tú": "aparecías",
+      "él/ella": "aparecía",
+      "nosotros": "aparecíamos",
+      "ellos/ellas": "aparecían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
   },
   {
     "word": "apenas",
@@ -2401,6 +2551,43 @@
     "categories": [
       "Animales"
     ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "buscar",
+    "english": "to look for",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; cambio ortográfico en pretérito yo: busqué (c→qu). ¡Ojo! No lleva preposición: busco mis llaves (nunca 'busco por').",
+    "grammar_rule": "Regular -AR verb (-car→-qué in preterite yo)",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "buscando",
+    "past_participle": "buscado",
+    "present_conjugation": {
+      "yo": "busco",
+      "tú": "buscas",
+      "él/ella": "busca",
+      "nosotros": "buscamos",
+      "ellos/ellas": "buscan"
+    },
+    "preterite_conjugation": {
+      "yo": "busqué",
+      "tú": "buscaste",
+      "él/ella": "buscó",
+      "nosotros": "buscamos",
+      "ellos/ellas": "buscaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "buscaba",
+      "tú": "buscabas",
+      "él/ella": "buscaba",
+      "nosotros": "buscábamos",
+      "ellos/ellas": "buscaban"
+    },
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,
@@ -4672,6 +4859,43 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "considerar",
+    "english": "to consider",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; considerar que + indicativo: considero que es buena idea.",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Comunicación y cortesía"
+    ],
+    "gerund": "considerando",
+    "past_participle": "considerado",
+    "present_conjugation": {
+      "yo": "considero",
+      "tú": "consideras",
+      "él/ella": "considera",
+      "nosotros": "consideramos",
+      "ellos/ellas": "consideran"
+    },
+    "preterite_conjugation": {
+      "yo": "consideré",
+      "tú": "consideraste",
+      "él/ella": "consideró",
+      "nosotros": "consideramos",
+      "ellos/ellas": "consideraron"
+    },
+    "imperfect_conjugation": {
+      "yo": "consideraba",
+      "tú": "considerabas",
+      "él/ella": "consideraba",
+      "nosotros": "considerábamos",
+      "ellos/ellas": "consideraban"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "construir",
     "english": "to build",
     "part_of_speech": "verb",
@@ -4793,6 +5017,43 @@
       "él/ella": "contestaba",
       "nosotros": "contestábamos",
       "ellos/ellas": "contestaban"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "convertirse",
+    "english": "to become, to turn into",
+    "part_of_speech": "verb (reflexive)",
+    "grammar_notes": "Cambio de raíz e→ie: me convierto; pretérito 3ª persona e→i: se convirtió; gerundio: convirtiéndose; convertirse en + sustantivo.",
+    "grammar_rule": "Stem-changing verb: e→ie (-IR: 3rd-person preterite e→i, reflexive)",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "convirtiéndose",
+    "past_participle": "convertido",
+    "present_conjugation": {
+      "yo": "me convierto",
+      "tú": "te conviertes",
+      "él/ella": "se convierte",
+      "nosotros": "nos convertimos",
+      "ellos/ellas": "se convierten"
+    },
+    "preterite_conjugation": {
+      "yo": "me convertí",
+      "tú": "te convertiste",
+      "él/ella": "se convirtió",
+      "nosotros": "nos convertimos",
+      "ellos/ellas": "se convirtieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "me convertía",
+      "tú": "te convertías",
+      "él/ella": "se convertía",
+      "nosotros": "nos convertíamos",
+      "ellos/ellas": "se convertían"
     },
     "tapatio": false,
     "tapatio_notes": "",
@@ -5012,6 +5273,43 @@
     "leitner_box": 2,
     "leitner_sessions_until_due": 1,
     "_seed": false
+  },
+  {
+    "word": "crear",
+    "english": "to create",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; dos vocales juntas (creo, creé) — no confundir con creer (creo es igual, contexto decide).",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "creando",
+    "past_participle": "creado",
+    "present_conjugation": {
+      "yo": "creo",
+      "tú": "creas",
+      "él/ella": "crea",
+      "nosotros": "creamos",
+      "ellos/ellas": "crean"
+    },
+    "preterite_conjugation": {
+      "yo": "creé",
+      "tú": "creaste",
+      "él/ella": "creó",
+      "nosotros": "creamos",
+      "ellos/ellas": "crearon"
+    },
+    "imperfect_conjugation": {
+      "yo": "creaba",
+      "tú": "creabas",
+      "él/ella": "creaba",
+      "nosotros": "creábamos",
+      "ellos/ellas": "creaban"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
   },
   {
     "word": "creatinina",
@@ -5331,6 +5629,44 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "cumplir",
+    "english": "to fulfill; to turn (age)",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -IR; cumplir años: ¿Cuántos años cumples?; cumplir con = completar una obligación.",
+    "grammar_rule": "Regular -IR verb",
+    "categories": [
+      "Tiempo y frecuencia",
+      "Familia y relaciones"
+    ],
+    "gerund": "cumpliendo",
+    "past_participle": "cumplido",
+    "present_conjugation": {
+      "yo": "cumplo",
+      "tú": "cumples",
+      "él/ella": "cumple",
+      "nosotros": "cumplimos",
+      "ellos/ellas": "cumplen"
+    },
+    "preterite_conjugation": {
+      "yo": "cumplí",
+      "tú": "cumpliste",
+      "él/ella": "cumplió",
+      "nosotros": "cumplimos",
+      "ellos/ellas": "cumplieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "cumplía",
+      "tú": "cumplías",
+      "él/ella": "cumplía",
+      "nosotros": "cumplíamos",
+      "ellos/ellas": "cumplían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "cuñada",
     "english": "sister-in-law",
     "part_of_speech": "noun (f)",
@@ -5538,6 +5874,43 @@
     "leitner_box": 2,
     "leitner_sessions_until_due": 0,
     "_seed": false
+  },
+  {
+    "word": "decidir",
+    "english": "to decide",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -IR; decidir + infinitivo: decidí viajar.",
+    "grammar_rule": "Regular -IR verb",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "decidiendo",
+    "past_participle": "decidido",
+    "present_conjugation": {
+      "yo": "decido",
+      "tú": "decides",
+      "él/ella": "decide",
+      "nosotros": "decidimos",
+      "ellos/ellas": "deciden"
+    },
+    "preterite_conjugation": {
+      "yo": "decidí",
+      "tú": "decidiste",
+      "él/ella": "decidió",
+      "nosotros": "decidimos",
+      "ellos/ellas": "decidieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "decidía",
+      "tú": "decidías",
+      "él/ella": "decidía",
+      "nosotros": "decidíamos",
+      "ellos/ellas": "decidían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
   },
   {
     "word": "decir",
@@ -6095,6 +6468,43 @@
     "leitner_box": 2,
     "leitner_sessions_until_due": 0,
     "_seed": false
+  },
+  {
+    "word": "dirigir",
+    "english": "to direct, to lead",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -IR; cambio ortográfico en presente yo: dirijo (g→j); dirigirse a = hablarle a alguien.",
+    "grammar_rule": "Regular -IR verb (g→j in present yo: dirijo)",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "dirigiendo",
+    "past_participle": "dirigido",
+    "present_conjugation": {
+      "yo": "dirijo",
+      "tú": "diriges",
+      "él/ella": "dirige",
+      "nosotros": "dirigimos",
+      "ellos/ellas": "dirigen"
+    },
+    "preterite_conjugation": {
+      "yo": "dirigí",
+      "tú": "dirigiste",
+      "él/ella": "dirigió",
+      "nosotros": "dirigimos",
+      "ellos/ellas": "dirigieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "dirigía",
+      "tú": "dirigías",
+      "él/ella": "dirigía",
+      "nosotros": "dirigíamos",
+      "ellos/ellas": "dirigían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
   },
   {
     "word": "disculpa",
@@ -7696,6 +8106,43 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "existir",
+    "english": "to exist",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -IR; se usa mucho en tercera persona: existe/existen.",
+    "grammar_rule": "Regular -IR verb",
+    "categories": [
+      "Gramática funcional"
+    ],
+    "gerund": "existiendo",
+    "past_participle": "existido",
+    "present_conjugation": {
+      "yo": "existo",
+      "tú": "existes",
+      "él/ella": "existe",
+      "nosotros": "existimos",
+      "ellos/ellas": "existen"
+    },
+    "preterite_conjugation": {
+      "yo": "existí",
+      "tú": "exististe",
+      "él/ella": "existió",
+      "nosotros": "existimos",
+      "ellos/ellas": "existieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "existía",
+      "tú": "existías",
+      "él/ella": "existía",
+      "nosotros": "existíamos",
+      "ellos/ellas": "existían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "éxito",
     "english": "success",
     "part_of_speech": "noun (m)",
@@ -7706,6 +8153,43 @@
       "Descripción personal",
       "Comunicación y cortesía"
     ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "explicar",
+    "english": "to explain",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; cambio ortográfico en pretérito yo: expliqué (c→qu).",
+    "grammar_rule": "Regular -AR verb (-car→-qué in preterite yo)",
+    "categories": [
+      "Comunicación y cortesía"
+    ],
+    "gerund": "explicando",
+    "past_participle": "explicado",
+    "present_conjugation": {
+      "yo": "explico",
+      "tú": "explicas",
+      "él/ella": "explica",
+      "nosotros": "explicamos",
+      "ellos/ellas": "explican"
+    },
+    "preterite_conjugation": {
+      "yo": "expliqué",
+      "tú": "explicaste",
+      "él/ella": "explicó",
+      "nosotros": "explicamos",
+      "ellos/ellas": "explicaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "explicaba",
+      "tú": "explicabas",
+      "él/ella": "explicaba",
+      "nosotros": "explicábamos",
+      "ellos/ellas": "explicaban"
+    },
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,
@@ -7971,6 +8455,43 @@
     "categories": [
       "Animales"
     ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "formar",
+    "english": "to form, to make up",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; formar parte de = pertenecer; formarse = hacer fila (uso mexicano: fórmese en la fila).",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "formando",
+    "past_participle": "formado",
+    "present_conjugation": {
+      "yo": "formo",
+      "tú": "formas",
+      "él/ella": "forma",
+      "nosotros": "formamos",
+      "ellos/ellas": "forman"
+    },
+    "preterite_conjugation": {
+      "yo": "formé",
+      "tú": "formaste",
+      "él/ella": "formó",
+      "nosotros": "formamos",
+      "ellos/ellas": "formaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "formaba",
+      "tú": "formabas",
+      "él/ella": "formaba",
+      "nosotros": "formábamos",
+      "ellos/ellas": "formaban"
+    },
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,
@@ -9599,6 +10120,43 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "intentar",
+    "english": "to try, to attempt",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; intentar + infinitivo: intenté llamar (sin preposición).",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "intentando",
+    "past_participle": "intentado",
+    "present_conjugation": {
+      "yo": "intento",
+      "tú": "intentas",
+      "él/ella": "intenta",
+      "nosotros": "intentamos",
+      "ellos/ellas": "intentan"
+    },
+    "preterite_conjugation": {
+      "yo": "intenté",
+      "tú": "intentaste",
+      "él/ella": "intentó",
+      "nosotros": "intentamos",
+      "ellos/ellas": "intentaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "intentaba",
+      "tú": "intentabas",
+      "él/ella": "intentaba",
+      "nosotros": "intentábamos",
+      "ellos/ellas": "intentaban"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "interesar",
     "english": "to interest",
     "part_of_speech": "verb",
@@ -10679,6 +11237,43 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "lograr",
+    "english": "to achieve, to manage to",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; lograr + infinitivo: logré terminar la tarea.",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "logrando",
+    "past_participle": "logrado",
+    "present_conjugation": {
+      "yo": "logro",
+      "tú": "logras",
+      "él/ella": "logra",
+      "nosotros": "logramos",
+      "ellos/ellas": "logran"
+    },
+    "preterite_conjugation": {
+      "yo": "logré",
+      "tú": "lograste",
+      "él/ella": "logró",
+      "nosotros": "logramos",
+      "ellos/ellas": "lograron"
+    },
+    "imperfect_conjugation": {
+      "yo": "lograba",
+      "tú": "lograbas",
+      "él/ella": "lograba",
+      "nosotros": "lográbamos",
+      "ellos/ellas": "lograban"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "loro",
     "english": "parrot",
     "part_of_speech": "noun (m)",
@@ -10946,6 +11541,43 @@
     "leitner_box": 2,
     "leitner_sessions_until_due": 1,
     "_seed": false
+  },
+  {
+    "word": "mantener",
+    "english": "to maintain, to keep",
+    "part_of_speech": "verb",
+    "grammar_notes": "Se conjuga como tener: mantengo, mantienes; pretérito fuerte: mantuve.",
+    "grammar_rule": "Mixed irregular: yo-irregular (mantengo) + stem-change e→ie",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "manteniendo",
+    "past_participle": "mantenido",
+    "present_conjugation": {
+      "yo": "mantengo",
+      "tú": "mantienes",
+      "él/ella": "mantiene",
+      "nosotros": "mantenemos",
+      "ellos/ellas": "mantienen"
+    },
+    "preterite_conjugation": {
+      "yo": "mantuve",
+      "tú": "mantuviste",
+      "él/ella": "mantuvo",
+      "nosotros": "mantuvimos",
+      "ellos/ellas": "mantuvieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "mantenía",
+      "tú": "mantenías",
+      "él/ella": "mantenía",
+      "nosotros": "manteníamos",
+      "ellos/ellas": "mantenían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
   },
   {
     "word": "mantequilla",
@@ -12424,6 +13056,80 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "obtener",
+    "english": "to obtain, to get",
+    "part_of_speech": "verb",
+    "grammar_notes": "Se conjuga como tener: obtengo, obtienes; pretérito fuerte: obtuve.",
+    "grammar_rule": "Mixed irregular: yo-irregular (obtengo) + stem-change e→ie",
+    "categories": [
+      "Rutinas diarias"
+    ],
+    "gerund": "obteniendo",
+    "past_participle": "obtenido",
+    "present_conjugation": {
+      "yo": "obtengo",
+      "tú": "obtienes",
+      "él/ella": "obtiene",
+      "nosotros": "obtenemos",
+      "ellos/ellas": "obtienen"
+    },
+    "preterite_conjugation": {
+      "yo": "obtuve",
+      "tú": "obtuviste",
+      "él/ella": "obtuvo",
+      "nosotros": "obtuvimos",
+      "ellos/ellas": "obtuvieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "obtenía",
+      "tú": "obtenías",
+      "él/ella": "obtenía",
+      "nosotros": "obteníamos",
+      "ellos/ellas": "obtenían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "ocurrir",
+    "english": "to occur, to happen",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -IR; casi siempre en tercera persona: ocurre/ocurren; ¿Qué ocurrió? = ¿Qué pasó?",
+    "grammar_rule": "Regular -IR verb",
+    "categories": [
+      "Gramática funcional"
+    ],
+    "gerund": "ocurriendo",
+    "past_participle": "ocurrido",
+    "present_conjugation": {
+      "yo": "ocurro",
+      "tú": "ocurres",
+      "él/ella": "ocurre",
+      "nosotros": "ocurrimos",
+      "ellos/ellas": "ocurren"
+    },
+    "preterite_conjugation": {
+      "yo": "ocurrí",
+      "tú": "ocurriste",
+      "él/ella": "ocurrió",
+      "nosotros": "ocurrimos",
+      "ellos/ellas": "ocurrieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "ocurría",
+      "tú": "ocurrías",
+      "él/ella": "ocurría",
+      "nosotros": "ocurríamos",
+      "ellos/ellas": "ocurrían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "odio",
     "english": "hatred / to hate",
     "part_of_speech": "noun (m) / verb",
@@ -12432,6 +13138,43 @@
     "categories": [
       "Emociones y estados"
     ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "ofrecer",
+    "english": "to offer",
+    "part_of_speech": "verb",
+    "grammar_notes": "Irregular solo en yo: ofrezco (c→zc); lo demás regular; ¿Qué se le ofrece? = frase de cortesía muy mexicana.",
+    "grammar_rule": "Irregular yo form (c→zc): ofrezco",
+    "categories": [
+      "Comunicación y cortesía"
+    ],
+    "gerund": "ofreciendo",
+    "past_participle": "ofrecido",
+    "present_conjugation": {
+      "yo": "ofrezco",
+      "tú": "ofreces",
+      "él/ella": "ofrece",
+      "nosotros": "ofrecemos",
+      "ellos/ellas": "ofrecen"
+    },
+    "preterite_conjugation": {
+      "yo": "ofrecí",
+      "tú": "ofreciste",
+      "él/ella": "ofreció",
+      "nosotros": "ofrecimos",
+      "ellos/ellas": "ofrecieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "ofrecía",
+      "tú": "ofrecías",
+      "él/ella": "ofrecía",
+      "nosotros": "ofrecíamos",
+      "ellos/ellas": "ofrecían"
+    },
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,
@@ -13663,6 +14406,43 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "permitir",
+    "english": "to allow, to permit",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -IR; permitir + infinitivo o que + subjuntivo; ¿Me permite? = frase de cortesía.",
+    "grammar_rule": "Regular -IR verb",
+    "categories": [
+      "Comunicación y cortesía"
+    ],
+    "gerund": "permitiendo",
+    "past_participle": "permitido",
+    "present_conjugation": {
+      "yo": "permito",
+      "tú": "permites",
+      "él/ella": "permite",
+      "nosotros": "permitimos",
+      "ellos/ellas": "permiten"
+    },
+    "preterite_conjugation": {
+      "yo": "permití",
+      "tú": "permitiste",
+      "él/ella": "permitió",
+      "nosotros": "permitimos",
+      "ellos/ellas": "permitieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "permitía",
+      "tú": "permitías",
+      "él/ella": "permitía",
+      "nosotros": "permitíamos",
+      "ellos/ellas": "permitían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "peroné",
     "english": "fibula",
     "part_of_speech": "noun (m)",
@@ -13925,6 +14705,44 @@
     ],
     "tapatio": false,
     "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "platicar",
+    "english": "to chat, to talk",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; cambio ortográfico en pretérito yo: platiqué (c→qu). En México sustituye a charlar/conversar.",
+    "grammar_rule": "Regular -AR verb (-car→-qué in preterite yo)",
+    "categories": [
+      "Comunicación y cortesía",
+      "Cultura tapatía"
+    ],
+    "gerund": "platicando",
+    "past_participle": "platicado",
+    "present_conjugation": {
+      "yo": "platico",
+      "tú": "platicas",
+      "él/ella": "platica",
+      "nosotros": "platicamos",
+      "ellos/ellas": "platican"
+    },
+    "preterite_conjugation": {
+      "yo": "platiqué",
+      "tú": "platicaste",
+      "él/ella": "platicó",
+      "nosotros": "platicamos",
+      "ellos/ellas": "platicaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "platicaba",
+      "tú": "platicabas",
+      "él/ella": "platicaba",
+      "nosotros": "platicábamos",
+      "ellos/ellas": "platicaban"
+    },
+    "tapatio": true,
+    "tapatio_notes": "🌵 Palabra clave del español mexicano: en Guadalajara nadie 'charla', todos platican. 'Vamos a platicar un rato.'",
     "leitner_box": 1,
     "leitner_sessions_until_due": 0
   },
@@ -15123,6 +15941,43 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "reconocer",
+    "english": "to recognize",
+    "part_of_speech": "verb",
+    "grammar_notes": "Irregular solo en yo: reconozco (c→zc); lo demás regular.",
+    "grammar_rule": "Irregular yo form (c→zc): reconozco",
+    "categories": [
+      "Comunicación y cortesía"
+    ],
+    "gerund": "reconociendo",
+    "past_participle": "reconocido",
+    "present_conjugation": {
+      "yo": "reconozco",
+      "tú": "reconoces",
+      "él/ella": "reconoce",
+      "nosotros": "reconocemos",
+      "ellos/ellas": "reconocen"
+    },
+    "preterite_conjugation": {
+      "yo": "reconocí",
+      "tú": "reconociste",
+      "él/ella": "reconoció",
+      "nosotros": "reconocimos",
+      "ellos/ellas": "reconocieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "reconocía",
+      "tú": "reconocías",
+      "él/ella": "reconocía",
+      "nosotros": "reconocíamos",
+      "ellos/ellas": "reconocían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "recordar",
     "english": "to remember",
     "part_of_speech": "verb",
@@ -15449,6 +16304,80 @@
       "él/ella": "respiraba",
       "nosotros": "respirábamos",
       "ellos/ellas": "respiraban"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "responder",
+    "english": "to answer, to respond",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -ER; responder a una pregunta / responder el teléfono.",
+    "grammar_rule": "Regular -ER verb",
+    "categories": [
+      "Comunicación y cortesía"
+    ],
+    "gerund": "respondiendo",
+    "past_participle": "respondido",
+    "present_conjugation": {
+      "yo": "respondo",
+      "tú": "respondes",
+      "él/ella": "responde",
+      "nosotros": "respondemos",
+      "ellos/ellas": "responden"
+    },
+    "preterite_conjugation": {
+      "yo": "respondí",
+      "tú": "respondiste",
+      "él/ella": "respondió",
+      "nosotros": "respondimos",
+      "ellos/ellas": "respondieron"
+    },
+    "imperfect_conjugation": {
+      "yo": "respondía",
+      "tú": "respondías",
+      "él/ella": "respondía",
+      "nosotros": "respondíamos",
+      "ellos/ellas": "respondían"
+    },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "resultar",
+    "english": "to turn out, to result",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; resultar + adjetivo: resultó difícil; resulta que... = introduce una sorpresa.",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Gramática funcional"
+    ],
+    "gerund": "resultando",
+    "past_participle": "resultado",
+    "present_conjugation": {
+      "yo": "resulto",
+      "tú": "resultas",
+      "él/ella": "resulta",
+      "nosotros": "resultamos",
+      "ellos/ellas": "resultan"
+    },
+    "preterite_conjugation": {
+      "yo": "resulté",
+      "tú": "resultaste",
+      "él/ella": "resultó",
+      "nosotros": "resultamos",
+      "ellos/ellas": "resultaron"
+    },
+    "imperfect_conjugation": {
+      "yo": "resultaba",
+      "tú": "resultabas",
+      "él/ella": "resultaba",
+      "nosotros": "resultábamos",
+      "ellos/ellas": "resultaban"
     },
     "tapatio": false,
     "tapatio_notes": "",
@@ -17734,6 +18663,43 @@
       "Medicina y tratamiento",
       "Salud y síntomas"
     ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "tratar",
+    "english": "to try / to treat",
+    "part_of_speech": "verb",
+    "grammar_notes": "Regular -AR; tratar de + infinitivo = intentar (trato de estudiar); tratar con = lidiar con personas.",
+    "grammar_rule": "Regular -AR verb",
+    "categories": [
+      "Comunicación y cortesía"
+    ],
+    "gerund": "tratando",
+    "past_participle": "tratado",
+    "present_conjugation": {
+      "yo": "trato",
+      "tú": "tratas",
+      "él/ella": "trata",
+      "nosotros": "tratamos",
+      "ellos/ellas": "tratan"
+    },
+    "preterite_conjugation": {
+      "yo": "traté",
+      "tú": "trataste",
+      "él/ella": "trató",
+      "nosotros": "tratamos",
+      "ellos/ellas": "trataron"
+    },
+    "imperfect_conjugation": {
+      "yo": "trataba",
+      "tú": "tratabas",
+      "él/ella": "trataba",
+      "nosotros": "tratábamos",
+      "ellos/ellas": "trataban"
+    },
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,

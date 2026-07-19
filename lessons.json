@@ -77,6 +77,48 @@
         { "label": "Tarjetas: Comunicación y cortesía", "href": "flashcards_vocabulario.html", "note": "Elige \"Comunicación y cortesía\" para repasar disculpa, gracias, de acuerdo, mande, sale." },
         { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica formar oraciones con estas mismas palabras en cualquier categoría." }
       ]
+    },
+    {
+      "id": "verbos",
+      "type": "drill",
+      "title": "Los 100 Verbos",
+      "emoji": "⚡",
+      "accent": "#C1440E",
+      "summary": "Los cien verbos más usados del español mexicano, en cinco grupos de veinte. Domina un grupo y se abre el siguiente; domina un tiempo y se abre el próximo.",
+      "setting": "Empiezas con los veinte verbos más usados, solo en presente. Cuando dominas un grupo (con el mismo sistema de cajitas de tus tarjetas), se desbloquea el siguiente grupo — y el siguiente tiempo verbal para el grupo que ya dominas.",
+      "methodology": "Clasificación basada en el corpus CORPES XXI y la lista de los 100 verbos de SpanishDictionary.com, ajustada al español hablado de México: se sustituyeron diez verbos de registro escrito (realizar, señalar, establecer, etc.) por verbos cotidianos como comer, dormir, platicar 🌵 y agarrar 🌵. El orden final es una síntesis pedagógica, no una medición exacta de frecuencia.",
+      "tenses": [
+        { "id": "presente", "name": "Presente", "emoji": "🌞", "sections": "3, 6–9", "desc": "Lo que haces hoy, siempre, en general." },
+        { "id": "preterito", "name": "Pretérito", "emoji": "📸", "sections": "32", "desc": "Acción terminada: una foto del pasado." },
+        { "id": "imperfecto", "name": "Imperfecto", "emoji": "🎞️", "sections": "33", "desc": "Escenario o costumbre del pasado: una película." },
+        { "id": "futuro_proximo", "name": "Futuro próximo", "emoji": "🚌", "sections": "29", "formula": "ir + a + infinitivo", "desc": "Lo que vas a hacer. Escribe la frase completa: voy a comer." },
+        { "id": "gerundio", "name": "Gerundio", "emoji": "🌀", "sections": "27", "formula": "estar + gerundio", "desc": "Lo que está pasando ahorita mismo. Escribe la frase completa: estoy comiendo." },
+        { "id": "participio", "name": "Participio", "emoji": "🏁", "sections": "34", "formula": "haber + participio", "desc": "Lo que has hecho. Escribe la frase completa: he comido." }
+      ],
+      "groups": [
+        { "name": "Los cimientos", "emoji": "🧱", "verbs": ["ser","estar","tener","hacer","poder","decir","haber","ir","dar","ver","saber","pasar","deber","querer","llegar","dejar","llevar","encontrar","seguir","poner"] },
+        { "name": "La conversación", "emoji": "💬", "verbs": ["quedarse","parecer","hablar","pensar","volver","conocer","salir","comer","tomar","tratar","contar","llamarse","venir","mirar","oír","permitir","esperar","sentir","vivir","buscar"] },
+        { "name": "La rutina", "emoji": "☀️", "verbs": ["creer","crear","perder","andar","existir","abrir","trabajar","recibir","mantener","dormir","explicar","lograr","empezar","recordar","comenzar","pedir","preguntar","pagar","entrar","mostrar"] },
+        { "name": "La calle", "emoji": "🌵", "verbs": ["comprar","escribir","entender","terminar","ganar","agarrar","morir","ocurrir","ofrecer","jugar","gustar","escuchar","tocar","sentarse","cambiar","aparecer","acabar","decidir","platicar","resultar"] },
+        { "name": "El toque fino", "emoji": "✨", "verbs": ["caer","necesitar","sacar","conseguir","estudiar","considerar","convertirse","reconocer","servir","alcanzar","intentar","cumplir","leer","obtener","ayudar","usar","responder","producir","formar","dirigir"] }
+      ],
+      "special": {
+        "impersonal": { "haber": { "presente": "hay", "preterito": "hubo", "imperfecto": "había" } },
+        "gustar_type": ["gustar"],
+        "simple_only": ["haber","gustar"]
+      },
+      "grammar_refs": [
+        { "section": 3, "title": "Verbos Regulares — Presente", "note": "El punto de partida: las terminaciones -AR, -ER, -IR del presente. Los grupos 1 y 2 están llenos de irregulares (Secciones 6–9) — por eso cada tarjeta te avisa si el verbo es regular o no, hasta que lo domines." },
+        { "section": 32, "title": "Pretérito Simple", "note": "La foto del pasado. Ojo con los pretéritos fuertes (tuve, hice, dije) que aparecen desde el grupo 1." },
+        { "section": 33, "title": "Pretérito Imperfecto", "note": "La película del pasado. Solo ser, ir y ver son irregulares aquí — el tiempo más amable de todos." },
+        { "section": 29, "title": "Futuro Próximo (Ir + a + Infinitivo)", "note": "No hay nada nuevo que memorizar: si dominas ir en presente, ya tienes el futuro de los cien verbos." },
+        { "section": 27, "title": "Presente Continuo (Estar + Gerundio)", "note": "Estar + gerundio para lo que pasa ahorita. Los -IR con cambio de raíz cambian también en el gerundio: durmiendo, pidiendo." },
+        { "section": 34, "title": "Pretérito Perfecto (Haber + Participio)", "note": "Haber en presente + participio. Los participios irregulares (hecho, dicho, visto, puesto...) se concentran justo en los verbos más usados." }
+      ],
+      "practice": [
+        { "label": "Tarjetas de Vocabulario", "href": "flashcards_vocabulario.html", "note": "Tu progreso en presente aquí también alimenta las cajitas de tus tarjetas — los dos comparten memoria." },
+        { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Usa los verbos que ya dominaste dentro de oraciones completas." }
+      ]
     }
   ]
 }
