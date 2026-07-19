@@ -508,11 +508,14 @@ function buildDrillUI(lesson){
       '</div>'+
       '<div class="note-box" style="margin-top:14px">'+esc(lesson.setting)+'</div>'+
     '</div>'+
-    '<div class="card"><h2>🗺️ Tu mapa de verbos</h2><div class="matrix" id="drill-matrix"></div></div>'+
     '<div class="card"><h2 id="drill-cell-title">🎯 Practica</h2><div class="drill-stage" id="drill-stage"></div></div>'+
+    '<div class="card"><h2>🗺️ Tu mapa de verbos</h2><div class="matrix" id="drill-matrix"></div></div>'+
     '<div class="card"><h2>📚 Gramática de esta lección</h2>'+gramHtml+
       '<div class="note-box" style="margin-top:10px"><b>¿De dónde sale esta lista?</b> '+esc(lesson.methodology)+'</div></div>'+
     '<div class="card"><h2>🎯 Sigue practicando</h2><div class="practice-list">'+practiceHtml+'</div></div>';
+  document.onkeydown=function(ev){
+    if(ev.key==='Enter'&&DRILL&&DRILL.answered){ev.preventDefault();nextCard();}
+  };
   renderMatrix();
   nextCard();
 }
@@ -614,15 +617,19 @@ function gradeCard(){
     });
     fb.innerHTML+='<div class="unlock-banner">🎉 ¡Se desbloqueó: '+esc(msgs.join(' y '))+'!</div>';
   }
-  fb.innerHTML+='<div style="margin-top:10px"><button class="btn-check" onclick="nextCard()">Siguiente →</button></div>';
+  fb.innerHTML+='<div style="margin-top:8px;color:var(--muted);font-size:.9rem"><i>'+esc(c.word)+' — '+esc(c.e.english)+'</i></div>';
+  fb.innerHTML+='<div style="margin-top:10px"><button class="btn-check" onclick="nextCard()">Siguiente →</button>'+
+    '<span style="margin-left:10px;color:var(--muted);font-size:.82rem">o pulsa Enter ↵</span></div>';
   renderMatrix();
   inp.disabled=true;
+  inp.blur();
 }
 
 // ── Routing ──────────────────────────────────────────────────────────────
 function route(){
   var id = decodeURIComponent((location.hash||'').replace('#',''));
   if(!id){
+    DRILL=null; document.onkeydown=null;
     $('view-detail').style.display='none';
     $('back-to-picker').style.display='none';
     $('view-picker').style.display='block';
