@@ -5,6 +5,7 @@
       "title": "En el mercado",
       "emoji": "🧺",
       "accent": "#2A7A3B",
+      "player": "Cliente",
       "summary": "Compra aguacate, queso y fresas en un puesto del mercado, todo en el registro formal (usted) que se usa con los vendedores en Guadalajara.",
       "setting": "Estás en un puesto de frutas y verduras en un mercado de Guadalajara, hablando con la vendedora.",
       "register_note": "Esta conversación usa usted, no tú. En Guadalajara, usted es la forma normal para hablar con vendedores y desconocidos, no solo con personas mayores que tú. Ver la Sección 28 abajo.",
@@ -76,6 +77,294 @@
         { "label": "Tarjetas: Cantidades y comparaciones", "href": "flashcards_vocabulario.html", "note": "Elige \"Cantidades y comparaciones\" para repasar kilo, docena, pedazo, demasiado, poco." },
         { "label": "Tarjetas: Comunicación y cortesía", "href": "flashcards_vocabulario.html", "note": "Elige \"Comunicación y cortesía\" para repasar disculpa, gracias, de acuerdo, mande, sale." },
         { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica formar oraciones con estas mismas palabras en cualquier categoría." }
+      ]
+    },
+    {
+      "id": "medico",
+      "title": "Con el médico",
+      "emoji": "🩺",
+      "accent": "#1B4F8A",
+      "player": "Paciente",
+      "summary": "Describe tus síntomas en el consultorio: qué te duele, desde cuándo, y qué te receta la doctora. Todo de usted.",
+      "setting": "Estás en un consultorio en Guadalajara. Te sientes mal desde ayer y la doctora te va a examinar.",
+      "register_note": "Con el médico siempre se usa usted, en las dos direcciones: tú le hablas de usted a la doctora y ella te habla de usted a ti. Al final ella te dice \"¡Que se mejore!\" — la fórmula de cortesía para despedirse de un enfermo.",
+      "categories": ["Salud y síntomas", "Medicina y tratamiento", "Anatomía y cuerpo"],
+      "grammar_refs": [
+        {
+          "section": 39,
+          "title": "DOLER (Gustar-type structure for pain)",
+          "note": "Me duele la cabeza (singular) pero me duelen la cabeza y el estómago (plural): igual que gustar, el verbo concuerda con lo que duele, no contigo. Y ojo: la cabeza, con artículo, nunca \"mi cabeza\"."
+        },
+        {
+          "section": 40,
+          "title": "Enfermedades y Síntomas",
+          "note": "Los síntomas se expresan con TENER (tengo tos, tengo fiebre, tengo gripe) y los estados con SENTIRSE + adjetivo (me siento mal) o ESTAR + adjetivo (estoy mareado)."
+        },
+        {
+          "section": 20,
+          "title": "Verbos Reflexivos",
+          "note": "Sentirse es reflexivo: me siento, se siente. La doctora pregunta \"¿Cómo se siente?\" (usted) y tú respondes \"me siento mal\"."
+        },
+        {
+          "section": 29,
+          "title": "Futuro Próximo (Ir + a + Infinitivo)",
+          "note": "\"Le voy a dar una receta\", \"va a tomar una pastilla\", \"va a mejorar\": el futuro próximo aparece tres veces en la receta de la doctora."
+        }
+      ],
+      "vocab_highlight": [
+        { "word": "médico", "english": "doctor (physician)" },
+        { "word": "sentirse", "english": "to feel" },
+        { "word": "enfermo", "english": "sick" },
+        { "word": "doler", "english": "to hurt" },
+        { "word": "cabeza", "english": "head" },
+        { "word": "garganta", "english": "throat" },
+        { "word": "estómago", "english": "stomach" },
+        { "word": "tos", "english": "cough" },
+        { "word": "fiebre", "english": "fever" },
+        { "word": "mareado", "english": "dizzy" },
+        { "word": "gripe", "english": "flu" },
+        { "word": "medicamento", "english": "medication" },
+        { "word": "pastilla", "english": "pill" },
+        { "word": "receta", "english": "prescription" },
+        { "word": "descansar", "english": "to rest" },
+        { "word": "mejorar", "english": "to get better" }
+      ],
+      "dialogue": [
+        { "speaker": "Doctora", "es": "Buenas tardes. ¿Cómo se siente hoy?", "en": "Good afternoon. How are you feeling today?" },
+        { "speaker": "Paciente", "es": "Buenas tardes, doctora. Me siento mal. Creo que estoy enfermo.", "en": "Good afternoon, doctor. I feel bad. I think I'm sick." },
+        { "speaker": "Doctora", "es": "¿Qué le duele?", "en": "What hurts?" },
+        {
+          "speaker": "Paciente",
+          "prompt": "¿Qué le dices a la doctora?",
+          "choice": [
+            {
+              "es": "Me duele la cabeza y también me duele la garganta.",
+              "en": "My head hurts and my throat hurts too.",
+              "note": "Duele en singular, porque cada cosa duele por separado: me duele la cabeza... y me duele la garganta.",
+              "response": [
+                { "speaker": "Doctora", "es": "¿Tiene tos también?", "en": "Do you have a cough too?" },
+                { "speaker": "Paciente", "es": "Sí, tengo un poco de tos desde ayer.", "en": "Yes, I've had a bit of a cough since yesterday." }
+              ]
+            },
+            {
+              "es": "Me duelen la cabeza y el estómago, y estoy mareado.",
+              "en": "My head and my stomach hurt, and I'm dizzy.",
+              "note": "Duelen en plural, porque duelen dos cosas a la vez. Y mareado va con ESTAR: es un estado temporal.",
+              "response": [
+                { "speaker": "Doctora", "es": "¿Está mareado? ¿Desde cuándo se siente así?", "en": "You're dizzy? Since when have you felt this way?" },
+                { "speaker": "Paciente", "es": "Desde ayer, doctora.", "en": "Since yesterday, doctor." }
+              ]
+            }
+          ]
+        },
+        { "speaker": "Doctora", "es": "¿Tiene fiebre?", "en": "Do you have a fever?" },
+        { "speaker": "Paciente", "es": "Sí, un poco.", "en": "Yes, a little." },
+        { "speaker": "Doctora", "es": "Bueno, usted tiene una gripe, nada más.", "en": "Well, you have the flu, that's all." },
+        { "speaker": "Paciente", "es": "Qué bueno. ¿Necesito algún medicamento?", "en": "That's good. Do I need any medication?" },
+        { "speaker": "Doctora", "es": "Sí, le voy a dar una receta. Va a tomar una pastilla cada ocho horas, con comida.", "en": "Yes, I'm going to give you a prescription. You're going to take one pill every eight hours, with food." },
+        { "speaker": "Paciente", "es": "De acuerdo. ¿Algo más?", "en": "Agreed. Anything else?" },
+        { "speaker": "Doctora", "es": "Sí: tiene que descansar y tomar mucha agua. Va a mejorar en unos días.", "en": "Yes: you have to rest and drink lots of water. You're going to get better in a few days." },
+        { "speaker": "Paciente", "es": "Muchas gracias, doctora.", "en": "Thank you very much, doctor." },
+        { "speaker": "Doctora", "es": "De nada. ¡Que se mejore pronto!", "en": "You're welcome. Get better soon!" }
+      ],
+      "practice": [
+        { "label": "Tarjetas: Salud y síntomas", "href": "flashcards_vocabulario.html", "note": "Elige la categoría \"Salud y síntomas\" para repasar fiebre, tos, mareado, doler y el resto." },
+        { "label": "Tarjetas: Medicina y tratamiento", "href": "flashcards_vocabulario.html", "note": "Elige \"Medicina y tratamiento\" para repasar medicamento, pastilla, receta." },
+        { "label": "Tarjetas: Anatomía y cuerpo", "href": "flashcards_vocabulario.html", "note": "Elige \"Anatomía y cuerpo\" para repasar cabeza, garganta, estómago y más partes del cuerpo." },
+        { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica oraciones completas con estos verbos y sustantivos." }
+      ]
+    },
+    {
+      "id": "direcciones",
+      "title": "Pidiendo direcciones",
+      "emoji": "🧭",
+      "accent": "#E8971A",
+      "player": "Turista",
+      "summary": "Estás un poco perdido en el centro de Guadalajara y una señora te explica cómo llegar al Mercado San Juan de Dios.",
+      "setting": "Estás en una calle del centro de Guadalajara. Buscas el famoso Mercado San Juan de Dios y le preguntas a una señora.",
+      "register_note": "Con desconocidos en la calle, siempre usted: disculpe, ¿me puede ayudar? La señora te contesta con el \"usted + presente\" clásico de México para dar direcciones: se va todo recto, dobla, cruza — presente de indicativo, no mandatos. 🌵 Y vas a oír mande y que le vaya bien, puro Guadalajara.",
+      "categories": ["Orientación y direcciones", "Ciudad y transporte", "Comunicación y cortesía"],
+      "grammar_refs": [
+        {
+          "section": 41,
+          "title": "Direcciones y Lugares en la Ciudad 🌵",
+          "note": "Todo el vocabulario clave está aquí: a la derecha, a la izquierda, todo recto, la cuadra 🌵, el semáforo, la esquina, doblar, cruzar, dar la vuelta. En Guadalajara se cuenta en cuadras, no en metros."
+        },
+        {
+          "section": 1,
+          "title": "SER vs. ESTAR",
+          "note": "La ubicación siempre va con ESTAR: ¿dónde está el mercado?, está en el centro, no está lejos. Nunca con ser."
+        },
+        {
+          "section": 11,
+          "title": "Palabras Interrogativas",
+          "note": "¿Dónde está...? y ¿Por dónde me voy? — dónde siempre con acento cuando es pregunta."
+        },
+        {
+          "section": 28,
+          "title": "Cortesía y Formalidad 🌵",
+          "note": "Disculpe para abrir la conversación, mande como respuesta tapatía, y que le vaya bien para despedirse. Las tres fórmulas en una sola plática callejera."
+        }
+      ],
+      "vocab_highlight": [
+        { "word": "mercado", "english": "market" },
+        { "word": "centro", "english": "downtown / center" },
+        { "word": "calle", "english": "street" },
+        { "word": "cuadra", "english": "block (tapatío/Mexican)" },
+        { "word": "esquina", "english": "corner" },
+        { "word": "semáforo", "english": "traffic light" },
+        { "word": "a la derecha", "english": "to the right" },
+        { "word": "a la izquierda", "english": "to the left" },
+        { "word": "todo recto", "english": "straight ahead" },
+        { "word": "doblar", "english": "to turn" },
+        { "word": "cruzar", "english": "to cross" },
+        { "word": "dar la vuelta", "english": "to turn / go around" },
+        { "word": "caminar", "english": "to walk" },
+        { "word": "llegar", "english": "to arrive" },
+        { "word": "cerca", "english": "near" },
+        { "word": "lejos", "english": "far" }
+      ],
+      "dialogue": [
+        { "speaker": "Turista", "es": "Disculpe, señora, ¿me puede ayudar? Creo que estoy un poco perdido.", "en": "Excuse me, ma'am, can you help me? I think I'm a little lost." },
+        { "speaker": "Señora", "es": "¡Mande! Claro que sí, joven. ¿Qué busca?", "en": "Yes? Of course, young man. What are you looking for?" },
+        { "speaker": "Turista", "es": "¿Dónde está el Mercado San Juan de Dios?", "en": "Where is the San Juan de Dios Market?" },
+        { "speaker": "Señora", "es": "Ah, no está lejos. Está en el centro, a unas cinco cuadras de aquí.", "en": "Oh, it's not far. It's downtown, about five blocks from here." },
+        {
+          "speaker": "Turista",
+          "prompt": "¿Qué le preguntas a la señora?",
+          "choice": [
+            {
+              "es": "¿Puedo caminar desde aquí?",
+              "en": "Can I walk from here?",
+              "note": "Poder + infinitivo: la forma más simple de pedir permiso o preguntar si algo es posible.",
+              "response": [
+                { "speaker": "Señora", "es": "Sí, claro. Caminando llega en quince minutos.", "en": "Yes, of course. Walking, you'll get there in fifteen minutes." },
+                { "speaker": "Turista", "es": "Perfecto. ¿Y por dónde me voy?", "en": "Perfect. And which way do I go?" }
+              ]
+            },
+            {
+              "es": "¿Me puede repetir, más despacio, por favor?",
+              "en": "Can you repeat that, more slowly, please?",
+              "note": "La frase más valiosa para un estudiante. Nadie se ofende: al contrario, te van a hablar más despacio y con más cariño.",
+              "response": [
+                { "speaker": "Señora", "es": "Claro que sí. El mercado está en el centro, cerquita.", "en": "Of course. The market is downtown, real close." },
+                { "speaker": "Turista", "es": "Ah, ya entiendo, gracias. ¿Y por dónde me voy?", "en": "Ah, now I understand, thanks. And which way do I go?" }
+              ]
+            }
+          ]
+        },
+        { "speaker": "Señora", "es": "Se va todo recto por esta calle, tres cuadras, hasta el semáforo.", "en": "You go straight down this street, three blocks, up to the traffic light." },
+        { "speaker": "Turista", "es": "Todo recto tres cuadras, hasta el semáforo. ¿Y luego?", "en": "Straight ahead three blocks, up to the light. And then?" },
+        { "speaker": "Señora", "es": "En el semáforo dobla a la derecha y cruza la calle.", "en": "At the light you turn right and cross the street." },
+        { "speaker": "Turista", "es": "A la derecha... ¿y después?", "en": "To the right... and after that?" },
+        { "speaker": "Señora", "es": "Camina dos cuadras más y en la esquina da la vuelta a la izquierda. Ahí está el mercado.", "en": "You walk two more blocks and at the corner you turn left. There's the market." },
+        { "speaker": "Turista", "es": "Entonces: todo recto, a la derecha en el semáforo, dos cuadras, y a la izquierda en la esquina.", "en": "So: straight ahead, right at the light, two blocks, and left at the corner." },
+        { "speaker": "Señora", "es": "¡Eso es! Está muy cerca, no tiene pierde.", "en": "That's it! It's very close, you can't miss it." },
+        { "speaker": "Turista", "es": "Muchísimas gracias, señora. Muy amable.", "en": "Thank you so much, ma'am. Very kind of you." },
+        { "speaker": "Señora", "es": "De nada, joven. ¡Que le vaya bien!", "en": "You're welcome, young man. Have a good one!" }
+      ],
+      "practice": [
+        { "label": "Tarjetas: Orientación y direcciones", "href": "flashcards_vocabulario.html", "note": "Elige \"Orientación y direcciones\" para repasar cuadra, esquina, a la derecha, todo recto y el resto." },
+        { "label": "Tarjetas: Ciudad y transporte", "href": "flashcards_vocabulario.html", "note": "Elige \"Ciudad y transporte\" para repasar calle, centro, semáforo y más." },
+        { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica oraciones con estos verbos de movimiento." }
+      ]
+    },
+    {
+      "id": "familia",
+      "title": "Presentando a la familia",
+      "emoji": "👨‍👩‍👧‍👦",
+      "accent": "#7C3AED",
+      "player": "Stan",
+      "summary": "Le enseñas una foto de tu familia a una vecina: tu esposa, tus dos hijos y tus tres nietos. Tu primera lección de tú.",
+      "setting": "Platicas con una vecina de confianza y le enseñas una foto de tu familia. Como ya hay confianza, esta conversación es de tú — tu primera lección informal.",
+      "register_note": "¡Ojo! Esta lección usa tú, no usted. Con amigos y vecinos de confianza en Guadalajara se habla de tú: ¿es tu familia?, ¿los ves mucho? Compara con las otras lecciones, donde todo es de usted.",
+      "categories": ["Familia y relaciones", "Descripción personal"],
+      "grammar_refs": [
+        {
+          "section": 16,
+          "title": "Posesivos Átonos (Short-form)",
+          "note": "Mi esposa, mis nietos, tu familia, sus ojos: los posesivos cortos concuerdan en número con la cosa poseída (mi/mis), no con el dueño."
+        },
+        {
+          "section": 10,
+          "title": "Descripción Física (SER + TENER)",
+          "note": "SER para rasgos (es alto, es bromista) y TENER para edad y partes del cuerpo (tiene once años, tiene el cabello rizado). La edad nunca va con ser."
+        },
+        {
+          "section": 12,
+          "title": "Concordancia Sustantivo-Adjetivo",
+          "note": "Son traviesos, estamos jubilados: el adjetivo concuerda en género y número. Dos nietos y una nieta juntos → masculino plural."
+        },
+        {
+          "section": 1,
+          "title": "SER vs. ESTAR",
+          "note": "Es mi esposa (identidad, SER) pero estamos jubilados (estado alcanzado, ESTAR). La misma oración puede necesitar los dos."
+        }
+      ],
+      "vocab_highlight": [
+        { "word": "familia", "english": "family" },
+        { "word": "esposa", "english": "wife" },
+        { "word": "hijo", "english": "son" },
+        { "word": "hija", "english": "daughter" },
+        { "word": "nieto", "english": "grandson" },
+        { "word": "nieta", "english": "granddaughter" },
+        { "word": "mamá", "english": "mom" },
+        { "word": "año", "english": "year" },
+        { "word": "cabello", "english": "hair (tapatío-flagged)" },
+        { "word": "ojo", "english": "eye" },
+        { "word": "rizado", "english": "curly" },
+        { "word": "alto", "english": "tall" },
+        { "word": "bromista", "english": "jokester" },
+        { "word": "travieso", "english": "mischievous" },
+        { "word": "buena onda", "english": "cool / good vibes (tapatío)" },
+        { "word": "vivir", "english": "to live" },
+        { "word": "visitar", "english": "to visit" },
+        { "word": "jubilado", "english": "retired" },
+        { "word": "cerca", "english": "near" }
+      ],
+      "dialogue": [
+        { "speaker": "Vecina", "es": "¡Qué bonita foto! ¿Es tu familia?", "en": "What a lovely photo! Is that your family?" },
+        { "speaker": "Stan", "es": "Sí, es mi familia. Ella es mi esposa. Llevamos treinta años juntos.", "en": "Yes, it's my family. She's my wife. We've been together thirty years." },
+        { "speaker": "Vecina", "es": "¡Treinta años! Qué bonito. ¿Y ellos son tus hijos?", "en": "Thirty years! How lovely. And are they your children?" },
+        { "speaker": "Stan", "es": "Sí, tengo dos hijos. Mi hija tiene treinta y seis años y mi hijo tiene treinta y cinco.", "en": "Yes, I have two children. My daughter is thirty-six and my son is thirty-five." },
+        { "speaker": "Vecina", "es": "¿Y esos tres niños?", "en": "And those three kids?" },
+        {
+          "speaker": "Stan",
+          "prompt": "¿Cómo presentas a tus nietos?",
+          "choice": [
+            {
+              "es": "¡Son mis nietos! Tengo dos nietos y una nieta.",
+              "en": "They're my grandkids! I have two grandsons and one granddaughter.",
+              "note": "Nietos en masculino plural cubre al grupo mixto; nieta especifica a la niña.",
+              "response": [
+                { "speaker": "Vecina", "es": "¡Tres nietos! ¿Cuántos años tienen?", "en": "Three grandkids! How old are they?" },
+                { "speaker": "Stan", "es": "Tienen catorce, trece y once años.", "en": "They're fourteen, thirteen, and eleven." }
+              ]
+            },
+            {
+              "es": "Son los hijos de mis hijos: ¡mis tres nietos!",
+              "en": "They're my children's children: my three grandkids!",
+              "note": "Un jueguito de palabras con los posesivos: los hijos de mis hijos. La vecina lo va a festejar.",
+              "response": [
+                { "speaker": "Vecina", "es": "¡Qué familia tan grande! ¿Los ves mucho?", "en": "What a big family! Do you see them a lot?" },
+                { "speaker": "Stan", "es": "Sí, nos visitan mucho. Son un poco traviesos, pero muy buena onda.", "en": "Yes, they visit us a lot. They're a little mischievous, but really great." }
+              ]
+            }
+          ]
+        },
+        { "speaker": "Vecina", "es": "¿Cómo son tus nietos?", "en": "What are your grandkids like?" },
+        { "speaker": "Stan", "es": "Mi nieta tiene el cabello rizado y los ojos grandes, como su mamá.", "en": "My granddaughter has curly hair and big eyes, like her mom." },
+        { "speaker": "Vecina", "es": "¿Y tu hijo cómo es?", "en": "And what's your son like?" },
+        { "speaker": "Stan", "es": "Es alto y muy bromista, como yo.", "en": "He's tall and a real jokester, like me." },
+        { "speaker": "Vecina", "es": "¿Viven cerca de ti?", "en": "Do they live near you?" },
+        { "speaker": "Stan", "es": "Sí, viven cerca. Mi esposa y yo estamos jubilados, y la familia nos visita mucho.", "en": "Yes, they live nearby. My wife and I are retired, and the family visits us a lot." },
+        { "speaker": "Vecina", "es": "Qué buena onda tu familia.", "en": "Your family sounds great." },
+        { "speaker": "Stan", "es": "Gracias. Para mí, la familia es lo más importante.", "en": "Thanks. For me, family is the most important thing." }
+      ],
+      "practice": [
+        { "label": "Tarjetas: Familia y relaciones", "href": "flashcards_vocabulario.html", "note": "Elige \"Familia y relaciones\" para repasar esposa, hijo, nieto, mamá y el resto." },
+        { "label": "Tarjetas: Descripción personal", "href": "flashcards_vocabulario.html", "note": "Elige \"Descripción personal\" para repasar alto, rizado, bromista, buena onda." },
+        { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica ser/estar/tener con descripciones completas." }
       ]
     },
     {

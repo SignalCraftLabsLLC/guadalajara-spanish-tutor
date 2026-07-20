@@ -192,6 +192,7 @@ h2.sec{font-family:'Oswald',sans-serif;font-weight:600;color:var(--cobalt-dk);
   <!-- PLAY -->
   <section id="play-screen" class="screen">
     <div class="progress">
+      <button class="pill pill-btn" id="btn-home-exit" onclick="if(confirm('¿Salir y volver al inicio? Tu avance ya se guardó.'))location.href='index.html'" title="Volver al inicio">🏠</button>
       <button class="pill pill-btn" id="btn-setup-exit" onclick="confirmBackToSetup()" title="Volver a configuración">⚙</button>
       <div class="pill-group">
         <span class="pill" id="round-pill">Serie 1</span>
@@ -221,6 +222,7 @@ h2.sec{font-family:'Oswald',sans-serif;font-weight:600;color:var(--cobalt-dk);
       <button class="btn btn-go" id="btn-continue" onclick="nextRound()">Siguiente serie →</button>
       <button class="btn btn-ghost" id="btn-review-missed" onclick="" style="margin-top:10px;width:100%;display:none"></button>
       <button class="btn btn-ghost" id="btn-round-setup" onclick="show('setup-screen');buildSetup();" style="margin-top:10px;width:100%">⚙ Volver a configuración</button>
+      <div style="text-align:center"><a class="backlink" href="index.html">← Volver al menú</a></div>
     </div>
   </section>
 

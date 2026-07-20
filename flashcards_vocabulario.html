@@ -322,6 +322,28 @@ body {
 .play-header-rounds .rnum { color: var(--cobalt); font-weight: 700; }
 /* .back-to-cats removed — use ← Categorías ctrl button instead */
 
+/* ── Fixed home pill: visible on every screen (load, selection, play) ── */
+.home-pill {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 60;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--cobalt-dark);
+  text-decoration: none;
+  background: white;
+  border: 1px solid var(--cream-dark);
+  border-radius: 999px;
+  padding: 7px 13px;
+  box-shadow: 0 4px 12px rgba(27,79,138,0.10);
+  transition: border-color 0.15s;
+}
+.home-pill:hover { border-color: var(--marigold); }
+@media (max-width: 560px) { .home-pill { top: 8px; left: 8px; padding: 6px 11px; font-size: 0.8rem; } }
+
 /* ── Progress bar ───────────────────────────────────────────────────── */
 .progress-wrap {
   width: 100%;
@@ -1199,6 +1221,8 @@ body {
 </style>
 </head>
 <body>
+
+<a class="home-pill" href="index.html">← Inicio</a>
 
 <!-- ══════════════════════════════════════════════════════════════════ -->
 <!--  LOAD SCREEN (shown first — JSON required to play)                  -->

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los 100 Verbos · Tu Tutor de Español Tapatío</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Playfair+Display:wght@700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cobalt:#1B4F8A;--cobalt-dk:#143a66;--terracotta:#C1440E;--marigold:#E8971A;
+  --cream:#F5F0E8;--jade:#2A7A3B;--muted:#6B7280;--text:#22223B;--bg:#F5F0E8;--tapatio:#7C3AED;
+  --card:#FFFFFF;--line:#E6DCCB;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',system-ui,sans-serif;color:var(--text);min-height:100vh;font-size:17px;line-height:1.55;
+  background:
+   radial-gradient(circle at 8% 0%, rgba(232,151,26,.13), transparent 40%),
+   radial-gradient(circle at 92% 100%, rgba(27,79,138,.13), transparent 45%),
+   var(--bg);}
+.wrap{max-width:900px;margin:0 auto;padding:34px 20px 70px}
+a{color:inherit}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.back{font-family:'Oswald',sans-serif;font-weight:600;font-size:.88rem;letter-spacing:.02em;color:var(--cobalt-dk);
+  text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);
+  border-radius:20px;padding:8px 14px}
+.back:hover{border-color:var(--marigold)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 24px;
+  box-shadow:0 10px 26px rgba(27,79,138,.07);margin-bottom:18px}
+.card h2{font-family:'Oswald',sans-serif;font-weight:600;font-size:1.05rem;color:var(--cobalt-dk);
+  letter-spacing:.02em;margin-bottom:10px;display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.lesson-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px}
+.lesson-head .emoji{font-size:2.6rem;line-height:1}
+.lesson-head h1{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--cobalt);line-height:1.15}
+.lesson-head .summary{color:var(--muted);font-size:.98rem;margin-top:4px}
+.note-box{background:#FBF7EF;border:1px solid var(--line);border-left:4px solid var(--terracotta);border-radius:10px;
+  padding:12px 14px;font-size:.92rem;color:var(--text);margin-bottom:6px}
+.gram-card{background:#F8F4FE;border:1px solid #E2D2FB;border-radius:14px;padding:13px 15px;margin-bottom:10px}
+.gram-card .sec{font-family:'Oswald',sans-serif;font-weight:700;font-size:.85rem;color:var(--tapatio);margin-bottom:3px}
+.gram-card p{font-size:.92rem;color:var(--text)}
+.practice-list{display:flex;flex-direction:column;gap:10px}
+.practice-item{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:#FBF7EF;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.practice-item .txt{flex:1;min-width:200px}
+.practice-item .txt b{font-family:'Oswald',sans-serif;font-weight:600;font-size:.92rem;color:var(--cobalt-dk)}
+.practice-item .txt small{display:block;color:var(--muted);font-size:.85rem;margin-top:2px}
+.btn-go{border:none;border-radius:12px;padding:9px 16px;font-family:'Oswald',sans-serif;font-weight:600;
+  font-size:.85rem;letter-spacing:.02em;cursor:pointer;background:var(--cobalt);color:#fff;text-decoration:none;flex:0 0 auto}
+.btn-go:hover{background:var(--cobalt-dk)}
+.empty-state{color:var(--muted);text-align:center;padding:40px 10px}
+/* ── drill ── */
+.matrix{display:flex;flex-direction:column;gap:10px}
+.matrix-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.matrix-row .gname{font-family:'Oswald',sans-serif;font-weight:600;font-size:.85rem;color:var(--cobalt-dk);
+  flex:0 0 150px;display:flex;align-items:center;gap:6px}
+.tchip{border:1px solid var(--line);background:#FBF7EF;border-radius:20px;padding:6px 12px;font-size:.82rem;
+  font-weight:600;color:var(--cobalt-dk);cursor:pointer;display:inline-flex;align-items:center;gap:5px;
+  transition:border-color .14s,transform .14s}
+.tchip:hover{border-color:var(--marigold);transform:translateY(-1px)}
+.tchip.locked{opacity:.42;cursor:not-allowed;filter:grayscale(.4)}
+.tchip.locked:hover{border-color:var(--line);transform:none}
+.tchip.active{background:var(--cobalt);color:#fff;border-color:var(--cobalt)}
+.tchip.done{border-color:var(--jade);background:#EDF7EF}
+.tchip.active.done{background:var(--jade);color:#fff}
+.tchip small{font-weight:500;opacity:.75}
+.drill-stage{text-align:center;padding:8px 0 4px}
+.drill-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pill{background:#FBF7EF;border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:.82rem;font-weight:600;color:var(--cobalt-dk)}
+.pill.reg{border-color:var(--jade);color:var(--jade);background:#EDF7EF}
+.pill.orto{border-color:var(--marigold);color:#9A6206;background:#FDF3E0}
+.pill.irr{border-color:var(--terracotta);color:var(--terracotta);background:#FBECE4}
+.drill-verb{font-family:'Playfair Display',serif;font-size:2.4rem;color:var(--cobalt);line-height:1.1}
+.drill-cue{font-size:1.05rem;color:var(--muted);margin-top:6px}
+.drill-cue b{color:var(--terracotta);font-size:1.25rem}
+.drill-input-row{display:flex;gap:10px;justify-content:center;margin:18px auto 6px;max-width:460px}
+.drill-input{flex:1;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-family:'Barlow',sans-serif;
+  font-size:1.05rem;background:#fff;color:var(--text)}
+.drill-input:focus{outline:none;border-color:var(--cobalt)}
+.btn-check{border:none;border-radius:12px;padding:11px 20px;font-family:'Oswald',sans-serif;font-weight:600;
+  font-size:.9rem;cursor:pointer;background:var(--terracotta);color:#fff}
+.btn-check:hover{filter:brightness(1.08)}
+.btn-ghost{border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-family:'Oswald',sans-serif;
+  font-weight:600;font-size:.85rem;cursor:pointer;background:#fff;color:var(--cobalt-dk)}
+.btn-ghost:hover{border-color:var(--marigold)}
+.drill-feedback{min-height:54px;max-width:520px;margin:8px auto 0;font-size:.98rem}
+.drill-feedback .fb{border-radius:12px;padding:10px 14px;display:inline-block}
+.fb.ok{background:#EDF7EF;border:1px solid #BEE0C5;color:var(--jade)}
+.fb.almost{background:#FDF3E0;border:1px solid #F2DEBC;color:#9A6206}
+.fb.bad{background:#FBECE4;border:1px solid #F0CDBB;color:var(--terracotta)}
+.drill-help{max-width:520px;margin:10px auto 0;font-size:.9rem;color:var(--muted);background:#FBF7EF;
+  border:1px solid var(--line);border-radius:12px;padding:10px 14px;text-align:left}
+.drill-score{margin-top:16px;font-size:.85rem;color:var(--muted)}
+.progress-mini{height:7px;background:#EFE7D8;border-radius:6px;overflow:hidden;max-width:340px;margin:8px auto 0}
+.progress-mini i{display:block;height:100%;background:linear-gradient(90deg,var(--marigold),var(--jade));border-radius:6px}
+.unlock-banner{background:#EDF7EF;border:1px solid #BEE0C5;border-radius:14px;padding:14px 16px;margin:14px auto;
+  max-width:520px;font-weight:600;color:var(--jade)}
+@media(max-width:520px){body{font-size:16px}
+  .matrix-row .gname{flex-basis:100%}.drill-verb{font-size:2rem}.lesson-head h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="back" href="index.html">← Inicio</a>
+  </div>
+  <div id="view"></div>
+</div>
+
+<script src="spelling_handler.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// Los 100 Verbos — standalone drill (broken out of lecciones.html, 2026-07-19).
+// Config still lives in lessons.json (the type:"drill" entry) so the
+// dictionary editor workflow and lesson data stay in one place.
+// Per-verb per-tense Leitner store (tapatio_verbos). Presente grades sync
+// back to the shared tapatio_leitner so flashcards/sentence maker benefit.
+// ═══════════════════════════════════════════════════════════════════════
+var LS_DICT='tapatio_dict_v', LS_LEITNER='tapatio_leitner', LS_VERBS='tapatio_verbos';
+var TENSE_KEYS={presente:'present_conjugation',preterito:'preterite_conjugation',imperfecto:'imperfect_conjugation'};
+var PRON=['yo','tú','él/ella','nosotros','ellos/ellas'];
+var RP=['me','te','se','nos','se'];
+var IR_PRES=['voy','vas','va','vamos','van'];
+var EST=['estoy','estás','está','estamos','están'];
+var HAB=['he','has','ha','hemos','han'];
+var BOX_ICON=['🌱','📖','💪','🔥','⭐'];
+var DICT=null, BYWORD=null, DRILL=null;
+
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+// ── storage ──
+function vload(){try{return JSON.parse(localStorage.getItem(LS_VERBS)||'{}')||{};}catch(e){return {};}}
+function vsave(o){try{localStorage.setItem(LS_VERBS,JSON.stringify(o));}catch(e){}}
+function vbox(w,tid){var o=vload();return (o[w]&&o[w][tid]&&o[w][tid].box)||1;}
+function vset(w,tid,b){
+  var o=vload(); o[w]=o[w]||{}; o[w][tid]={box:b}; vsave(o);
+  if(tid==='presente'){
+    try{
+      var ov=JSON.parse(localStorage.getItem(LS_LEITNER)||'{}')||{};
+      ov[w]=ov[w]||{}; ov[w].box=b;
+      localStorage.setItem(LS_LEITNER,JSON.stringify(ov));
+    }catch(e){}
+  }
+}
+
+// ── dictionary loading (shared cache first, fetch fallback) ──
+function loadDict(lesson,cb){
+  var need=[]; lesson.groups.forEach(function(g){need=need.concat(g.verbs);});
+  function complete(d){
+    var by={}; d.forEach(function(e){by[e.word]=e;});
+    return need.every(function(w){return !!by[w];});
+  }
+  function finish(d){DICT=d;BYWORD={};d.forEach(function(e){BYWORD[e.word]=e;});cb(null);}
+  var d=null;
+  try{d=JSON.parse(localStorage.getItem(LS_DICT)||'null');}catch(e){}
+  if(d&&d.length&&complete(d)){finish(d);return;}
+  fetch('spanish_dictionary.json',{cache:'no-store'})
+    .then(function(r){return r.json();})
+    .then(function(fresh){
+      if(!complete(fresh)){cb('incompleto');return;}
+      try{localStorage.setItem(LS_DICT,JSON.stringify(fresh));}catch(e){}
+      finish(fresh);
+    })
+    .catch(function(){cb('fetch');});
+}
+
+// ── regular conjugation + orthographic variants (for the badge) ──
+function baseInf(e){
+  var inf=e.word;
+  if(isRefl(e)&&/se$/.test(inf)) inf=inf.slice(0,-2);
+  return inf;
+}
+function isRefl(e){
+  return /reflexive/.test(e.part_of_speech||'') ||
+         /^me\s/.test((e.present_conjugation&&e.present_conjugation.yo)||'');
+}
+function regForms(inf,tense){
+  var stem=inf.slice(0,-2), end=inf.slice(-2).replace('í','i');
+  var T={
+    presente:{ar:['o','as','a','amos','an'],er:['o','es','e','emos','en'],ir:['o','es','e','imos','en']},
+    preterito:{ar:['é','aste','ó','amos','aron'],er:['í','iste','ió','imos','ieron'],ir:['í','iste','ió','imos','ieron']},
+    imperfecto:{ar:['aba','abas','aba','ábamos','aban'],er:['ía','ías','ía','íamos','ían'],ir:['ía','ías','ía','íamos','ían']}
+  };
+  if(T[tense]) return T[tense][end].map(function(s){return stem+s;});
+  if(tense==='gerundio') return stem+(end==='ar'?'ando':'iendo');
+  if(tense==='participio') return stem+(end==='ar'?'ado':'ido');
+  return null;
+}
+function orthoForms(inf,tense){
+  var stem=inf.slice(0,-2), end=inf.slice(-2).replace('í','i'), vowelStem=/[aeiouáéíóú]$/.test(stem);
+  var f;
+  if(tense==='preterito'&&end==='ar'){
+    var yo=null;
+    if(/c$/.test(stem)) yo=stem.slice(0,-1)+'qué';
+    else if(/g$/.test(stem)) yo=stem.slice(0,-1)+'gué';
+    else if(/z$/.test(stem)) yo=stem.slice(0,-1)+'cé';
+    if(!yo) return null;
+    f=regForms(inf,'preterito').slice(); f[0]=yo; return f;
+  }
+  if(tense==='preterito'&&end!=='ar'&&vowelStem){
+    return [stem+'í',stem+'íste',stem+'yó',stem+'ímos',stem+'yeron'];
+  }
+  if(tense==='presente'&&/g(e|i)r$/.test(inf)){
+    f=regForms(inf,'presente').slice(); f[0]=stem.slice(0,-1)+'jo'; return f;
+  }
+  if(tense==='gerundio'&&end!=='ar'&&vowelStem) return stem+'yendo';
+  if(tense==='participio'&&end!=='ar'&&vowelStem) return stem+'ído';
+  return null;
+}
+function classify(e,tid){
+  if(/Gustar-type/.test(e.grammar_rule||'')) return {cls:'irr',label:'⚠️ Estructura tipo gustar'};
+  if(e.word==='haber') return {cls:'irr',label:'⚠️ Irregular (impersonal: hay)'};
+  if(tid==='futuro_proximo') return {cls:'reg',label:'✅ Fórmula regular: ir + a + infinitivo'};
+  var inf=baseInf(e);
+  if(tid==='gerundio'||tid==='participio'){
+    var actual=(tid==='gerundio'?e.gerund:e.past_participle)||'';
+    actual=actual.replace(/ándose$/,'ando').replace(/iéndose$/,'iendo');
+    var plain=regForms(inf,tid), orto=orthoForms(inf,tid);
+    if(actual===plain) return {cls:'reg',label:'✅ Regular'};
+    if(orto&&actual===orto) return {cls:'orto',label:'🔤 Cambio de ortografía'};
+    return {cls:'irr',label:'⚠️ Irregular: '+actual};
+  }
+  var c=e[TENSE_KEYS[tid]]; if(!c) return {cls:'irr',label:'⚠️ Irregular'};
+  var actual=PRON.map(function(p){return (c[p]||'').replace(/^(me|te|se|nos)\s+/,'');});
+  var plain=regForms(inf,tid), orto=orthoForms(inf,tid);
+  function eq(a,b){return a&&b&&a.join('|')===b.join('|');}
+  if(eq(actual,plain)) return {cls:'reg',label:'✅ Regular'};
+  if(eq(actual,orto)) return {cls:'orto',label:'🔤 Regular con cambio de ortografía'};
+  return {cls:'irr',label:'⚠️ Irregular'};
+}
+
+// ── unlock logic ──
+function tenseIsSimple(tid){return tid==='presente'||tid==='preterito'||tid==='imperfecto';}
+function eligible(lesson,g,t){
+  var tid=lesson.tenses[t].id, so=(lesson.special&&lesson.special.simple_only)||[];
+  return lesson.groups[g].verbs.filter(function(w){return tenseIsSimple(tid)||so.indexOf(w)<0;});
+}
+function masteredIn(lesson,g,t){
+  var tid=lesson.tenses[t].id;
+  return eligible(lesson,g,t).filter(function(w){return vbox(w,tid)===5;}).length;
+}
+function cellMastered(lesson,g,t){
+  var el=eligible(lesson,g,t); if(!el.length) return false;
+  return masteredIn(lesson,g,t)>=Math.ceil(el.length*0.8);
+}
+function cellUnlocked(lesson,g,t){
+  if(t===0) return g===0||cellMastered(lesson,g-1,0);
+  return cellMastered(lesson,g,t-1);
+}
+function unlockedCells(lesson){
+  var s=[];
+  for(var g=0;g<lesson.groups.length;g++)
+    for(var t=0;t<lesson.tenses.length;t++)
+      if(cellUnlocked(lesson,g,t)) s.push(g+':'+t);
+  return s;
+}
+
+// ── card generation ──
+function makeCard(lesson,word,t){
+  var tid=lesson.tenses[t].id, e=BYWORD[word], sp=lesson.special||{};
+  if(sp.impersonal&&sp.impersonal[word]&&tenseIsSimple(tid)){
+    return {word:word,tid:tid,pron:'(impersonal)',cue:'___ tacos en la mesa',expected:sp.impersonal[word][tid],e:e};
+  }
+  if((sp.gustar_type||[]).indexOf(word)>=0&&tenseIsSimple(tid)){
+    var ios=['me','te','le','nos','les'], lbl=['a mí','a ti','a él / a ella','a nosotros','a ellos'];
+    var i=Math.floor(Math.random()*5), pl=Math.random()<0.5;
+    var pair=((e[TENSE_KEYS[tid]]||{})[ios[i]]||'').split(' / ');
+    var form=pl?(pair[1]||pair[0]):pair[0];
+    return {word:word,tid:tid,pron:lbl[i],cue:pl?'los tacos':'el mole',expected:ios[i]+' '+form,e:e};
+  }
+  var i=Math.floor(Math.random()*5), refl=isRefl(e), binf=baseInf(e);
+  if(tenseIsSimple(tid)){
+    return {word:word,tid:tid,pron:PRON[i],cue:null,expected:(e[TENSE_KEYS[tid]]||{})[PRON[i]],e:e};
+  }
+  if(tid==='futuro_proximo'){
+    var exp=refl ? RP[i]+' '+IR_PRES[i]+' a '+binf+' / '+IR_PRES[i]+' a '+binf+RP[i]
+                 : IR_PRES[i]+' a '+e.word;
+    return {word:word,tid:tid,pron:PRON[i],cue:'ir + a + infinitivo',expected:exp,e:e};
+  }
+  if(tid==='gerundio'){
+    var ger=e.gerund||'';
+    if(refl){
+      var att=ger.replace(/se$/,RP[i]);
+      var sep=ger.replace(/ándose$/,'ando').replace(/iéndose$/,'iendo');
+      return {word:word,tid:tid,pron:PRON[i],cue:'estar + gerundio',expected:RP[i]+' '+EST[i]+' '+sep+' / '+EST[i]+' '+att,e:e};
+    }
+    return {word:word,tid:tid,pron:PRON[i],cue:'estar + gerundio',expected:EST[i]+' '+ger,e:e};
+  }
+  if(tid==='participio'){
+    var part=e.past_participle||'';
+    var exp=refl ? RP[i]+' '+HAB[i]+' '+part : HAB[i]+' '+part;
+    return {word:word,tid:tid,pron:PRON[i],cue:'haber + participio',expected:exp,e:e};
+  }
+}
+function pickWord(lesson,g,t){
+  var tid=lesson.tenses[t].id, el=eligible(lesson,g,t), pool=[];
+  el.forEach(function(x){
+    var b=vbox(x,tid), wt=(b===5)?1:(6-b)*(6-b);
+    for(var k=0;k<wt;k++) pool.push(x);
+  });
+  var w=pool[Math.floor(Math.random()*pool.length)];
+  if(DRILL&&DRILL.card&&el.length>1){
+    var tries=0;
+    while(w===DRILL.card.word&&tries<6){w=pool[Math.floor(Math.random()*pool.length)];tries++;}
+  }
+  return w;
+}
+
+// ── drill UI ──
+function buildDrillUI(lesson){
+  DRILL={lesson:lesson,g:0,t:0,card:null,answered:false,session:{ok:0,tot:0},unlocked:unlockedCells(lesson)};
+  // default cell: first unlocked, not-yet-mastered (frontier)
+  var found=false;
+  for(var t=0;t<lesson.tenses.length&&!found;t++)
+    for(var g=0;g<lesson.groups.length&&!found;g++)
+      if(cellUnlocked(lesson,g,t)&&!cellMastered(lesson,g,t)){DRILL.g=g;DRILL.t=t;found=true;}
+  var v=$('view');
+  var gramHtml=(lesson.grammar_refs||[]).map(function(gr){
+    return '<div class="gram-card"><div class="sec">grammar_catalog.md · Sección '+gr.section+' — '+esc(gr.title)+'</div><p>'+esc(gr.note)+'</p></div>';
+  }).join('');
+  var practiceHtml=(lesson.practice||[]).map(function(p){
+    return '<div class="practice-item"><div class="txt"><b>'+esc(p.label)+'</b><small>'+esc(p.note)+'</small></div>'+
+           '<a class="btn-go" href="'+esc(p.href)+'">Abrir →</a></div>';
+  }).join('');
+  v.innerHTML=
+    '<div class="card">'+
+      '<div class="lesson-head">'+
+        '<div class="emoji">'+lesson.emoji+'</div>'+
+        '<div><h1>'+esc(lesson.title)+'</h1><div class="summary">'+esc(lesson.summary)+'</div></div>'+
+      '</div>'+
+      '<div class="note-box" style="margin-top:14px">'+esc(lesson.setting)+'</div>'+
+    '</div>'+
+    '<div class="card"><h2 id="drill-cell-title">🎯 Practica</h2><div class="drill-stage" id="drill-stage"></div></div>'+
+    '<div class="card"><h2>🗺️ Tu mapa de verbos</h2><div class="matrix" id="drill-matrix"></div></div>'+
+    '<div class="card"><h2>📚 Gramática de esta lección</h2>'+gramHtml+
+      '<div class="note-box" style="margin-top:10px"><b>¿De dónde sale esta lista?</b> '+esc(lesson.methodology)+'</div></div>'+
+    '<div class="card"><h2>🎯 Sigue practicando</h2><div class="practice-list">'+practiceHtml+'</div></div>';
+  document.onkeydown=function(ev){
+    if(ev.key==='Enter'&&!ev.repeat&&DRILL&&DRILL.answered){ev.preventDefault();nextCard();}
+  };
+  renderMatrix();
+  nextCard();
+}
+function renderMatrix(){
+  var L=DRILL.lesson, host=$('drill-matrix'), html='';
+  for(var g=0;g<L.groups.length;g++){
+    html+='<div class="matrix-row"><div class="gname">'+L.groups[g].emoji+' '+esc(L.groups[g].name)+'</div>';
+    for(var t=0;t<L.tenses.length;t++){
+      var un=cellUnlocked(L,g,t), ma=cellMastered(L,g,t);
+      var cnt=masteredIn(L,g,t), tot=eligible(L,g,t).length;
+      var cls='tchip'+(un?'':' locked')+(ma?' done':'')+((g===DRILL.g&&t===DRILL.t)?' active':'');
+      var inner=L.tenses[t].emoji+' '+esc(L.tenses[t].name)+(un?' <small>'+cnt+'/'+tot+'</small>':' 🔒');
+      html+='<button class="'+cls+'" '+(un?'onclick="drillSelect('+g+','+t+')"':'disabled')+'>'+inner+'</button>';
+    }
+    html+='</div>';
+  }
+  host.innerHTML=html;
+}
+function drillSelect(g,t){
+  if(!cellUnlocked(DRILL.lesson,g,t)) return;
+  DRILL.g=g; DRILL.t=t;
+  renderMatrix();
+  nextCard();
+}
+function nextCard(){
+  var L=DRILL.lesson;
+  var w=pickWord(L,DRILL.g,DRILL.t);
+  DRILL.card=makeCard(L,w,DRILL.t);
+  DRILL.answered=false;
+  var tn=L.tenses[DRILL.t], gn=L.groups[DRILL.g];
+  $('drill-cell-title').innerHTML='🎯 '+gn.emoji+' '+esc(gn.name)+' · '+tn.emoji+' '+esc(tn.name);
+  var c=DRILL.card, b=vbox(c.word,c.tid), badge='';
+  if(b<5){
+    var k=classify(c.e,c.tid);
+    badge='<span class="pill '+(k.cls==='reg'?'reg':k.cls==='orto'?'orto':'irr')+'">'+esc(k.label)+'</span>';
+  }
+  var cnt=masteredIn(L,DRILL.g,DRILL.t), tot=eligible(L,DRILL.g,DRILL.t).length;
+  var goal=Math.ceil(tot*0.8);
+  $('drill-stage').innerHTML=
+    '<div class="drill-meta">'+
+      '<span class="pill">'+BOX_ICON[b-1]+' '+b+'/5</span>'+badge+
+      '<span class="pill">'+esc(tn.formula||tn.desc||'')+'</span>'+
+    '</div>'+
+    '<div class="drill-verb">'+esc(c.word)+'</div>'+
+    '<div class="drill-cue"><b>'+esc(c.pron||'')+'</b>'+(c.cue?' · '+esc(c.cue):'')+'</div>'+
+    '<div class="drill-input-row">'+
+      '<input class="drill-input" id="dv-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribe la forma…">'+
+      '<button class="btn-check" id="dv-check">Comprobar</button>'+
+    '</div>'+
+    '<div style="margin-top:6px"><button class="btn-ghost" id="dv-help-btn">🛟 Ayuda</button></div>'+
+    '<div class="drill-help" id="dv-help" style="display:none"></div>'+
+    '<div class="drill-feedback" id="dv-feedback"></div>'+
+    '<div class="progress-mini"><i style="width:'+Math.min(100,Math.round(cnt/goal*100))+'%"></i></div>'+
+    '<div class="drill-score">Meta del nivel: '+goal+' de '+tot+' verbos en ⭐ · Sesión: '+DRILL.session.ok+'/'+DRILL.session.tot+' ✓</div>';
+  $('dv-check').onclick=gradeCard;
+  $('dv-help-btn').onclick=function(){
+    var h=$('dv-help');
+    if(h.style.display==='none'){
+      var e=DRILL.card.e;
+      h.innerHTML='<b>'+esc(e.word)+'</b> — '+esc(e.english)+'<br>'+esc(e.grammar_notes||'')+
+        (e.tapatio&&e.tapatio_notes?'<br>'+esc(e.tapatio_notes):'');
+      h.style.display='block';
+    }else h.style.display='none';
+  };
+  var inp=$('dv-input');
+  inp.onkeydown=function(ev){
+    if(ev.key==='Enter'){
+      ev.preventDefault();
+      ev.stopPropagation();   // don't let this same keystroke reach the document handler
+      if(!DRILL.answered) gradeCard();
+    }
+  };
+  inp.focus();
+}
+function gradeCard(){
+  if(DRILL.answered) return;
+  var c=DRILL.card, inp=$('dv-input'), given=(inp.value||'').trim();
+  if(!given) return;
+  var r=SpellingHandler.check(given,c.expected);
+  var b=vbox(c.word,c.tid), fb=$('dv-feedback'), showAns=esc(c.expected.split(' / ')[0]);
+  DRILL.answered=true; DRILL.session.tot++;
+  var before=DRILL.unlocked;
+  if(r.status==='exact'){
+    DRILL.session.ok++;
+    var nb=Math.min(5,b+1);
+    vset(c.word,c.tid,nb);
+    fb.innerHTML='<div class="fb ok">'+(nb===5?'⭐ ¡Dominado! ':'✅ ¡Correcto! ')+esc(r.feedback||'')+'</div>';
+  }else if(r.status==='accent_only'){
+    DRILL.session.ok++;
+    fb.innerHTML='<div class="fb almost">✏️ '+esc(r.feedback||'Revisa los acentos.')+' → <b>'+showAns+'</b></div>';
+  }else{
+    vset(c.word,c.tid,1);
+    fb.innerHTML='<div class="fb bad">'+esc(r.feedback||'')+' La forma correcta: <b>'+showAns+'</b></div>';
+  }
+  var after=unlockedCells(DRILL.lesson);
+  var news=after.filter(function(x){return before.indexOf(x)<0;});
+  DRILL.unlocked=after;
+  if(news.length){
+    var L=DRILL.lesson;
+    var msgs=news.map(function(x){
+      var p=x.split(':');
+      return L.groups[+p[0]].emoji+' '+L.groups[+p[0]].name+' · '+L.tenses[+p[1]].emoji+' '+L.tenses[+p[1]].name;
+    });
+    fb.innerHTML+='<div class="unlock-banner">🎉 ¡Se desbloqueó: '+esc(msgs.join(' y '))+'!</div>';
+  }
+  fb.innerHTML+='<div style="margin-top:8px;color:var(--muted);font-size:.9rem"><i>'+esc(c.word)+' — '+esc(c.e.english)+'</i></div>';
+  fb.innerHTML+='<div style="margin-top:10px"><button class="btn-check" onclick="nextCard()">Siguiente →</button>'+
+    '<span style="margin-left:10px;color:var(--muted);font-size:.82rem">o pulsa Enter ↵</span></div>';
+  renderMatrix();
+  inp.disabled=true;
+  inp.blur();
+}
+
+// ── boot: load the drill config from lessons.json ──
+fetch('lessons.json',{cache:'no-store'})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var lesson=(data.lessons||[]).filter(function(l){return l.type==='drill';})[0];
+    if(!lesson){$('view').innerHTML='<div class="card"><div class="empty-state">No se encontró la lección de verbos en lessons.json. 🌱</div></div>';return;}
+    document.title=lesson.title+' · Tu Tutor de Español Tapatío';
+    $('view').innerHTML='<div class="card"><div class="empty-state">Cargando verbos… 🌱</div></div>';
+    loadDict(lesson,function(err){
+      if(err){
+        $('view').innerHTML='<div class="card"><div class="empty-state">No se pudo cargar el diccionario. Abre primero la página de <a href="index.html">Inicio</a> para actualizarlo. 🔄</div></div>';
+        return;
+      }
+      buildDrillUI(lesson);
+    });
+  })
+  .catch(function(){
+    $('view').innerHTML='<div class="card"><div class="empty-state">No se pudo cargar lessons.json. ¿Está en la misma carpeta?</div></div>';
+  });
+</script>
+</body>
+</html>

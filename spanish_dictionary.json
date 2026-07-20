@@ -1273,6 +1273,21 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "año",
+    "english": "year",
+    "part_of_speech": "noun (m)",
+    "grammar_notes": "El año. La edad se expresa con tener, nunca con ser: tengo cincuenta años. ¿Cuántos años tienes?",
+    "grammar_rule": "Masculine noun",
+    "categories": [
+      "Tiempo y frecuencia",
+      "Cantidades y comparaciones"
+    ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "aorta",
     "english": "aorta",
     "part_of_speech": "noun (f)",
@@ -2624,6 +2639,20 @@
     "leitner_sessions_until_due": 1
   },
   {
+    "word": "cabeza",
+    "english": "head",
+    "part_of_speech": "noun (f)",
+    "grammar_notes": "La cabeza. Con doler se usa con artículo, no con posesivo: me duele la cabeza (no 'mi cabeza').",
+    "grammar_rule": "Feminine noun",
+    "categories": [
+      "Anatomía y cuerpo"
+    ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "cabra",
     "english": "goat",
     "part_of_speech": "noun (f)",
@@ -2864,6 +2893,21 @@
       "nosotros": "calentábamos",
       "ellos/ellas": "calentaban"
     },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "calle",
+    "english": "street",
+    "part_of_speech": "noun (f)",
+    "grammar_notes": "La calle. Femenina aunque termina en -e: la calle ancha, las calles del centro.",
+    "grammar_rule": "Feminine noun",
+    "categories": [
+      "Ciudad y transporte",
+      "Orientación y direcciones"
+    ],
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,
@@ -3586,6 +3630,20 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "centro",
+    "english": "downtown / center",
+    "part_of_speech": "noun (m)",
+    "grammar_notes": "El centro. En una ciudad mexicana, el Centro (con mayúscula) es el centro histórico: voy al Centro.",
+    "grammar_rule": "Masculine noun",
+    "categories": [
+      "Ciudad y transporte"
+    ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "cepillarse",
     "english": "to brush (teeth/hair)",
     "part_of_speech": "verb (reflexive)",
@@ -3617,6 +3675,21 @@
       "nosotros": "nos cepillábamos",
       "ellos/ellas": "se cepillaban"
     },
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "cerca",
+    "english": "near / close by",
+    "part_of_speech": "adverb",
+    "grammar_notes": "Adverbio de lugar. Con punto de referencia se usa cerca de: cerca del mercado. Lo contrario es lejos.",
+    "grammar_rule": "Adverb",
+    "categories": [
+      "Orientación y direcciones",
+      "Ciudad y transporte"
+    ],
     "tapatio": false,
     "tapatio_notes": "",
     "leitner_box": 1,
@@ -11393,6 +11466,20 @@
     "leitner_sessions_until_due": 0
   },
   {
+    "word": "mamá",
+    "english": "mom",
+    "part_of_speech": "noun (f)",
+    "grammar_notes": "La mamá. En el habla diaria de México se usa mamá y papá mucho más que madre y padre.",
+    "grammar_rule": "Feminine noun",
+    "categories": [
+      "Familia y relaciones"
+    ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
     "word": "mamey",
     "english": "mamey sapote (tropical fruit)",
     "part_of_speech": "noun (m)",
@@ -11878,6 +11965,20 @@
     "english": "medication / medicine",
     "part_of_speech": "noun (m)",
     "grammar_notes": "el medicamento; también la medicina; Frase médica clave: ¿Toma algún medicamento?",
+    "grammar_rule": "Masculine noun",
+    "categories": [
+      "Medicina y tratamiento"
+    ],
+    "tapatio": false,
+    "tapatio_notes": "",
+    "leitner_box": 1,
+    "leitner_sessions_until_due": 0
+  },
+  {
+    "word": "médico",
+    "english": "doctor (physician)",
+    "part_of_speech": "noun (m/f)",
+    "grammar_notes": "El médico / la médica. Al hablarle directamente se usa doctor(a): Doctora, me siento mal.",
     "grammar_rule": "Masculine noun",
     "categories": [
       "Medicina y tratamiento"
