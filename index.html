@@ -87,6 +87,35 @@ footer{text-align:center;margin-top:34px;color:var(--muted);font-size:.85rem}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--cobalt-dk);color:#fff;
   padding:10px 18px;border-radius:24px;font-size:.92rem;opacity:0;transition:.3s;pointer-events:none}
 .toast.show{opacity:1}
+/* welcome / first-run walkthrough */
+.welcome{position:relative;border-left:5px solid var(--tapatio);background:linear-gradient(135deg,#fff,#F7F3FD)}
+.welcome h2{font-family:'Oswald',sans-serif;font-weight:600;font-size:1.25rem;color:var(--cobalt-dk);
+  margin-bottom:10px;display:flex;align-items:center;gap:9px;letter-spacing:.01em}
+.welcome h3{font-family:'Oswald',sans-serif;font-weight:600;font-size:.95rem;color:var(--tapatio);
+  margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em}
+.welcome .w-lead{font-size:1rem;margin-bottom:18px}
+.welcome .w-block{margin-bottom:18px}
+.welcome .w-sub{color:var(--muted);font-size:.95rem;margin-top:8px}
+.welcome .en,.welcome .en-block{display:none}
+.welcome.show-en .en{display:inline}
+.welcome.show-en .en-block{display:block;margin-top:3px;color:var(--muted);font-style:italic;font-size:.9rem}
+.w-levels{display:flex;flex-wrap:wrap;gap:8px}
+.w-lv{background:#fff;border:1px solid var(--line);border-left-width:4px;border-radius:12px;
+  padding:7px 12px;font-weight:600;font-size:.9rem;color:var(--cobalt-dk)}
+.w-lv i{font-style:normal;font-weight:400;color:var(--muted);font-size:.85rem}
+.w-steps{margin:6px 0 0;padding-left:22px}
+.w-steps li{margin-bottom:8px;font-size:.97rem}
+.w-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.w-go{background:var(--tapatio);color:#fff}
+.w-go:hover{filter:brightness(1.08)}
+.w-en-toggle{background:var(--cream);color:var(--cobalt-dk);border:2px solid var(--line)}
+.w-en-toggle:hover{border-color:var(--marigold);background:#fff}
+.welcome-x{position:absolute;top:12px;right:14px;border:none;background:transparent;color:var(--muted);
+  font-size:1.05rem;cursor:pointer;line-height:1;padding:4px}
+.welcome-x:hover{color:var(--terracotta)}
+.hero-help{border:1px solid var(--line);background:#fff;color:var(--cobalt-dk);border-radius:20px;
+  padding:6px 14px;font-family:'Oswald',sans-serif;font-weight:600;font-size:.82rem;cursor:pointer;margin-top:12px}
+.hero-help:hover{border-color:var(--marigold)}
 @media(max-width:520px){.hero h1{font-size:2rem}body{font-size:16px}}
 </style>
 </head>
@@ -96,7 +125,44 @@ footer{text-align:center;margin-top:34px;color:var(--muted);font-size:.85rem}
     <div class="kicker">🌵 Tu Tutor de Español · Guadalajara, Jalisco</div>
     <h1>¡Hola! ¿Qué practicamos hoy?</h1>
     <p class="sub">Tu lugar para repasar vocabulario, construir oraciones y ver cómo vas avanzando.</p>
+    <button class="hero-help" id="hero-help" style="display:none" onclick="openWelcome()">❔ ¿Cómo empiezo?</button>
   </header>
+
+  <!-- WELCOME / FIRST-RUN WALKTHROUGH (Spanish-first, English on request) -->
+  <section class="card welcome" id="welcome" style="display:none">
+    <button class="welcome-x" onclick="dismissWelcome()" title="Cerrar" aria-label="Cerrar">✕</button>
+    <h2>👋 ¡Bienvenido! Empieza aquí</h2>
+    <p class="w-lead">Este es tu tutor de español tapatío: repasas palabras, armas oraciones y ves cómo avanzas. Todo se guarda solo, aquí en tu navegador. 🌵
+      <span class="en-block">This is your Guadalajara Spanish tutor: you review words, build sentences, and watch yourself progress. Everything saves itself, right here in your browser.</span>
+    </p>
+
+    <div class="w-block">
+      <h3>📈 Tus niveles</h3>
+      <p class="w-sub">Cada palabra sube de nivel conforme la practicas:<span class="en-block">Each word levels up as you practice it:</span></p>
+      <div class="w-levels">
+        <span class="w-lv" style="border-left-color:var(--lv1)">🌱 Nuevas <i>· apenas la conoces<span class="en"> (brand new)</span></i></span>
+        <span class="w-lv" style="border-left-color:var(--lv2)">📖 Aprendiendo <i>· ya te suena<span class="en"> (getting familiar)</span></i></span>
+        <span class="w-lv" style="border-left-color:var(--lv3)">💪 Vas bien <i>· la recuerdas con esfuerzo<span class="en"> (recalled with effort)</span></i></span>
+        <span class="w-lv" style="border-left-color:var(--lv4)">🔥 Casi <i>· casi es tuya<span class="en"> (almost there)</span></i></span>
+        <span class="w-lv" style="border-left-color:var(--lv5)">⭐ Dominadas <i>· ¡tuya para siempre!<span class="en"> (mastered)</span></i></span>
+      </div>
+    </div>
+
+    <div class="w-block">
+      <h3>🗺️ ¿Por dónde empiezo?</h3>
+      <ol class="w-steps">
+        <li><b>⚡ Los 100 Verbos</b> — empieza con los verbos en presente.<span class="en-block">Start with the verbs in the present tense.</span></li>
+        <li><b>🃏 Tarjetas de Vocabulario</b> — repasa tu vocabulario, tema por tema.<span class="en-block">Review your vocabulary, topic by topic.</span></li>
+        <li><b>💬 Lecciones</b> — junta todo en una conversación de verdad.<span class="en-block">Put it all together in a real conversation.</span></li>
+      </ol>
+      <p class="w-sub">Cuando domines un grupo, regresa por el siguiente. Sin prisa, ¿eh? 🌶️<span class="en-block">When you master a group, come back for the next one. No rush.</span></p>
+    </div>
+
+    <div class="w-actions">
+      <button class="btn w-go" onclick="dismissWelcome()">¡Empecemos! →</button>
+      <button class="btn w-en-toggle" id="w-en-btn" onclick="toggleWelcomeEn()">Ver en inglés</button>
+    </div>
+  </section>
 
   <!-- DICTIONARY STATUS -->
   <section class="card">
@@ -268,8 +334,31 @@ function renderProgress(){
     '<div class="legend">'+legend+'</div>';
 }
 
+// ── Welcome / first-run walkthrough ─────────────────────────────────────────
+var LS_ONBOARDED='tapatio_onboarded';
+function initWelcome(){
+  var seen=false; try{seen=!!localStorage.getItem(LS_ONBOARDED);}catch(e){}
+  $('welcome').style.display   = seen ? 'none' : 'block';
+  $('hero-help').style.display = seen ? 'inline-block' : 'none';
+}
+function dismissWelcome(){
+  try{localStorage.setItem(LS_ONBOARDED,'1');}catch(e){}
+  $('welcome').style.display='none';
+  $('hero-help').style.display='inline-block';
+}
+function openWelcome(){
+  $('welcome').style.display='block';
+  $('hero-help').style.display='none';
+  $('welcome').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function toggleWelcomeEn(){
+  var on=$('welcome').classList.toggle('show-en');
+  $('w-en-btn').textContent = on ? 'Ocultar inglés' : 'Ver en inglés';
+}
+
 // ── Init ────────────────────────────────────────────────────────────────────
 buildCards();
+initWelcome();      // greet newcomers; returning users see a small "¿Cómo empiezo?" link
 renderProgress();   // show whatever is cached immediately
 checkDict(false);   // then auto-check for updates
 </script>
