@@ -73,9 +73,9 @@
         { "speaker": "Vendedora", "es": "Gracias a usted. ¡Que le vaya bien!", "en": "Thank you. Have a good one!" }
       ],
       "practice": [
-        { "label": "Tarjetas: Alimentación", "href": "flashcards_vocabulario.html", "note": "Abre las Tarjetas de Vocabulario y elige la categoría \"Alimentación\" para repasar aguacate, queso, fresa y el resto." },
-        { "label": "Tarjetas: Cantidades y comparaciones", "href": "flashcards_vocabulario.html", "note": "Elige \"Cantidades y comparaciones\" para repasar kilo, docena, pedazo, demasiado, poco." },
-        { "label": "Tarjetas: Comunicación y cortesía", "href": "flashcards_vocabulario.html", "note": "Elige \"Comunicación y cortesía\" para repasar disculpa, gracias, de acuerdo, mande, sale." },
+        { "label": "Tarjetas: Alimentación", "href": "flashcards_vocabulario.html?cat=Alimentaci%C3%B3n", "note": "Ya viene lista la categoría Alimentación. Repasa aguacate, queso, fresa y lo demás." },
+        { "label": "Tarjetas: Cantidades y comparaciones", "href": "flashcards_vocabulario.html?cat=Cantidades%20y%20comparaciones", "note": "Ya viene lista Cantidades y comparaciones: kilo, docena, pedazo, demasiado, poco." },
+        { "label": "Tarjetas: Comunicación y cortesía", "href": "flashcards_vocabulario.html?cat=Comunicaci%C3%B3n%20y%20cortes%C3%ADa", "note": "Ya viene lista Comunicación y cortesía: disculpa, gracias, de acuerdo, mande, sale." },
         { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica formar oraciones con estas mismas palabras en cualquier categoría." }
       ]
     },
@@ -168,9 +168,9 @@
         { "speaker": "Doctora", "es": "De nada. ¡Que se mejore pronto!", "en": "You're welcome. Get better soon!" }
       ],
       "practice": [
-        { "label": "Tarjetas: Salud y síntomas", "href": "flashcards_vocabulario.html", "note": "Elige la categoría \"Salud y síntomas\" para repasar fiebre, tos, mareado, doler y el resto." },
-        { "label": "Tarjetas: Medicina y tratamiento", "href": "flashcards_vocabulario.html", "note": "Elige \"Medicina y tratamiento\" para repasar medicamento, pastilla, receta." },
-        { "label": "Tarjetas: Anatomía y cuerpo", "href": "flashcards_vocabulario.html", "note": "Elige \"Anatomía y cuerpo\" para repasar cabeza, garganta, estómago y más partes del cuerpo." },
+        { "label": "Tarjetas: Salud y síntomas", "href": "flashcards_vocabulario.html?cat=Salud%20y%20s%C3%ADntomas", "note": "Ya viene lista Salud y síntomas: fiebre, tos, mareado, doler y lo demás." },
+        { "label": "Tarjetas: Medicina y tratamiento", "href": "flashcards_vocabulario.html?cat=Medicina%20y%20tratamiento", "note": "Ya viene lista Medicina y tratamiento: medicamento, pastilla, receta." },
+        { "label": "Tarjetas: Anatomía y cuerpo", "href": "flashcards_vocabulario.html?cat=Anatom%C3%ADa%20y%20cuerpo", "note": "Ya viene lista Anatomía y cuerpo: cabeza, garganta, estómago y más partes del cuerpo." },
         { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica oraciones completas con estos verbos y sustantivos." }
       ]
     },
@@ -264,8 +264,8 @@
         { "speaker": "Señora", "es": "De nada, joven. ¡Que le vaya bien!", "en": "You're welcome, young man. Have a good one!" }
       ],
       "practice": [
-        { "label": "Tarjetas: Orientación y direcciones", "href": "flashcards_vocabulario.html", "note": "Elige \"Orientación y direcciones\" para repasar cuadra, esquina, a la derecha, todo recto y el resto." },
-        { "label": "Tarjetas: Ciudad y transporte", "href": "flashcards_vocabulario.html", "note": "Elige \"Ciudad y transporte\" para repasar calle, centro, semáforo y más." },
+        { "label": "Tarjetas: Orientación y direcciones", "href": "flashcards_vocabulario.html?cat=Orientaci%C3%B3n%20y%20direcciones", "note": "Ya viene lista Orientación y direcciones: cuadra, esquina, a la derecha, todo recto y lo demás." },
+        { "label": "Tarjetas: Ciudad y transporte", "href": "flashcards_vocabulario.html?cat=Ciudad%20y%20transporte", "note": "Ya viene lista Ciudad y transporte: calle, centro, semáforo y más." },
         { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica oraciones con estos verbos de movimiento." }
       ]
     },
@@ -362,8 +362,8 @@
         { "speaker": "Stan", "es": "Gracias. Para mí, la familia es lo más importante.", "en": "Thanks. For me, family is the most important thing." }
       ],
       "practice": [
-        { "label": "Tarjetas: Familia y relaciones", "href": "flashcards_vocabulario.html", "note": "Elige \"Familia y relaciones\" para repasar esposa, hijo, nieto, mamá y el resto." },
-        { "label": "Tarjetas: Descripción personal", "href": "flashcards_vocabulario.html", "note": "Elige \"Descripción personal\" para repasar alto, rizado, bromista, buena onda." },
+        { "label": "Tarjetas: Familia y relaciones", "href": "flashcards_vocabulario.html?cat=Familia%20y%20relaciones", "note": "Ya viene lista Familia y relaciones: esposa, hijo, nieto, mamá y lo demás." },
+        { "label": "Tarjetas: Descripción personal", "href": "flashcards_vocabulario.html?cat=Descripci%C3%B3n%20personal", "note": "Ya viene lista Descripción personal: alto, rizado, bromista, buena onda." },
         { "label": "Constructor de Oraciones", "href": "sentence_maker.html", "note": "Practica ser/estar/tener con descripciones completas." }
       ]
     },

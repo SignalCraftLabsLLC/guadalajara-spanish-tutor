@@ -1759,6 +1759,7 @@ function onJSONLoaded(migratedCount) {
   updateCatScrollCues(); // re-check now that the screen is actually visible (was 0x0 while hidden)
   updateLeitnerModeUI();
   updateCatUI();
+  applyCatParam();   // honor ?cat= deep-link from a lesson practice link
   if (migratedCount > 0) {
     // brief notice — entries didn't have leitner fields yet
     var info = document.getElementById('leitner-mode-info');
@@ -1919,6 +1920,30 @@ function toggleCat(id) {
   if (selectedCats.length === 0) selectedCats = ['Todas'];
   selectedRounds = null; // category changed — re-default rounds to the new max
   updateCatUI();
+}
+
+// ── Deep-link: preselect a category from ?cat= (once, e.g. from a lesson) ──
+var _catParamApplied = false;
+function applyCatParam() {
+  if (_catParamApplied) return;
+  _catParamApplied = true;
+  var raw = null;
+  try { raw = new URLSearchParams(window.location.search).get('cat'); } catch (e) { raw = null; }
+  if (!raw) return;                       // no param → normal full-deck behavior
+  var want = raw.trim().toLowerCase();
+  var match = CAT_META.filter(function (m) {
+    return m.id !== 'Todas' && m.id.toLowerCase() === want;
+  })[0];
+  if (!match) return;                     // unknown category → leave default untouched
+  selectedCats = [match.id];
+  selectedRounds = null;
+  updateCatUI();
+  // scroll the preselected category into view so the lesson hand-off is obvious
+  document.querySelectorAll('.cat-card').forEach(function (el) {
+    if (el.dataset.catId === match.id && el.scrollIntoView) {
+      el.scrollIntoView({ block: 'nearest' });
+    }
+  });
 }
 
 // ── Rounds selector ──────────────────────────────────────────────────
